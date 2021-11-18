@@ -5,7 +5,7 @@
                 <a href="index.html">
                     <img class="logo" src="../assets/icon-left-font-monochrome-white.svg" alt="">
                 </a>
-                <h1> Welcome, "users first name" !</h1>
+                <h1> Welcome, {{user.firstName}} !</h1>
             </div>
 
             <div class="header-btns col-lg-2 col-md-3">  
@@ -56,6 +56,7 @@ export default {
   font-size: 22px;
   color: white;
   line-height: 36px;
+  font-weight: 200;
 }
 .main-header .container .header-btns {
   display: flex;

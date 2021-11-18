@@ -18,6 +18,7 @@
                   <label for="text"> Insert your caption here: </label>
                   <input type="text" maxlength="150" required="true">
               </div>
+
               <div class="img-input">
                   <div class="preview">
                     <img class="img-preview" style="{ 'background-image': `url(${previewImage})` }" @click="selectImage">
@@ -25,6 +26,7 @@
 
                   <input type="file" id="postImg" accept="image/*" @input="pickFile" ref="fileInput" required="true">
               </div>
+
               <input type="submit" value="Submit" class="submit-btn">
           </div>
         </div>
@@ -44,20 +46,21 @@ export default {
   methods: {
 
     selectImage () {
-          this.$refs.fileInput.click()
-      },
-      pickFile () {
-        let input = this.$refs.fileInput
-        let file = input.files
-        if (file && file[0]) {
-          let reader = new FileReader
-          reader.onload = e => {
-            this.previewImage = e.target.result
-          }
-          reader.readAsDataURL(file[0])
-          this.$emit('input', file[0])
+      this.$refs.fileInput.click()
+    },
+
+    pickFile () {
+      let input = this.$refs.fileInput
+      let file = input.files
+      if (file && file[0]) {
+        let reader = new FileReader
+        reader.onload = e => {
+          this.previewImage = e.target.result
         }
+        reader.readAsDataURL(file[0])
+        this.$emit('input', file[0])
       }
+    }
   },
 }
 </script>

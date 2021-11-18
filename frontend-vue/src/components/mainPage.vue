@@ -1,116 +1,126 @@
 <template>
     <section class="main-page">
-        <div class="container">             
-            <article class="posts col-lg-9 col-md-8">
-                <h2>Discover our posts</h2>
-
-                <div class="box">
-                    <div class="post col-lg-6">
-                        <div class="content">
-                            <div class="top-bar">
-                                <div class="user-info">
-                                    <img src="../assets/user-black.png" alt="">
-                                    <p class="name-container"> Katie May </p>
-                                </div>
-
-                                <div>
-                                  <router-link to="/comments">
-                                    <img src="../assets/comments.png" alt="" id="commentsBtn">
-                                  </router-link>
-                                    <img src="../assets/bin-black.png" alt="">
-                                </div>
-                            </div>
-
-                            <div class="img-container">
-                                <img src="../assets/bob.jpg" alt="">
-                            </div>
-
-                            <div class="caption-container">
-                                <p> However iconic and well-known his image, Ross is still a man of surprises. One glaring fact, that even the most faithful
-                                television watchers do not often notice, is that Ross was missing a finger. It was cut off on a saw while woodworking
-                                with his father in his youth. If you look carefully, you will see that Ross hid his missing digit by holding his palette
-                                with the hand missing the finger.</p>
-                            </div>
-
-                            <div class="post-actions">
-                                <div class="likes">
-                                    <img class="like" src="../assets/like.png" alt="">
-                                    <img class="like-active" src="../assets/like-active.png" alt="">
-                                </div>
-                                <div class="dislikes">
-                                    <img class="dislike" src="../assets/dislike.png" alt="">
-                                    <img class="dislike-active" src="../assets/dislike-active.png" alt="">
-                                </div>
-
-                                <form class="comments">
-                                    <input class="input" type="text" name="comments" placeholder="Write a comment...">
-                                    <input class="btn" type="submit" value="Submit">
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="post col-lg-6">
-                        <div class="content">
-                            <div class="top-bar">
-                                <div class="user-info">
-                                    <img src="../assets/user-black.png" alt="">
-                                    <p class="name-container"> Janice John </p>
-                                </div>
-                                <div>
-                                    <img src="../assets/comments.png" alt="">
-                                    <img src="../assets/bin-black.png" alt="">
-                                </div>
-                            </div>
-
-                            <div class="img-container">
-                                <img src="../assets/anotherTest.jpeg" alt="">
-                            </div>
-
-                            <div class="caption-container">
-                                <p> The sky was so pretty last night.</p>
-                            </div>
-
-                            <div class="post-actions">
-                                <img src="../assets/like.png" alt="">
-                                <img src="../assets/dislike.png" alt="">  
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="post col-lg-6">
-                        <div class="content">
-                            <img src="" alt="">
-                            <p> </p>
-                        </div>
-                    </div>
-
-                    <div class="post col-lg-6">
-                        <div class="content">
-                            <img src="" alt="">
-                            <p> </p>
-                        </div>
-                    </div>
-                </div>
-            </article>
-                
-            <div class="col-lg-3 col-md-4">
-                <div class="sticky-items">
-                    <div class="footer">
-                        <p> About </p>
-                        <p> User Agreement </p>
-                        <p> Content Policy </p>
-                        <p> Privacy Policy </p>
-                        <p> Moderator Guidelines</p>
-                        <p> Help </p>
-                        <span> © 2021 Club Groupomania, Inc. All rights reserved.</span>
-                    </div>
-
-                    <a href="#scroll-top">
-                        <button class="scroll-btn"> Back to top </button>
-                    </a>    
-                </div>  
+        <div class="container">  
+          <!-- <article class="no-posts col-lg-9 col-md-8">
+            <div>
+              <h2> Sorry! It seems that nothing has been posted yet..</h2>
+              <button> <router-link to="/createPost"> Create new post </router-link> </button> 
             </div>
+          </article> -->
+
+          <article class="posts col-lg-9 col-md-8">
+              <h2>Discover our posts</h2>
+
+              <div class="box">
+                  <div class="post col-lg-6">
+                      <div class="content">
+                          <div class="top-bar">
+                              <div class="user-info">
+                                  <img src="../assets/user-black.png" alt="">
+                                  <p class="name-container"> Katie May </p>
+                              </div>
+
+                              <div>
+                                <router-link to="/comments">
+                                  <img src="../assets/comments.png" alt="" id="commentsBtn">
+                                </router-link>
+                                  <img src="../assets/bin-black.png" alt="">
+                              </div>
+                          </div>
+
+                          <div class="img-container">
+                              <img src="../assets/bob.jpg" alt="">
+                          </div>
+
+                          <div class="caption-container">
+                              <p> However iconic and well-known his image, Ross is still a man of surprises. One glaring fact, that even the most faithful
+                              television watchers do not often notice, is that Ross was missing a finger. It was cut off on a saw while woodworking
+                              with his father in his youth. If you look carefully, you will see that Ross hid his missing digit by holding his palette
+                              with the hand missing the finger.</p>
+                          </div>
+
+                          <div class="post-actions">
+                              <div class="like col-2">
+                                <img src="../assets/like-inactive.png" alt="" @click="likePost" class="remove-like" >  
+                                <img src="../assets/like-active.png" alt="" @click="likePost" class="add-like" style="visibility: hidden">  
+                              </div>
+
+                              <form class="comments col-10">
+                                  <input class="input" type="text" name="comments" placeholder="Write a comment...">
+                                  <input class="btn" type="submit" value="Submit">
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="post col-lg-6">
+                      <div class="content">
+                          <div class="top-bar">
+                              <div class="user-info">
+                                  <img src="../assets/user-black.png" alt="">
+                                  <p class="name-container"> Janice John </p>
+                              </div>
+                              <div>
+                                  <img src="../assets/comments.png" alt="">
+                                  <img src="../assets/bin-black.png" alt="">
+                              </div>
+                          </div>
+
+                          <div class="img-container">
+                              <img src="../assets/anotherTest.jpeg" alt="">
+                          </div>
+
+                          <div class="caption-container">
+                              <p> The sky was so pretty last night.</p>
+                          </div>
+
+                          <div class="post-actions">
+                              <div class="like col-2">
+                                <img src="../assets/like-inactive.png" alt="" @click="likePost" class="remove-like">  
+                                <img src="../assets/like-active.png" alt="" @click="likePost" class="add-like" style="visibility: hidden">  
+                              </div>
+
+                              <form class="comments col-10">
+                                  <input class="input" type="text" name="comments" placeholder="Write a comment...">
+                                  <input class="btn" type="submit" value="Submit">
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="post col-lg-6">
+                      <div class="content">
+                          <img src="" alt="">
+                          <p> </p>
+                      </div>
+                  </div>
+
+                  <div class="post col-lg-6">
+                      <div class="content">
+                          <img src="" alt="">
+                          <p> </p>
+                      </div>
+                  </div>
+              </div>
+          </article>
+              
+          <div class="col-lg-3 col-md-4">
+              <div class="sticky-items">
+                  <div class="footer">
+                      <p> About </p>
+                      <p> User Agreement </p>
+                      <p> Content Policy </p>
+                      <p> Privacy Policy </p>
+                      <p> Moderator Guidelines</p>
+                      <p> Help </p>
+                      <span> © 2021 Club Groupomania, Inc. All rights reserved.</span>
+                  </div>
+
+                  <a href="#scroll-top">
+                      <button class="scroll-btn"> Back to top </button>
+                  </a>    
+              </div>  
+          </div>
         </div>
     </section>
 </template>
@@ -118,7 +128,23 @@
 <script>
 
 export default {
-    name: 'MainPage'
+  name: 'MainPage',
+  methods: {
+
+    // Like post
+    likePost: function() {
+      let addLike = document.getElementsByClassName('add-like');
+      let removeLike = document.getElementsByClassName('remove-like');
+
+      if(addLike.style.visibility === "hidden") {
+        addLike.style.visibility = "visible"
+        removeLike.style.visibility = "hidden"
+      } else {
+        addLike.style.visibility = "hidden"
+        removeLike.style.visibility = "visible"
+      }
+    }
+  }
 }
 
 </script>
@@ -129,6 +155,32 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin-top: 30px;
+}
+.main-page .container .no-posts {
+  margin: 20px 0;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-page .container .no-posts div {
+  text-align: center;
+}
+.main-page .container .no-posts div h2 {
+  width: 100%;
+  font-size: 23px;
+  margin-bottom: 20px;
+}
+.main-page .container .no-posts div button {
+  padding: 7px;
+  margin: 0 5px;
+  border-radius: 12px;
+  width: 150px;
+  border: 2px solid black;
+  background-color: #091F43;
+}
+.main-page .container .no-posts div button a {
+  color: white;
+  text-decoration: none;
 }
 .main-page .container .posts {
   margin: 20px 0;
@@ -193,28 +245,14 @@ export default {
   bottom: 15px;
   display: flex;
 }
-.main-page .container .posts .box .post .content .post-actions img {
-  margin-right: 15px;
-  height: 25px;
-  cursor: pointer;
-}
-.main-page .container .posts .box .post .content .post-actions .likes {
+.main-page .container .posts .box .post .content .post-actions .like {
   position: relative;
 }
-.main-page .container .posts .box .post .content .post-actions .likes .like {
+.main-page .container .posts .box .post .content .post-actions .like img {
   position: absolute;
-  bottom: 0;
-  left: 0;
-}
-.main-page .container .posts .box .post .content .post-actions .likes .like-active {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  transform: scale(0.2);
-  transition: transform 400ms;
-}
-.main-page .container .posts .box .post .content .post-actions .likes .like-active:hover {
-  transform: scale(0.99);
+  margin-right: 15px;
+  height: 30px;
+  cursor: pointer;
 }
 .main-page .container .posts .box .post .content .post-actions .comments {
   display: flex;
@@ -223,12 +261,13 @@ export default {
 .main-page .container .posts .box .post .content .post-actions .comments .input {
   border-radius: 12px;
   border: 1px solid #091F43;
+  padding-left: 5px;
 }
 .main-page .container .posts .box .post .content .post-actions .comments .btn {
   margin-left: 5px;
-  padding: 5px;
+  padding: 7px;
   border-radius: 12px;
-  width: 70px;
+  width: 90px;
   border: 2px solid black;
   background-color: #091F43;
   color: white;
@@ -245,11 +284,12 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .main-page .container div .sticky-items .footer p {
-  line-height: 5px;
-  font-size: 13px;
+  line-height: 10px;
+  font-size: 15px;
+  cursor: pointer;
 }
 .main-page .container div .sticky-items .footer span {
-  font-size: 14px;
+  font-size: 13px;
   margin: 5px 0;
 }
 .main-page .container div .sticky-items a {
@@ -260,7 +300,7 @@ export default {
   padding: 7px;
   margin: 0 5px;
   border-radius: 12px;
-  width: 150px;
+  width: 120px;
   border: 2px solid black;
   background-color: #091F43;
   color: white;
