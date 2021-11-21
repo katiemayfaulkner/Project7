@@ -21,15 +21,18 @@ exports.signup = (req, res) => {
 				email: req.body.email,
 				password: req.body.password,
 			}
+
+			console.log(newUser)
 	
-			// const query = 'UPDATE User SET ? WHERE userID = ?';
-			const query = 'INSERT INTO User(firstName, lastName, email, password) VALUES (firstName, lastName, email, password)';
+			// const query = 'INSERT INTO User SET ?;
+			const query = 'INSERT INTO User SET ?';
 
 	
 			// SQL Queries
-			connection.query(query, [newUser, 1], (err, rows) => {
+			connection.query(query, [newUser], (err, rows) => {
 				
 				if(!err) {
+
 					console.log(rows);
 					res.send('Your account has been created successfully!');
 				} else {
@@ -40,7 +43,7 @@ exports.signup = (req, res) => {
 		}
 		
 	})
-}
+};
 
 exports.login = (req, res) => {
 
@@ -71,9 +74,9 @@ exports.login = (req, res) => {
 			})
 		}
 	})
-}
+};
 
-exports.getUser = (req, res, next) => {
+exports.getUser = (req, res) => {
 
 	// Retrieve user
     mySqlConnection.getConnection((err, connection) => {
@@ -139,9 +142,9 @@ exports.modifyUser = (req, res) => {
 		}
 		
 	})
-}
+};
 
-exports.deleteUser = (req, res, next)=> {
+exports.deleteUser = (req, res)=> {
 
 	// Delete user
 	mySqlConnection.getConnection((err, connection) => {

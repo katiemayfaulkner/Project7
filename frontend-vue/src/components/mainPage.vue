@@ -41,8 +41,8 @@
 
                           <div class="post-actions">
                               <div class="like col-2">
-                                <img src="../assets/like-inactive.png" alt="" @click="likePost" class="remove-like" >  
-                                <img src="../assets/like-active.png" alt="" @click="likePost" class="add-like" style="visibility: hidden">  
+                                <img src="../assets/like-inactive.png" alt="" @click="likePost" id="remove-like" >  
+                                <img src="../assets/like-active.png" alt="" @click="likePost" id="add-like" style="visibility: hidden">  
                               </div>
 
                               <form class="comments col-10">
@@ -75,9 +75,11 @@
                           </div>
 
                           <div class="post-actions">
-                              <div class="like col-2">
-                                <img src="../assets/like-inactive.png" alt="" @click="likePost" class="remove-like">  
-                                <img src="../assets/like-active.png" alt="" @click="likePost" class="add-like" style="visibility: hidden">  
+                              <div class="like col-2">          
+                                <img 
+                                  src="../assets/like-active.png"
+                                  v-bind:class="{nonLiked: isLiked}"
+                                  @click="isLiked = !isLiked">  
                               </div>
 
                               <form class="comments col-10">
@@ -129,12 +131,18 @@
 
 export default {
   name: 'MainPage',
+  data() {
+    return{
+      isLiked: false,
+
+    }
+  },
   methods: {
 
     // Like post
     likePost: function() {
-      let addLike = document.getElementsByClassName('add-like');
-      let removeLike = document.getElementsByClassName('remove-like');
+      let addLike = document.getElementById('add-like');
+      let removeLike = document.getElementById('remove-like');
 
       if(addLike.style.visibility === "hidden") {
         addLike.style.visibility = "visible"
@@ -304,6 +312,15 @@ export default {
   border: 2px solid black;
   background-color: #091F43;
   color: white;
+}
+
+
+.like img {
+  filter: brightness(3);
+}
+
+.like img.nonLiked {
+  filter: brightness(0)
 }
 
 @media only screen and (max-width: 770px) {

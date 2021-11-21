@@ -6,7 +6,7 @@
             <p> or <router-link to="/login"> login </router-link> to your existing account.</p>
             </div>
 
-            <div class="auth">
+            <form class="auth" v-on:submit.prevent="onSubmit">
                 <input
                 name="first-name"
                 type="text"
@@ -64,6 +64,7 @@
                         class="authInput signupInput secondPswd"
                         required="true"
                         id="retypePassword"
+                        v-model="form.retypePassword"
                     />
                     <img
                         @click="showSecondPassword"
@@ -80,14 +81,15 @@
                     />
                 </div>
 
-                <button id="signup" class="authBtn" @click="signUp">Sign Up</button>
-            </div>
+                <button class="authBtn" type="submit">Sign Up</button>
+                <p class="alert alert-danger" v-if="this.error">{{this.error}}</p>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
-    import AuthService from '../services/auth';
+    // import AuthService from '../services/auth';
 
     // import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
     import axios from 'axios'; 
@@ -96,11 +98,14 @@
         name: 'Signup',
         data() {
             return {
+                passwordsMatched: false,
+                error: "",
                 form: {
                     firstName: "",
                     lastName: "",
                     email: "",
                     password: "",
+                    retypePassword: "",
                 },
                 hidden: 1,
             };
@@ -140,52 +145,39 @@
             },
 
             // Check both passwords are the same
-            // comparePasswords: function (){
-            //     let firstPswd = document.getElementById('firstPswd');
-            //     console.log(firstPswd)
-            //     let secondPswd = document.getElementById('secondPswd')
-            //     let submitBtn = document.getElementById('signup');
+            onSubmit: function (){
+                if(this.form.password === this.form.retypePassword){
+                    this.passwordsMatched = true;
+                    this.error = ""
+                } else {
+                    this.passwordsMatched = false;
+                    this.error = "Your passwords do not match."
+                }
 
-            //     let cansubmit = true;
-
-            //     if(firstPswd.value !== secondPswd.value){
-            //         console.log('Passwords must match!');
-            //         cansubmit = false
-            //     } else {
-            //         console.log('Matching passwords!')
-            //         cansubmit = true
-            //     }
-            // },
+                this.signUp();
+            },
 
             // FOR HTML ->  disabled="disabled"  +  v-on:keyup="comparePasswords()"
 
-            signUp() {               
-                let self = this;
-                axios.post("http://localhost:3000/user/signup", this.form)
-                .then(response => {
-                    console.log("Response", response.data);
-                    // localStorage.setItem('token', response.data.token);
-					localStorage.setItem('user', JSON.stringify(response.data.user));
-                    self.$router.push({ name: "/" });
-                })
-                .catch(error => {
-                    console.error(error);
-                })
+            signUp() {
+                if(this.passwordsMatched) {
+
+
+                    axios.post("http://localhost:3000/user/signup", this.form)
+                    // .then (response => response.json())
+                    .then(data => {
+                        let userDetails = data;
+    
+                        console.log("Response", userDetails);
+                        // localStorage.setItem('token', response.data.token);
+                        localStorage.setItem('user', JSON.stringify(userDetails));
+                        // self.$router.push({ name: "" });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    })
+                }        
             },
-            // async signUp() {
-            //     try {
-            //         const credentials = {
-            //             firstName: this.firstName,
-            //             lastName: this.lastName, 
-            //             email: this.email,
-            //             password: this.password,
-            //         };
-            //         const response = await AuthService.signUp(credentials);
-            //         this.msg = response.msg;
-            //     } catch (error) {
-            //         this.msg = error.response.data.msg;
-            //     }
-            // },
         },
     };
 </script>
