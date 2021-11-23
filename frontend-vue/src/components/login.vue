@@ -6,7 +6,7 @@
         <p> or <router-link to="/signup"> signup </router-link> and create an account.</p>
         </div>
 
-        <form class="auth" @submit.prevent="sendForm">
+        <form class="auth" v-on:submit.prevent="onSubmit">
             <input
                 type="text"
                 name="first-name"
@@ -55,8 +55,33 @@
                 style="visibility: hidden"
                 />
             </div>
-          
-            <button id="login" class="authBtn"> Log In </button>
+            <div>
+              <input
+                  name="retype-password"
+                  type="password"
+                  placeholder="Retype password"
+                  class="authInput signupInput secondPswd"
+                  required="true"
+                  id="retypePassword"
+                  v-model="form.retypePassword"
+              />
+              <img
+                  @click="showSecondPassword"
+                  src="../assets/hidden.png"
+                  alt=""
+                  id="hideSecondPswd"
+              />
+              <img
+                  @click="showSecondPassword"
+                  src="../assets/visible.png"
+                  alt=""
+                  id="showSecondPswd"
+                  style="visibility: hidden"
+              />
+            </div>
+
+            <button class="authBtn" type="submit"> Log In </button>
+            <p class="alert alert-danger" v-if="this.error">{{this.error}}</p>
         </form>
     </div>
   </div>
@@ -70,13 +95,16 @@ export default {
   name: 'Login',
   data() {
     return {
+      passwordsMatched: false,
+      error: "",
       form: {
         firstName: "",
         lastName: "",
         email: "",
         password: "",
+        retypePassword: "",
       },
-      hidden: 1,
+      hidden: 2,
     };
   },
   methods: {
@@ -97,20 +125,49 @@ export default {
         hideLogin.style.visibility = "visible"
       }
     },
+    showSecondPassword: function () {
+            let retypePassword = document.getElementById("retypePassword");
+            let showSecond = document.getElementById("showSecondPswd");
+            let hideSecond = document.getElementById("hideSecondPswd");
 
-    sendForm() {
-      let self = this;
-      axios.post("http://localhost:3000/user/login", this.form)
-      .then(response => {
-          console.log("Response", response.data);
-          // localStorage.setItem('token', response.data.token);
-					localStorage.setItem('user', JSON.stringify(response.data.user));
-          self.$router.push({ name: "/" });
-      })
-      .catch(error => {
-          console.error(error);
-      })
+            if (retypePassword.type === "password") {
+                retypePassword.type = "text";
+                showSecond.style.visibility = "visible"
+                hideSecond.style.visibility = "hidden"
+
+            } else {
+                retypePassword.type = "password";
+                showSecond.style.visibility = "hidden"
+                hideSecond.style.visibility = "visible"
+            }
     },
+
+    // Check both passwords are the same
+    onSubmit: function (){
+        if(this.form.password === this.form.retypePassword){
+            this.passwordsMatched = true;
+            this.error = ""
+        } else {
+            this.passwordsMatched = false;
+            this.error = "Your passwords do not match."
+        }
+
+        // this.logIn();
+    },
+
+    // logIn() {
+    //   let self = this;
+    //   axios.post("http://localhost:3000/user/login", this.form)
+    //   .then(response => {
+    //       console.log("Response", response.data);
+    //       // localStorage.setItem('token', response.data.token);
+		// 			localStorage.setItem('user', JSON.stringify(response.data.user));
+    //       self.$router.push({ name: "/" });
+    //   })
+    //   .catch(error => {
+    //       console.error(error);
+    //   })
+    // },
   }
 }
 </script>

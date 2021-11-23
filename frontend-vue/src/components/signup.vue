@@ -107,7 +107,7 @@
                     password: "",
                     retypePassword: "",
                 },
-                hidden: 1,
+                hidden: 2,
             };
         },
         methods: {
