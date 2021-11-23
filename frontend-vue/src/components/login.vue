@@ -152,22 +152,27 @@ export default {
             this.error = "Your passwords do not match."
         }
 
-        // this.logIn();
+        this.logIn();
     },
 
-    // logIn() {
-    //   let self = this;
-    //   axios.post("http://localhost:3000/user/login", this.form)
-    //   .then(response => {
-    //       console.log("Response", response.data);
-    //       // localStorage.setItem('token', response.data.token);
-		// 			localStorage.setItem('user', JSON.stringify(response.data.user));
-    //       self.$router.push({ name: "/" });
-    //   })
-    //   .catch(error => {
-    //       console.error(error);
-    //   })
-    // },
+    logIn() {
+
+      if(this.passwordsMatched) {
+        
+        let userDetails = this.form
+
+        axios.get("http://localhost:3000/user/login", this.form)
+        .then(
+          // localStorage.setItem('token', response.data.token);
+          console.log(userDetails.firstName, "has been successfully logged in!"),
+          localStorage.setItem('user', JSON.stringify(userDetails)),
+          this.$router.push({ name: 'Home' })   
+        )
+        .catch(error => {
+          console.error(error);
+        })
+      }
+    },
   }
 }
 </script>

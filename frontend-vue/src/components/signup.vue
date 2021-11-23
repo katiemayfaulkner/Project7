@@ -165,7 +165,7 @@
                     axios.post("http://localhost:3000/user/signup", userDetails)
                     .then(
                         // localStorage.setItem('token', response.data.token);
-                        console.log("Response", userDetails),
+                        console.log(userDetails.firstName, "has created a new account!"),
                         localStorage.setItem('user', JSON.stringify(userDetails)),
                         this.$router.push({ name: 'Home' })   
                     )
