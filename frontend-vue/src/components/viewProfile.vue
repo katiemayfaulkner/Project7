@@ -12,19 +12,19 @@
         <img src="../assets/user.png" alt="">
         <div>
           <p class="title">First name:</p>
-          <!-- <p id="userName"> {{user.firstName}}</p> -->
+          <p id="userName"> {{user.firstName}}</p>
         </div>
         <div>
           <p class="title">Last name:</p>
-          <!-- <p id="userName"> {{user.lastName}}</p> -->
+          <p id="userName"> {{user.lastName}}</p>
         </div>
         <div>
           <p class="title">Email:</p>
-          <!-- <p id="userEmail"> {{user.email}}</p> -->
+          <p id="userEmail"> {{user.email}}</p>
         </div>
         <div>
           <p class="title">Password:</p>
-          <!-- <p> {{user.password}} </p> -->
+          <p> {{user.password}} </p>
         </div>
       </div>
       <div class="profile-btns">
@@ -43,61 +43,58 @@
 import axios from 'axios'; 
 
 export default {
-  name: 'viewProfile',
-  data() {
-    return {
-      user: [],
-    };
-  },
-  methods: {
+	name: 'viewProfile',
+	data() {
+		return {
+			user: [],
+		};
+	},
+	methods: {
 
-    getUser() {
-      let token = window.localStorage.getItem('token');
+		getUser() {
+			//   let token = window.localStorage.getItem('token');
 
-      axios.get('http://localhost:3000/api/user/:id',
-				{ headers: {
-					'Authorization': `User ${token}`,
-					}
-				})
-				.then(function (response) {
-					self.user = response.data;
-					console.log("Response", response);
-				})
-				.catch(function (err) {
-					console.log("Error", err);
-				})
-    },
-
-    logoutUser() {
-      localStorage.clear();
-      this.$router.push({ name: "Welcome" });
-    },
-
-    deleteUser() {
-      let self = this;
-      let token = window.localStorage.getItem('token');
-      axios.delete('http://localhost:3000/api/user',
-       { headers: {
-        'Authorization': `Basic ${token}`,
-        }
-      })
-      .then(function (response) {
-        self.$router.push({ name: "Welcome" });
-        self.user = response.data;
-        alert('Successfully deleted account');
-        this.logoutUser();
-        localStorage.clear();
-        self.$router.push({ name: "Welcome" });
-        console.log("Response", response);
-      })
-      .catch(function (err) {
-        console.log("Error", err);
-      })
+			axios.get('http://localhost:3000/user/:id'
+			//, { headers: {'Authorization': `User ${token}`,}}
+			)
+			.then(
+				this.user = JSON.parse(window.localStorage.getItem('user')),	
+			)
+			.catch(function (err) {
+				console.log("Error", err);
+			})
 		},
-  },
-  beforeMount() {
-    this.getUser()
-  },
+
+		logoutUser() {
+			localStorage.clear();
+			this.$router.push({ name: "Welcome" });
+		},
+
+		deleteUser() {
+			let self = this;
+			let token = window.localStorage.getItem('token');
+			axios.delete('http://localhost:3000/api/user',
+			{ headers: {
+				'Authorization': `Basic ${token}`,
+				}
+			})
+			.then(function (response) {
+				self.$router.push({ name: "Welcome" });
+				self.user = response.data;
+				alert('Successfully deleted account');
+				this.logoutUser();
+				localStorage.clear();
+				self.$router.push({ name: "Welcome" });
+				console.log("Response", response);
+			})
+			.catch(function (err) {
+				console.log("Error", err);
+			})
+		},
+	},
+	beforeMount() {
+		this.getUser()
+	},
 }
 </script>
 

@@ -25,7 +25,7 @@ export default {
   name: 'Header',
   data() {
     return {
-      user: localStorage.getItem('user'),
+      user: JSON.parse(window.localStorage.getItem('user')),
     };
 	},
   props: ['firstName'], 
