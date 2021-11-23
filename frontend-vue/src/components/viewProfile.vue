@@ -1,5 +1,5 @@
 <template>
-  <div class="window">
+  <div class="profile-window">
     <div class="box">
       <div class="hero">
         <h1> My account: </h1>   
@@ -29,7 +29,7 @@
       </div>
       <div class="profile-btns">
         <input type="button" value="Logout" id="logoutBtn" @click="logoutUser()">
-        <router-link to="/edit">
+        <router-link to="/edit-profile">
           <input type="button" value="Edit my profile">
         </router-link>
         <input type="button" value="Delete account" id="deleteBtn" @click="deleteUser()">
@@ -101,89 +101,91 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 
-.window {
-  position: fixed;
-  z-index: 1;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  background-color: rgba(117, 114, 114, 0.5);
+.profile-window {
+	position: fixed;
+	z-index: 1;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	background-color: rgba(117, 114, 114, 0.5);
+	.box {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 70%;
+		height: 450px;
+		margin: O auto;
+		padding: 30px;
+		border-radius: 12px;
+		background-color: #091F43;
+		color: white;
+		.hero {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 30px;
+			a {
+				display: flex;
+				line-height: 25px;
+				margin-bottom: 10px;
+				text-decoration: none;
+				img {
+					margin-right: 5px;
+					height: 25px;
+				}
+			}
+			h1 {
+				font-size: 22px;
+				font-weight: 300px;
+			}
+		}
+		.profile {
+			margin: 20px 0;
+			img {
+				width: 50px;
+				height: auto;
+				margin-bottom: 15px;
+			}
+			div {
+				display: flex;
+				flex-wrap: wrap;
+				color: white;
+				.title {
+					font-weight: 500;
+				}
+				p {
+					padding-right: 10px;
+					font-size: 1.2rem;
+					font-weight: 200;
+				}
+			}
+		}
+		.profile-btns {
+			input {
+				padding: 10px;
+				margin-right: 15px;
+				border-radius: 12px;
+				border: none;
+				background-color: white;
+				font-weight: 800;
+				color: #091F43;
+				font-size: 17px;
+			}
+		}
+	}
 }
-.window .box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70%;
-  height: 450px;
-  margin: O auto;
-  padding: 30px;
-  border-radius: 12px;
-  background-color: #091F43;
-  color: white;
-}
-.window .box .hero {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-}
-.window .box .hero a{
-    display: flex;
-    line-height: 25px;
-    margin-bottom: 10px;
-    text-decoration: none;
-}
-.window .box .hero h1 {
-    font-size: 22px;
-    font-weight: 300px;
-}
-.window .box .hero a img { 
-  margin-right: 5px;
-  height: 25px;  
-}
-.window .box .profile {
-  margin: 20px 0;
-}
-.window .box .profile img {
-  width: 50px;
-  height: auto;
-  margin-bottom: 15px;
-}
-.window .box .profile div {
-  display: flex;
-  flex-wrap: wrap;
-  color: white;
-}
-.window .box .profile div .title {
-  font-weight: 500;
-}
-.window .box .profile div p {
-  padding-right: 10px;
-  font-size: 1.2rem;
-  font-weight: 200;
-}
-.window .box .profile-btns input {
-  padding: 10px;
-  margin-right: 15px;
-  border-radius: 12px;
-  border: none;
-  background-color: white;
-  font-weight: 800;
-  color: #091F43;
-  font-size: 17px;
-}
-
 @media only screen and (max-width: 770px) {
-  
-  .window .box{
-    width: 90%;
-  } 
-  .window .box input {
-    margin-top: 10px;
-  }
+	.window {
+		.box {
+			width: 90%;
+			input {
+				margin-top: 10px;
+			}
+		}
+	}
 }
 
 </style>

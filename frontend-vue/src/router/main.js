@@ -13,8 +13,9 @@ import editProfile from '../components/editProfile.vue'
 import viewComments from '../components/viewComments.vue'
 
 export default new Router({
-  // mode: "history",
-  // base: process.env.BASE_URL,
+  mode: "history",
+  base: process.env.BASE_URL,
+  
   routes: [
     {
       path: '/welcome',
@@ -37,7 +38,7 @@ export default new Router({
       component: Home
     },
     {
-      path: '/createPost',
+      path: '/create-post',
       name: 'createPost',
       component: createPost
     },
@@ -47,7 +48,7 @@ export default new Router({
       component: viewProfile
     },
     {
-      path: '/edit',
+      path: '/edit-profile',
       name: 'editProfile',
       component: editProfile
     },

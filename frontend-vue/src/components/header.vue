@@ -9,7 +9,7 @@
             </div>
 
             <div class="header-btns col-lg-2 col-md-3">  
-              <router-link  to="/createPost">
+              <router-link  to="/create-post">
                 <img src="../assets/post.png" alt="" id="showPost" to="/main">
               </router-link> 
               <router-link to="/profile">
@@ -25,67 +25,81 @@ export default {
   name: 'Header',
   data() {
     return {
-      user: {},
+      user: localStorage.getItem('user'),
     };
 	},
-  props: ['username'],
-  
+  props: ['firstName'], 
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 
 .main-header {
-  background-color: #091F43;
-  padding: 20px 0;
-}
-.main-header .container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-.main-header .container div {
-  display: block;
-}
-.main-header .container div .logo {
-  height: 36px;
-  width: auto;
-}
-.main-header .container div h1 {
-  margin-left: 50px;
-  font-size: 22px;
-  color: white;
-  line-height: 36px;
-  font-weight: 200;
-}
-.main-header .container .header-btns {
-  display: flex;
-  flex-wrap: nowrap;
-}
-.main-header .container .header-btns img {
-  height: 36px;
-  width: auto;
-  margin: 18px 10px 0;
-  cursor: pointer;
+	background-color: #091F43;
+	padding: 20px 0;
+
+	.container {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+
+		div {
+			display: block;
+
+			.logo {
+				height: 36px;
+				width: auto;
+			}
+
+			h1 {
+				margin-left: 50px;
+				font-size: 22px;
+				color: white;
+				line-height: 36px;
+				font-weight: 200;
+			}
+		}
+
+		.header-btns {
+			display: flex;
+			flex-wrap: nowrap;
+
+			img {
+				height: 36px;
+				width: auto;
+				margin: 18px 10px 0;
+				cursor: pointer;
+			}
+		}
+	}
 }
 
 @media only screen and (max-width: 770px) {
-  
- .main-header .container div .logo {
-    height: 32px;
-    width: auto;
-  }
-  .main-header .container div h1 {
-    margin-left: 50px;
-    font-size: 20px;
-  }
-  .main-header .container .header-btns img {
-    height: 30px;
-    margin-left: 7px;
-  }
-  .main-header .container .header-btns .window .box {
-    width: 90%;
-  } 
-}
+	.main-header {
 
-</style>
+		.container {
+
+			div {
+
+				.logo {
+					height: 32px;
+					width: auto;
+				}
+
+				h1 {
+					margin-left: 50px;
+					font-size: 20px;
+				}
+			}
+
+			.header-btns {
+
+				img {
+					height: 30px;
+					margin-left: 7px;
+				}
+			}
+		}
+	}
+}
+</style>>

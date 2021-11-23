@@ -1,5 +1,5 @@
 <template>
-  <div class="window">
+  <div class="auth-window">
     <div class="box">
         <div class="hero">
             <h1>Welcome to your new account!</h1>
@@ -157,22 +157,18 @@
                 this.signUp();
             },
 
-            // FOR HTML ->  disabled="disabled"  +  v-on:keyup="comparePasswords()"
-
             signUp() {
                 if(this.passwordsMatched) {
 
+                    let userDetails = this.form
 
-                    axios.post("http://localhost:3000/user/signup", this.form)
-                    // .then (response => response.json())
-                    .then(data => {
-                        let userDetails = data;
-    
-                        console.log("Response", userDetails);
+                    axios.post("http://localhost:3000/user/signup", userDetails)
+                    .then(
                         // localStorage.setItem('token', response.data.token);
-                        localStorage.setItem('user', JSON.stringify(userDetails));
-                        // self.$router.push({ name: "" });
-                    })
+                        console.log("Response", userDetails),
+                        localStorage.setItem('user', JSON.stringify(userDetails)),
+                        this.$router.push({ name: 'Home' })   
+                    )
                     .catch(error => {
                         console.error(error);
                     })
@@ -182,104 +178,118 @@
     };
 </script>
 
-<style scoped>
-.window {
-  visibility: visible;
-  position: fixed;
-  z-index: 1;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  /* background-color: rgba(117, 114, 114, 0.705); */
-  background: linear-gradient(-45deg, #8d42ee, #194fa5, #3a87fa, #1fafe4);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+<style lang="scss">
+
+.auth-window {
+	visibility: visible;
+	position: fixed;
+	z-index: 1;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	background: linear-gradient(-45deg, #8d42ee, #194fa5, #3a87fa, #1fafe4);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+
+	.box {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 60%;
+		height: 500px;
+		margin: O auto;
+		padding: 70px;
+		border-radius: 12px;
+		background-color: #091f43;
+		color: white;
+
+		.hero {
+			text-align: center;
+
+			h1 {
+				font-size: 26px;
+			}
+
+			p {
+				font-weight: 200;
+
+				a {
+					font-weight: 800;
+					text-decoration: none;
+					color: white;
+				}
+			}
+		}
+		.auth {
+			align-items: center;
+			width: 220px;
+			margin: 25px auto;
+
+			.authInput {
+				height: 40px;
+				padding: 7px;
+				margin: 5px;
+				border-radius: 12px;
+				border: 2px solid black;
+				font-size: 17px;
+			}
+
+			div {
+				display: flex;
+				position: relative;
+			}
+
+			img {
+				height: 20px;
+				margin: 15px 0;
+				position: absolute;
+				top: 0;
+				right: 0;
+			}
+
+			.authBtn {
+				padding: 7px;
+				margin: 5px;
+				border-radius: 12px;
+				width: 100px;
+				border: 2px solid black;
+				background-color: white;
+				color: #091f43;
+				font-size: 17px;
+
+				&:disabled {
+					background: linear-gradient(160deg, #6b6b6b 0%, #b6b5b5 100%);
+					border: none;
+					color: white;
+				}
+			}
+		}
+	}
 }
+
 @keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-.window .box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    height: 500px;
-    margin: O auto;
-    padding: 70px;
-    border-radius: 12px;
-    background-color: #091f43;
-    color: white;
-}
-.window .box .hero {
-  text-align: center;
-}
-.window .box .hero h1 {
-    font-size: 26px;
-}
-.window .box .hero p {
-    font-weight: 200;
-}
-.window .box .hero p a {
-    font-weight: 800;
-    text-decoration: none;
-    color: white;
-}
-.window .box .auth {
-  align-items: center;
-  width: 220px;
-  margin: 25px auto;
-}
-.window .box .auth .authInput {
-  height: 40px;
-  padding: 7px;
-  margin: 5px;
-  border-radius: 12px;
-  border: 2px solid black;
-  font-size: 17px;
-}
-.window .box .auth div {
-  display: flex;
-  position: relative;
-}
-.window .box .auth img {
-  height: 20px;
-  margin: 15px 0;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-.window .box .auth .authBtn {
-  padding: 7px;
-  margin: 5px;
-  border-radius: 12px;
-  width: 100px;
-  border: 2px solid black;
-  background-color: white;
-  color: #091f43;
-  font-size: 17px;
-}
-.window .box .auth .authBtn:disabled{
-  background: linear-gradient(160deg, #6b6b6b 0%, #b6b5b5 100%);
-  border: none;
-  color: white;
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 
 @media only screen and (max-width: 770px) {
-  
- .window .box {
-   padding: 50px 0;
-   width: 83%;
- } 
+
+	.window {
+
+		.box {
+			padding: 50px 0;
+			width: 83%;
+		}
+	}
 }
 
 </style>
