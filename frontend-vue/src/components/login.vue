@@ -149,7 +149,7 @@ export default {
             this.error = ""
         } else {
             this.passwordsMatched = false;
-            this.error = "Your passwords do not match."
+            this.error = "Passwords must match!"
         }
 
         this.logIn();
@@ -196,10 +196,9 @@ export default {
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		width: 60%;
-		height: 500px;
+		width: 60%;	
 		margin: O auto;
-		padding: 70px;
+		padding: 60px;
 		border-radius: 12px;
 		background-color: #091f43;
 		color: white;
@@ -225,6 +224,7 @@ export default {
 			align-items: center;
 			width: 220px;
 			margin: 25px auto;
+      position: relative;
 
 			.authInput {
 				height: 40px;
@@ -250,20 +250,20 @@ export default {
 
 			.authBtn {
 				padding: 7px;
-				margin: 5px;
+				margin: 5px 5px 10px 5px;
 				border-radius: 12px;
 				width: 100px;
 				border: 2px solid black;
 				background-color: white;
 				color: #091f43;
 				font-size: 17px;
-
-				&:disabled {
-					background: linear-gradient(160deg, #6b6b6b 0%, #b6b5b5 100%);
-					border: none;
-					color: white;
-				}
 			}
+
+      p{
+        position: absolute;
+        padding: 10px;
+        margin: 0 5px;
+      }
 		}
 	}
 }

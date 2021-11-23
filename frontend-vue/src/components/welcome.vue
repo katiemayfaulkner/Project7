@@ -41,9 +41,8 @@ export default {
 		left: 50%;
 		transform: translate(-50%, -50%);
 		width: 60%;
-		height: 500px;
 		margin: O auto;
-		padding: 90px 20px;
+		padding: 80px 30px;
 		border-radius: 12px;
 		background-color: #091f43;
 		color: white;
