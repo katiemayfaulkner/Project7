@@ -12,7 +12,7 @@
               <h2>Discover our posts</h2>
 
               <div class="box">
-                  <div class="post col-lg-6">
+                  <div class="post col-lg-6">	
                       <div class="content">
                           <div class="top-bar">
                               <div class="user-info">
@@ -41,8 +41,11 @@
 
                           <div class="post-actions">
                               <div class="like col-2">
-                                <img src="../assets/like-inactive.png" alt="" @click="likePost" id="remove-like" >  
-                                <img src="../assets/like-active.png" alt="" @click="likePost" id="add-like" style="visibility: hidden">  
+                                <img 
+                                  src="../assets/like-active.png"								  
+									v-bind:class="{active: isLiked}"
+									@click="isLiked = !isLiked"
+								>  
                               </div>
 
                               <form class="comments col-10">
@@ -77,9 +80,10 @@
                           <div class="post-actions">
                               <div class="like col-2">          
                                 <img 
-                                  src="../assets/like-active.png"
-                                  v-bind:class="{nonLiked: isLiked}"
-                                  @click="isLiked = !isLiked">  
+                                  src="../assets/like-active.png"								  
+									v-bind:class="{active: isLiked}"
+									@click="isLiked = !isLiked"
+								>  
                               </div>
 
                               <form class="comments col-10">
@@ -134,24 +138,10 @@ export default {
   data() {
     return{
       isLiked: false,
-
     }
   },
   methods: {
 
-    // Like post
-    likePost: function() {
-      let addLike = document.getElementById('add-like');
-      let removeLike = document.getElementById('remove-like');
-
-      if(addLike.style.visibility === "hidden") {
-        addLike.style.visibility = "visible"
-        removeLike.style.visibility = "hidden"
-      } else {
-        addLike.style.visibility = "hidden"
-        removeLike.style.visibility = "visible"
-      }
-    }
   }
 }
 
@@ -196,6 +186,7 @@ export default {
 				}
 			}
 		}
+
 		.posts {
 			margin: 20px 0;
 
@@ -239,6 +230,7 @@ export default {
 								}
 							}
 						}
+
 						.img-container {
 							position: relative;
 							text-align: center;
@@ -251,6 +243,7 @@ export default {
 								box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 							}
 						}
+
 						.caption-container {
 							margin: 15px 0;
 							height: auto;
@@ -258,6 +251,7 @@ export default {
 							overflow-y: scroll;
 							border-radius: 12px;
 						}
+
 						.post-actions {
 							position: absolute;
 							bottom: 15px;
@@ -271,11 +265,13 @@ export default {
 									margin-right: 15px;
 									height: 30px;
 									cursor: pointer;
-                  filter: brightness();
+									filter: brightness(1);		
+									opacity: 35%;
 								}
-                img.nonLiked {
-                  filter: brightness(0);
-                }
+								img.active {
+									filter: brightness(0);
+									opacity: 100%;
+								}
 							}
 							.comments {
 								display: flex;
@@ -303,6 +299,7 @@ export default {
 				}
 			}
 		}
+
 		div {
 			.sticky-items {
 				position: -webkit-sticky;
@@ -340,6 +337,7 @@ export default {
 		}
 	}
 }
+
 @media only screen and (max-width: 770px) {
 	.main-page {
 		.container {
@@ -362,6 +360,5 @@ export default {
 		}
 	}
 }
-
 
 </style>

@@ -33,8 +33,8 @@
             />
             <div>
                 <input
-                type="text"
                 name="password"
+                type="password"
                 placeholder="Password"
                 class="authInput loginInput"
                 required="true"
@@ -95,6 +95,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      isLiked: false,
       passwordsMatched: false,
       error: "",
       form: {
@@ -241,12 +242,16 @@ export default {
 			}
 
 			img {
+				position: absolute;
+        top: 0;
+				right: 0;
 				height: 20px;
 				margin: 15px 0;
-				position: absolute;
-				top: 0;
-				right: 0;
+        cursor: pointer;
 			}
+      img.nonLiked {
+        filter: brightness(0);
+      }
 
 			.authBtn {
 				padding: 7px;

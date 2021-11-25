@@ -19,7 +19,7 @@ import MainPage from './components/mainPage.vue'
 
 export default {
   name: 'app',
-  loggedIn: true,
+  loggedIn: false,
   components: {
     Welcome,
     Header,

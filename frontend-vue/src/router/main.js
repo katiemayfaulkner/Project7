@@ -6,7 +6,6 @@ Vue.use(Router)
 import Welcome from '../components/welcome.vue'
 import Login from '../components/login.vue'
 import Signup from '../components/signup.vue'
-import Home from '../components/mainPage.vue'
 import createPost from '../components/createPost.vue'
 import viewProfile from '../components/viewProfile.vue'
 import editProfile from '../components/editProfile.vue'
@@ -31,11 +30,6 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
-    },
-    {
-      path: '/home',
-      name: 'Home',
-      component: Home
     },
     {
       path: '/create-post',

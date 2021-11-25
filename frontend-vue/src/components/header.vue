@@ -2,19 +2,17 @@
     <header class="main-header" id="scroll-top">
         <div class="container">
             <div class="col-lg-10 col-md-9">
-                <a href="index.html">
-                    <img class="logo" src="../assets/icon-left-font-monochrome-white.svg" alt="">
-                </a>
+                <img class="logo" src="../assets/icon-left-font-monochrome-white.svg" alt="">              
                 <h1> Welcome, {{user.firstName}} !</h1>
             </div>
 
             <div class="header-btns col-lg-2 col-md-3">  
-              <router-link  to="/create-post">
-                <img src="../assets/post.png" alt="" id="showPost" to="/main">
-              </router-link> 
-              <router-link to="/profile">
-                <img src="../assets/user.png" alt="" id="showUser" >   
-               </router-link>
+				<router-link  to="/create-post">
+					<img src="../assets/post.png" alt="" id="showPost">
+				</router-link> 
+				<router-link to="/profile">
+					<img src="../assets/user.png" alt="" id="showUser" >   
+				</router-link>
             </div>
         </div>
     </header>

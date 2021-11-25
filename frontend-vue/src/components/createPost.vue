@@ -3,7 +3,7 @@
         <div class="box">
           <div class="hero">
               <h1> Create New Post: </h1>
-              <router-link to="/">
+              <router-link to="/home">
                   <img src="../assets/close-white.png" alt="">
               </router-link>
           </div>
