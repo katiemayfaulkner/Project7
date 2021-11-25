@@ -160,15 +160,18 @@
             signUp() {
                 if(this.passwordsMatched) {
 
-                    let userDetails = this.form
+                    let userDetails = this.form;
 
                     axios.post("http://localhost:3000/user/signup", userDetails)
-                    .then(
+                    .then(response => {
+                        console.log(response.data);
+                        console.log(userDetails.firstName,", your account has successfully been created!"),
+
                         // localStorage.setItem('token', response.data.token);
-                        console.log(userDetails.firstName, "has created a new account!"),
-                        localStorage.setItem('user', JSON.stringify(userDetails)),
-                        this.$router.push({ name: 'Home' })   
-                    )
+                        
+                        localStorage.setItem('user', JSON.stringify(userDetails));
+                        this.$router.push({ path: "/home" });
+                    })
                     .catch(error => {
                         console.error(error);
                     })

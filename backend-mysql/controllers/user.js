@@ -157,8 +157,10 @@ exports.deleteUser = (req, res)=> {
 
 			console.log(req.body)
 	
-			// SELECT * FROM users
+			// DELETE FROM users
 			let userID = req.body.userID;
+
+			console.log(userID)
 	
 			const query = 'DELETE FROM User WHERE userID = ?';
 	

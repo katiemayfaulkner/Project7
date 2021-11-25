@@ -162,15 +162,18 @@ export default {
         
         let userDetails = this.form
 
-        axios.get("http://localhost:3000/user/login", this.form)
-        .then(
-          // localStorage.setItem('token', response.data.token);
+        axios.get("http://localhost:3000/user/login", userDetails)
+        .then(response => {
+          console.log(response.data);
           console.log(userDetails.firstName, "has been successfully logged in!"),
-          localStorage.setItem('user', JSON.stringify(userDetails)),
-          this.$router.push({ name: 'Home' })   
-        )
+
+          // localStorage.setItem('token', response.data.token);  
+           
+          localStorage.setItem('user', JSON.stringify(userDetails));
+          this.$router.push({ path: "/home" });
+        })
         .catch(error => {
-          console.error(error);
+            console.error(error);
         })
       }
     },

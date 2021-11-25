@@ -12,15 +12,15 @@
         <img src="../assets/user.png" alt="">
         <div>
           <p class="title">First name:</p>
-          <p id="userName"> {{user.firstName}}</p>
+          <p> {{user.firstName}}</p>
         </div>
         <div>
           <p class="title">Last name:</p>
-          <p id="userName"> {{user.lastName}}</p>
+          <p> {{user.lastName}}</p>
         </div>
         <div>
           <p class="title">Email:</p>
-          <p id="userEmail"> {{user.email}}</p>
+          <p> {{user.email}}</p>
         </div>
         <div>
           <p class="title">Password:</p>
@@ -28,11 +28,11 @@
         </div>
       </div>
       <div class="profile-btns">
-        <input type="button" value="Logout" id="logoutBtn" @click="logoutUser()">
+        <input type="button" value="Logout" @click="logoutUser()">
         <router-link to="/edit-profile">
           <input type="button" value="Edit my profile">
         </router-link>
-        <input type="button" value="Delete account" id="deleteBtn" @click="deleteUser()">
+        <input type="button" value="Delete account" @click="deleteUser()">
       </div>
     </div>
   </div>
@@ -54,38 +54,37 @@ export default {
 		getUser() {
 			//   let token = window.localStorage.getItem('token');
 
-			axios.get('http://localhost:3000/user/:id'
+			axios.get("http://localhost:3000/user/:id")
 			//, { headers: {'Authorization': `User ${token}`,}}
-			)
-			.then(
-				this.user = JSON.parse(window.localStorage.getItem('user')),	
-			)
-			.catch(function (err) {
-				console.log("Error", err);
+			.then(response => {
+				console.log(response.data);
+				this.user = JSON.parse(window.localStorage.getItem('user'));
+			})
+			.catch(error => {
+				console.error(error);
 			})
 		},
 
 		logoutUser() {
 			localStorage.clear();
 			this.$router.push({ name: "Welcome" });
+			console.log('You have been logged out.')
 		},
 
 		deleteUser() {
-			let self = this;
-			let token = window.localStorage.getItem('token');
-			axios.delete('http://localhost:3000/api/user',
-			{ headers: {
-				'Authorization': `Basic ${token}`,
-				}
-			})
-			.then(function (response) {
-				self.$router.push({ name: "Welcome" });
-				self.user = response.data;
-				alert('Successfully deleted account');
-				this.logoutUser();
-				localStorage.clear();
-				self.$router.push({ name: "Welcome" });
+
+			// let token = window.localStorage.getItem('token');
+
+			axios.delete('http://localhost:3000/user/:id',
+			// { headers: {'Authorization': `Basic ${token}`,}}
+			).then(response => {
+
+				this.user = response;	
+
 				console.log("Response", response);
+				console.log('Successfully deleted account');
+
+				// this.logoutUser();
 			})
 			.catch(function (err) {
 				console.log("Error", err);

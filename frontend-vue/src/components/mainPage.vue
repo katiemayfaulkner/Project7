@@ -1,137 +1,142 @@
 <template>
-    <section class="main-page">
-        <div class="container">  
-          <!-- <article class="no-posts col-lg-9 col-md-8">
-            <div>
-              <h2> Sorry! It seems that nothing has been posted yet..</h2>
-              <button> <router-link to="/createPost"> Create new post </router-link> </button> 
-            </div>
-          </article> -->
+	<div>
+		<Header/>
+		<section class="main-page">
+			<div class="container">  
+			<!-- <article class="no-posts col-lg-9 col-md-8">
+				<div>
+				<h2> Sorry! It seems that nothing has been posted yet..</h2>
+				<button> <router-link to="/createPost"> Create new post </router-link> </button> 
+				</div>
+			</article> -->
 
-          <article class="posts col-lg-9 col-md-8">
-              <h2>Discover our posts</h2>
+			<article class="posts col-lg-9 col-md-8">
+				<h2>Discover our posts</h2>
 
-              <div class="box">
-                  <div class="post col-lg-6">	
-                      <div class="content">
-                          <div class="top-bar">
-                              <div class="user-info">
-                                  <img src="../assets/user-black.png" alt="">
-                                  <p class="name-container"> Katie May </p>
-                              </div>
+				<div class="box">
+					<div class="post col-lg-6">	
+						<div class="content">
+							<div class="top-bar">
+								<div class="user-info">
+									<img src="../assets/user-black.png" alt="">
+									<p class="name-container"> Katie May </p>
+								</div>
 
-                              <div>
-                                <router-link to="/comments">
-                                  <img src="../assets/comments.png" alt="" id="commentsBtn">
-                                </router-link>
-                                  <img src="../assets/bin-black.png" alt="">
-                              </div>
-                          </div>
+								<div>
+									<router-link to="/comments">
+									<img src="../assets/comments.png" alt="" id="commentsBtn">
+									</router-link>
+									<img src="../assets/bin-black.png" alt="">
+								</div>
+							</div>
 
-                          <div class="img-container">
-                              <img src="../assets/bob.jpg" alt="">
-                          </div>
+							<div class="img-container">
+								<img src="../assets/bob.jpg" alt="">
+							</div>
 
-                          <div class="caption-container">
-                              <p> However iconic and well-known his image, Ross is still a man of surprises. One glaring fact, that even the most faithful
-                              television watchers do not often notice, is that Ross was missing a finger. It was cut off on a saw while woodworking
-                              with his father in his youth. If you look carefully, you will see that Ross hid his missing digit by holding his palette
-                              with the hand missing the finger.</p>
-                          </div>
+							<div class="caption-container">
+								<p> However iconic and well-known his image, Ross is still a man of surprises. One glaring fact, that even the most faithful
+								television watchers do not often notice, is that Ross was missing a finger. It was cut off on a saw while woodworking
+								with his father in his youth. If you look carefully, you will see that Ross hid his missing digit by holding his palette
+								with the hand missing the finger.</p>
+							</div>
 
-                          <div class="post-actions">
-                              <div class="like col-2">
-                                <img 
-                                  src="../assets/like-active.png"								  
-									v-bind:class="{active: isLiked}"
-									@click="isLiked = !isLiked"
-								>  
-                              </div>
+							<div class="post-actions">
+								<div class="like col-2">
+									<img 
+									src="../assets/like-active.png"								  
+										v-bind:class="{active: isLiked}"
+										@click="isLiked = !isLiked"
+									>  
+								</div>
 
-                              <form class="comments col-10">
-                                  <input class="input" type="text" name="comments" placeholder="Write a comment...">
-                                  <input class="btn" type="submit" value="Submit">
-                              </form>
-                          </div>
-                      </div>
-                  </div>
+								<form class="comments col-10">
+									<input class="input" type="text" name="comments" placeholder="Write a comment...">
+									<input class="btn" type="submit" value="Submit">
+								</form>
+							</div>
+						</div>
+					</div>
 
-                  <div class="post col-lg-6">
-                      <div class="content">
-                          <div class="top-bar">
-                              <div class="user-info">
-                                  <img src="../assets/user-black.png" alt="">
-                                  <p class="name-container"> Janice John </p>
-                              </div>
-                              <div>
-                                  <img src="../assets/comments.png" alt="">
-                                  <img src="../assets/bin-black.png" alt="">
-                              </div>
-                          </div>
+					<div class="post col-lg-6">
+						<div class="content">
+							<div class="top-bar">
+								<div class="user-info">
+									<img src="../assets/user-black.png" alt="">
+									<p class="name-container"> Janice John </p>
+								</div>
+								<div>
+									<img src="../assets/comments.png" alt="">
+									<img src="../assets/bin-black.png" alt="">
+								</div>
+							</div>
 
-                          <div class="img-container">
-                              <img src="../assets/anotherTest.jpeg" alt="">
-                          </div>
+							<div class="img-container">
+								<img src="../assets/anotherTest.jpeg" alt="">
+							</div>
 
-                          <div class="caption-container">
-                              <p> The sky was so pretty last night.</p>
-                          </div>
+							<div class="caption-container">
+								<p> The sky was so pretty last night.</p>
+							</div>
 
-                          <div class="post-actions">
-                              <div class="like col-2">          
-                                <img 
-                                  src="../assets/like-active.png"								  
-									v-bind:class="{active: isLiked}"
-									@click="isLiked = !isLiked"
-								>  
-                              </div>
+							<div class="post-actions">
+								<div class="like col-2">          
+									<img 
+									src="../assets/like-active.png"								  
+										v-bind:class="{active: isLiked}"
+										@click="isLiked = !isLiked"
+									>  
+								</div>
 
-                              <form class="comments col-10">
-                                  <input class="input" type="text" name="comments" placeholder="Write a comment...">
-                                  <input class="btn" type="submit" value="Submit">
-                              </form>
-                          </div>
-                      </div>
-                  </div>
+								<form class="comments col-10">
+									<input class="input" type="text" name="comments" placeholder="Write a comment...">
+									<input class="btn" type="submit" value="Submit">
+								</form>
+							</div>
+						</div>
+					</div>
 
-                  <div class="post col-lg-6">
-                      <div class="content">
-                          <img src="" alt="">
-                          <p> </p>
-                      </div>
-                  </div>
+					<div class="post col-lg-6">
+						<div class="content">
+							<img src="" alt="">
+							<p> </p>
+						</div>
+					</div>
 
-                  <div class="post col-lg-6">
-                      <div class="content">
-                          <img src="" alt="">
-                          <p> </p>
-                      </div>
-                  </div>
-              </div>
-          </article>
-              
-          <div class="col-lg-3 col-md-4">
-              <div class="sticky-items">
-                  <div class="footer">
-                      <p> About </p>
-                      <p> User Agreement </p>
-                      <p> Content Policy </p>
-                      <p> Privacy Policy </p>
-                      <p> Moderator Guidelines</p>
-                      <p> Help </p>
-                      <span> © 2021 Club Groupomania, Inc. All rights reserved.</span>
-                  </div>
+					<div class="post col-lg-6">
+						<div class="content">
+							<img src="" alt="">
+							<p> </p>
+						</div>
+					</div>
+				</div>
+			</article>
+				
+			<div class="col-lg-3 col-md-4">
+				<div class="sticky-items">
+					<div class="footer">
+						<p> About </p>
+						<p> User Agreement </p>
+						<p> Content Policy </p>
+						<p> Privacy Policy </p>
+						<p> Moderator Guidelines</p>
+						<p> Help </p>
+						<span> © 2021 Club Groupomania, Inc. All rights reserved.</span>
+					</div>
 
-                  <a href="#scroll-top">
-                      <button class="scroll-btn"> Back to top </button>
-                  </a>    
-              </div>  
-          </div>
-        </div>
-    </section>
+					<a href="#scroll-top">
+						<button class="scroll-btn"> Back to top </button>
+					</a>    
+				</div>  
+			</div>
+			</div>
+		</section>
+	</div>
 </template>
 
 <script>
+
+import Header from "./header.vue"
 
 export default {
   name: 'MainPage',
@@ -142,6 +147,9 @@ export default {
   },
   methods: {
 
+  },
+  components: {
+		"Header": Header,
   }
 }
 
