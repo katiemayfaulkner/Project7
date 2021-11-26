@@ -261,6 +261,7 @@
 				background-color: white;
 				color: #091f43;
 				font-size: 17px;
+                font-weight: 500;
 			}
 
             p{

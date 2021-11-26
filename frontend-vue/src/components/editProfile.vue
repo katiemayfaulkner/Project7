@@ -1,103 +1,95 @@
 <template>
-  <div class="profile-window">
-    <div class="box">
-      <div class="hero">
-        <h1> Enter your new details: </h1>   
-      </div>
-      
-      <div class="profile">
-        <img src="../assets/user.png" alt="">
-        <div>
-          <p class="title">First name:</p>
-          <input type="text">
-        </div>
-        <div>
-          <p class="title">Last name:</p>
-          <input type="text">
-        </div>
-        <div>
-          <p class="title">Email:</p>
-          <input type="text">
-        </div>
-        <div>
-          <p class="title">Password:</p>
-          <input type="password">
-        </div>
-      </div>
-      <div class="profile-btns">
-        <input type="submit" value="Submit" id="submitChanges">
-        <router-link to="/profile">
-          <input type="button" value="Cancel">
-        </router-link>
-      </div>
-    </div>
-  </div>
+	<div>
+		<Header/>
+		<section class="container edit-profile">
+			<router-link to="/home">
+				<p> Return </p>
+			</router-link>
+			<div class="content">
+				<h1> Enter your new details: </h1> 
+
+				<div class="profile">
+					<img src="../assets/user-black.png" alt="">
+					<div>
+						<p class="title">First name:</p>
+						<input type="text">
+					</div>
+					<div>
+						<p class="title">Last name:</p>
+						<input type="text">
+					</div>
+					<div>
+						<p class="title">Email:</p>
+						<input type="text">
+					</div>
+					<div>
+						<p class="title">Password:</p>
+						<input type="password">
+					</div>
+				</div>
+
+				<div class="profile-btns">
+					<input type="submit" value="Submit" id="submitChanges">
+					<router-link to="/profile">
+						<input type="button" value="Cancel">
+					</router-link>
+				</div>
+			</div>
+		</section>
+	</div>
 </template>
 
 <script>
+import Header from "./header.vue"
+
 // import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
 import axios from 'axios'; 
 
 export default {
-  name: 'editProfile',
-  methods: {
+	name: 'editProfile',
+	methods: {
 
-  }
+	},
+	components: {
+		"Header": Header,
+	}
 }
 </script>
 
 <style lang="scss">
 
-.profile-window {
-	position: fixed;
-	z-index: 1;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	left: 0;
-	background-color: rgba(117, 114, 114, 0.5);
+.edit-profile{
+	margin-top: 30px;
 
-	.box {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: 70%;
-		height: 450px;
-		margin: O auto;
-		padding: 30px;
+	a{
+		text-decoration: none;
+		color: black;
+		font-size: 18px;
+
+		p{
+			margin-left: 20px;
+			font-weight: 500;
+		}
+
+	}
+	.content{
+		padding: 25px;
+		width: 100%;
+		height: auto;
+		background-color: #f2f2f2;
 		border-radius: 12px;
-		background-color: #091F43;
-		color: white;
+		box-shadow: rgba(35, 35, 65, 0.25) 0px 6px 12px -2px, rgba(3, 3, 3, 0.418) 0px 3px 7px -3px;
 
-		.hero {
-			display: flex;
-			justify-content: space-between;
-			margin-bottom: 30px;
-
-			a {
-				display: flex;
-				line-height: 25px;
-				margin-bottom: 10px;
-				text-decoration: none;
-
-				img {
-					margin-right: 5px;
-					height: 25px;
-				}
-			}
-
-			h1 {
-				font-size: 22px;
-				font-weight: 300px;
-			}
+		h1{
+			font-size: 22px;
+			font-weight: 700px;		
 		}
 
 		.profile {
-			margin: 20px 0;
+			margin: 30px 0;
 
 			img {
-				width: 50px;
+				width: 60px;
 				height: auto;
 				margin-bottom: 15px;
 			}
@@ -105,8 +97,8 @@ export default {
 			div {
 				display: flex;
 				flex-wrap: wrap;
-				color: white;
-
+				color: black;
+				
 				.title {
 					font-weight: 500;
 				}
@@ -114,46 +106,29 @@ export default {
 				p {
 					padding-right: 10px;
 					font-size: 1.2rem;
-					font-weight: 200;
+					font-weight: 100;
 				}
 
 				input {
+					padding: 0 7px;
 					height: 30px;
 					width: 170px;
-					border: none;
-					border-radius: 10px;
+					border: 1px solid black;
+					border-radius: 8px;
 				}
 			}
 		}
-
 		.profile-btns {
 
 			input {
 				padding: 10px;
-				margin-right: 15px;
+				margin: 0 10px 15px 0;
 				border-radius: 12px;
 				border: none;
-				background-color: white;
-				color: #091F43;
-				font-weight: 800;
+				background-color: #091F43;
+				font-weight: 500;
+				color: white;
 				font-size: 17px;
-			}
-		}
-	}
-}
-
-@media only screen and (max-width: 770px) {
-
-	.window {
-
-		.box {
-			width: 90%;
-
-			.profile-btns {
-
-				input {
-					margin-top: 10px;
-				}
 			}
 		}
 	}

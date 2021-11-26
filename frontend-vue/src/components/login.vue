@@ -260,6 +260,7 @@ export default {
 				padding: 7px;
 				margin: 5px 5px 10px 5px;
 				border-radius: 12px;
+        font-weight: 500;
 				width: 100px;
 				border: 2px solid black;
 				background-color: white;

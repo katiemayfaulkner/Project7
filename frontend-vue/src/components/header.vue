@@ -2,7 +2,9 @@
     <header class="main-header" id="scroll-top">
         <div class="container">
             <div class="col-lg-10 col-md-9">
-                <img class="logo" src="../assets/icon-left-font-monochrome-white.svg" alt="">              
+				<router-link to="/home">
+					<img class="logo" src="../assets/icon-left-font-monochrome-white.svg" alt="">              
+				</router-link>
                 <h1> Welcome, {{user.firstName}} !</h1>
             </div>
 

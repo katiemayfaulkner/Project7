@@ -10,7 +10,6 @@ import Home from '../components/mainPage.vue'
 import createPost from '../components/createPost.vue'
 import viewProfile from '../components/viewProfile.vue'
 import editProfile from '../components/editProfile.vue'
-import viewComments from '../components/viewComments.vue'
 
 export default new Router({
   mode: "history",
@@ -51,12 +50,6 @@ export default new Router({
       path: '/edit-profile',
       name: 'editProfile',
       component: editProfile
-    },
-    {
-      path: '/comments',
-      name: 'viewComments',
-      component: viewComments
-      // props: true 
     }
   ]
 })

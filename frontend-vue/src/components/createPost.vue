@@ -1,39 +1,33 @@
 <template>
-    <div class="post-window">
-        <div class="box">
-          <div class="hero">
-              <h1> Create New Post: </h1>
-              <router-link to="/home">
-                  <img src="../assets/close-white.png" alt="">
-              </router-link>
-          </div>
+	<div>
+		<Header/>	
+		<section class="container create-post">
+			<router-link to="/home">
+				<p> Return </p>
+			</router-link>
+			<div class="content">
+				<h1> Create a new post: </h1>
+				<form class="create-post"> 					
+					<div class="img-input">
+						<input type="file" id="postImg" accept="image/*" @input="pickFile" ref="fileInput" required="true">
+						<img class="img-preview" style="{ 'background-image': `url(${previewImage})` }" @click="selectImage">
+					</div>
 
-          <div class="create-post"> 
-              <div class="text-input">
-                  <label for="text"> Insert your name here: </label>
-                  <input type="text" maxlength="150" required="true">
-              </div>
-              
-              <div class="text-input">
-                  <label for="text"> Insert your caption here: </label>
-                  <input type="text" maxlength="150" required="true">
-              </div>
+					<div class="text-input">
+						<label for="text"> Insert your caption: </label>
+						<input type="text" maxlength="150" required="true">
+					</div>
 
-              <div class="img-input">
-                  <div class="preview">
-                    <img class="img-preview" style="{ 'background-image': `url(${previewImage})` }" @click="selectImage">
-                  </div>
-
-                  <input type="file" id="postImg" accept="image/*" @input="pickFile" ref="fileInput" required="true">
-              </div>
-
-              <input type="submit" value="Submit" class="submit-btn">
-          </div>
-        </div>
-    </div>
+					<input type="submit" value="Submit" class="submit-btn">
+				</form>
+			</div>
+		</section>
+	</div>
 </template>
 
 <script>
+import Header from "./header.vue"
+
 export default {
   name: 'createPost',
 
@@ -62,54 +56,38 @@ export default {
       }
     }
   },
+  components: {
+		"Header": Header,
+  }
 }
 </script>
 
 <style lang="scss">
 
-.post-window {
-	position: fixed;
-	z-index: 1;
-	right: 0;
-	bottom: 0;
-	top: 0;
-	left: 0;
-	background-color: rgba(117, 114, 114, 0.5);
+.create-post{
+	margin-top: 30px;
 
-	.box {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		width: 70%;
-		height: 550px;
-		margin: O auto;
-		padding: 30px;
+	a{
+		text-decoration: none;
+		color: black;
+		font-size: 18px;
+
+		p{
+			margin-left: 20px;
+		}
+
+	}
+	.content{
+		padding: 25px;
+		width: 100%;
+		height: auto;
+		background-color: #f2f2f2;
 		border-radius: 12px;
-		background-color: #091F43;
-		color: white;
-		overflow: scroll;
+		box-shadow: rgba(35, 35, 65, 0.25) 0px 6px 12px -2px, rgba(3, 3, 3, 0.418) 0px 3px 7px -3px;
 
-		.hero {
-			display: flex;
-			justify-content: space-between;
-			margin-bottom: 10px;
-
-			a {
-				display: flex;
-				line-height: 25px;
-				text-decoration: none;
-
-				img {
-					margin-right: 5px;
-					height: 25px;
-				}
-			}
-
-			h1 {
-				font-size: 22px;
-				font-weight: 300px;
-			}
+		h1{
+			font-size: 22px;
+			font-weight: 700px;	
 		}
 
 		.create-post {
@@ -118,22 +96,25 @@ export default {
 			.img-input {
 				margin: 15px 0;
 
-				.preview {
-
-					.img-preview {
-						width: 120px;
-						height: 120px;
-						border: 1px hotpink solid;
-						display: block;
-						margin: 0 auto 10px;
-						background-size: cover;
-						background-position: center center;
-					}
+				.img-preview {
+					margin: 5px 0;
+					width: 300px;
+					height: 150px;
+					border: 2px solid black;
+					border-radius: 15px;
+					background-color: white;					
+				}
+				input{
+					margin: 5px 0;
+					padding: 5px;
+					border-radius: 12px;
+					font-size: 17px;
+					width: 100%;			
 				}
 			}
 
 			.text-input {
-				margin: 5px 0;
+				margin: 15px 0;
 
 				label {
 					width: 100%;
@@ -142,35 +123,26 @@ export default {
 
 				input {
 					width: 100%;
-					height: 40px;
+					height: 80px;
 					overflow: scroll;
+					padding: 0 7px;
 					border: 2px solid black;
 					border-radius: 15px;
 				}
 			}
 
 			.submit-btn {
-				padding: 7px;
+				padding: 12px;
+				margin-right: 15px;
 				border-radius: 12px;
-				width: 100px;
-				border: 2px solid black;
-				background-color: white;
-				color: #091F43;
+				border: none;
+				background-color: #091F43;
+				font-weight: 500;
+				color: white;
 				font-size: 17px;
 			}
 		}
 	}
 }
-
-@media only screen and (max-width: 770px) {
-
-	.window {
-
-		.box {
-			width: 90%;
-		}
-	}
-}
-
 
 </style>
