@@ -9,22 +9,6 @@
         <form class="auth" v-on:submit.prevent="onSubmit">
             <input
                 type="text"
-                name="first-name"
-                placeholder="First name"
-                class="authInput loginInput"
-                required="true"
-                v-model="form.firstName"
-            />
-            <input
-                type="text"
-                name="last-name"
-                placeholder="Last name"
-                class="authInput loginInput"
-                required="true"
-                v-model="form.lastName"
-            />
-            <input
-                type="text"
                 name="email"
                 placeholder="Email"
                 class="authInput loginInput"
@@ -41,43 +25,6 @@
                 id="loginPassword"
                 v-model="form.password"
                 />
-                <img
-                @click="showLogin"
-                src="../assets/hidden.png"
-                alt=""
-                id="hideLogin"
-                />
-                <img
-                @click="showLogin"
-                src="../assets/visible.png"
-                alt=""
-                id="showLogin"
-                style="visibility: hidden"
-                />
-            </div>
-            <div>
-              <input
-                  name="retype-password"
-                  type="password"
-                  placeholder="Retype password"
-                  class="authInput signupInput secondPswd"
-                  required="true"
-                  id="retypePassword"
-                  v-model="form.retypePassword"
-              />
-              <img
-                  @click="showSecondPassword"
-                  src="../assets/hidden.png"
-                  alt=""
-                  id="hideSecondPswd"
-              />
-              <img
-                  @click="showSecondPassword"
-                  src="../assets/visible.png"
-                  alt=""
-                  id="showSecondPswd"
-                  style="visibility: hidden"
-              />
             </div>
 
             <button class="authBtn" type="submit"> Log In </button>
@@ -95,88 +42,29 @@ export default {
   name: 'Login',
   data() {
     return {
-      isLiked: false,
-      passwordsMatched: false,
       error: "",
       form: {
-        firstName: "",
-        lastName: "",
         email: "",
-        password: "",
-        retypePassword: "",
-      },
-      hidden: 2,
+        password: ""
+      }
     };
   },
   methods: {
-    // Password visibility toggle
-    showLogin: function () {
-      let loginPassword = document.getElementById("loginPassword");
-      let hideLogin = document.getElementById("hideLogin");
-      let showLogin = document.getElementById("showLogin");
-
-      if (loginPassword.type === "password") {
-        loginPassword.type = "text";
-        showLogin.style.visibility = "visible"
-        hideLogin.style.visibility = "hidden"
-
-      } else {
-        loginPassword.type = "password";
-        showLogin.style.visibility = "hidden"
-        hideLogin.style.visibility = "visible"
-      }
-    },
-    showSecondPassword: function () {
-            let retypePassword = document.getElementById("retypePassword");
-            let showSecond = document.getElementById("showSecondPswd");
-            let hideSecond = document.getElementById("hideSecondPswd");
-
-            if (retypePassword.type === "password") {
-                retypePassword.type = "text";
-                showSecond.style.visibility = "visible"
-                hideSecond.style.visibility = "hidden"
-
-            } else {
-                retypePassword.type = "password";
-                showSecond.style.visibility = "hidden"
-                hideSecond.style.visibility = "visible"
-            }
-    },
-
     // Check both passwords are the same
-    onSubmit: function (){
-        if(this.form.password === this.form.retypePassword){
-            this.passwordsMatched = true;
-            this.error = ""
-        } else {
-            this.passwordsMatched = false;
-            this.error = "Passwords must match!"
-        }
-
-        this.logIn();
-    },
-
-    logIn() {
-
-      if(this.passwordsMatched) {
-        
-        let userDetails = this.form
-
-        axios.get("http://localhost:3000/user/login", userDetails)
-        .then(response => {
-          console.log(response.data);
-          console.log(userDetails.firstName, "has been successfully logged in!"),
-
-          // localStorage.setItem('token', response.data.token);  
-           
-          localStorage.setItem('user', JSON.stringify(userDetails));
+    onSubmit: function () {
+      this.error = ''; // To reset any previously happened errors
+      axios.post("http://localhost:3000/user/login", this.form)
+        .then(res => {
+          console.log(res.data);
+            
+          localStorage.setItem('user', JSON.stringify(res.data));
           this.$router.push({ path: "/home" });
         })
-        .catch(error => {
-            console.error(error);
+        .catch(err => {
+            this.error = "Incorrect email or password.";
+            // console.error(error);
         })
-      }
-    },
+    }
   }
 }
 </script>

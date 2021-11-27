@@ -50,21 +50,20 @@ export default {
 	name: 'viewProfile',
 	data() {
 		return {
-			user: [],
+			user: {},
 		};
 	},
 	methods: {
 
 		getUser() {
-			//   let token = window.localStorage.getItem('token');
+			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 
-			axios.get("http://localhost:3000/user/:id")
-			//, { headers: {'Authorization': `User ${token}`,}}
-			.then(response => {
-				console.log(response.data);
-				this.user = JSON.parse(window.localStorage.getItem('user'));
-			})
-			.catch(error => {
+			axios.get("http://localhost:3000/user/" + userId)
+				.then(res => {
+					console.log(res.data);
+					this.user = res.data;
+				})
+				.catch(error => {
 				console.error(error);
 			})
 		},

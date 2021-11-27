@@ -14,6 +14,9 @@ exports.signup = (req, res) => {
 		} else {
 
 			console.log(req.body)
+
+			// TODO: Encrypt passzord first, then add it to `newUser`
+			// let hashedPass = .....
 	
 			const newUser = {
 				firstName: req.body.firstName,
@@ -56,18 +59,36 @@ exports.login = (req, res) => {
 
 		} else {
 
-			console.log(req.body)
+			// console.log(req.body)
+
+			// TODO
+			// 1. FE to send EMAIL & PASS to validate
+			// 2. BE to validate if EMAIL exists
+			// 3. If exists, HASH the Pass + COMPARE it to the existing hashed pass
+			// 4. If MATCHED, create JWT
+			// 5. RETURN/SEND this specific user info to the FE (userID, FIRST NAME, TOKEN)
 	
-			// SELECT * FROM users
-			let userID = req.body.userID;
-	
-			const query = 'SELECT * FROM User WHERE userID = ?';
+			// Request data
+			let email = req.body.email;
+			let password = req.body.password;
 	
 			// SQL Queries
-			connection.query(query, [userID], (err, rows) => {
+			const query = 'SELECT * FROM User WHERE email = ?';
+	
+			connection.query(query, [email], (err, rows) => {
 				if(!err) {
+					if(rows.length > 0) { // There's data
+						res.status(200).json({
+							userId: rows[0].userID, 
+							firstName: rows[0].firstName
+						})
+					} else { // No data
+						res.status(400).json({
+							error: "Incorrect email or password."
+						})
+					}
 					console.log(rows)
-					res.send('You have successfully been logged in!');
+					
 				} else {
 					console.log(err)
 				}
@@ -86,19 +107,33 @@ exports.getUser = (req, res) => {
 			throw err;
 
 		} else {
-
-			console.log(req.body)
+			// console.log('BODY PARAMS:', req.body); // { id: 17 }
+			// console.log('QUERY PARAMS:', req.query); // ?id=17
+			// console.log('PATH/URL PARAMS:', req.params); // user/:id -> user/17
+			// console.log('HEADERS PARAMS:', req.headers)
+			
 	
 			// SELECT * FROM users
-			let userID = req.body.userID;
+			let userID = req.params.id;
 	
 			const query = 'SELECT * FROM User WHERE userID = ?';
 	
 			// SQL Queries
 			connection.query(query, [userID], (err, rows) => {
 				if(!err) {
+					if(rows.length > 0) { // There's data
+						res.status(200).json({
+							firstName: rows[0].firstName,
+							lastName: rows[0].lastName,
+							email: rows[0].email,
+						})
+
+					} else { // No data
+						res.status(400).json({
+							error: "This user doesn't exist"
+						})
+					}
 					console.log(rows)
-					res.send('Account retrieved successfully!');
 				} else {
 					console.log(err)
 				}
