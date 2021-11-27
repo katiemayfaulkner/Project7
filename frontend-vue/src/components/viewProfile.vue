@@ -60,8 +60,10 @@ export default {
 
 			axios.get("http://localhost:3000/user/" + userId)
 				.then(res => {
+
 					console.log(res.data);
 					this.user = res.data;
+					
 				})
 				.catch(error => {
 				console.error(error);
@@ -71,23 +73,21 @@ export default {
 		logoutUser() {
 			localStorage.clear();
 			this.$router.push({ name: "Welcome" });
-			console.log('You have been logged out.')
+
+			console.log('You have successfully been logged out.')
 		},
 
 		deleteUser() {
+			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 
-			// let token = window.localStorage.getItem('token');
-
-			axios.delete('http://localhost:3000/user/:id',
+			axios.delete('http://localhost:3000/user/' + userId,
 			// { headers: {'Authorization': `Basic ${token}`,}}
-			).then(response => {
+			).then(res => {
 
-				this.user = response;	
+				console.log(res.data);
+				this.logoutUser();
 
-				console.log("Response", response);
-				console.log('Successfully deleted account');
-
-				// this.logoutUser();
+				console.log('Your account has successfully been deleted!');
 			})
 			.catch(function (err) {
 				console.log("Error", err);

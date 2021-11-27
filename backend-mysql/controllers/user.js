@@ -189,11 +189,9 @@ exports.deleteUser = (req, res)=> {
 			throw err;
 
 		} else {
-
-			console.log(req.body)
 	
 			// DELETE FROM users
-			let userID = req.body.userID;
+			let userID = req.params.id;
 
 			console.log(userID)
 	
@@ -202,8 +200,10 @@ exports.deleteUser = (req, res)=> {
 			// SQL Queries
 			connection.query(query, [userID], (err, rows) => {
 				if(!err) {
+
 					console.log(rows)
 					res.send('Account successfully deleted!');
+
 				} else {
 					console.log(err)
 				}
