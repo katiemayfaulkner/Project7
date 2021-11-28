@@ -1,51 +1,88 @@
 // DB Connection
 const mySqlConnection = require('../config/database');
 
+// Password hashing
+const bcrypt = require("bcrypt");
+
 
 // Requests
 exports.signup = (req, res) => { 
 	
-	// Adding a new user
+	// Adding new user : check if user does not exist, if password is strong, then hash password, & insert user into db
 	mySqlConnection.getConnection((err, connection) => {
 
 		// If there's a problem throw error, else, continue
 		if(err) {
 			throw err;
+
 		} else {
 
-			console.log(req.body)
+			// Define user email 
+			let email = req.body.email;
 
-			// TODO: Encrypt passzord first, then add it to `newUser`
-			// let hashedPass = .....
-	
-			const newUser = {
-				firstName: req.body.firstName,
-				lastName: req.body.lastName,
-				email: req.body.email,
-				password: req.body.password,
-			}
+			// SQL Queries : if user already exists, throw error, else continue
+			const query = 'SELECT * FROM User WHERE email = ?';
 
-			console.log(newUser)
-	
-			// const query = 'INSERT INTO User SET ?;
-			const query = 'INSERT INTO User SET ?';
+			connection.query(query, [email], (err, rows) => {
 
-	
-			// SQL Queries
-			connection.query(query, [newUser], (err, rows) => {
-				
-				if(!err) {
-
-					console.log(rows);
-					res.send('Your account has been created successfully!');
-				} else {
+				if(err) {
 					console.log(err)
-				}
-			})
+					
+				} else {
 
-		}
-		
-	})
+					if(rows.length > 0) { // if there's data, throw error
+
+						res.status(400).json({
+							error: "User already exists."
+						})
+
+					} else { // no data, continue signup
+
+						// Define strong password
+						let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})');
+
+						// If entered password is a strong password, continue, else throw error
+						if(strongPassword.test(req.body.password) && req.body.password.length >= 8) {
+
+							// Encrypt password
+							let hashedPassword = bcrypt.hashSync(req.body.password, 10);
+					
+							// Define new user and get all required elements
+							const newUser = {
+								firstName: req.body.firstName,
+								lastName: req.body.lastName,
+								email: req.body.email,
+								password: hashedPassword,
+							};
+
+							console.log(newUser);
+					
+							// SQL Queries : if all previous steps have been validated, insert user into db
+							const query = 'INSERT INTO User SET ?';
+
+							connection.query(query, [newUser], (err, rows) => {
+								
+								if(!err) {
+									console.log(rows);
+									res.send('Your account has been created successfully!');
+
+								} else {
+									console.log(err)
+								};
+							});
+
+						} else{
+
+							// It's a weak password, throw error and alert user
+							res.status(400).json({
+								message: "Weak password. Password must be at least 8 character, and contain at least one uppercase, one lowercase, one number and a special character!"
+							});
+						};
+					};
+				};
+			});
+		};	
+	});
 };
 
 exports.login = (req, res) => {
@@ -130,7 +167,7 @@ exports.getUser = (req, res) => {
 
 					} else { // No data
 						res.status(400).json({
-							error: "This user doesn't exist"
+							error: "This user does not exist."
 						})
 					}
 					console.log(rows)
