@@ -4,6 +4,9 @@ const mySqlConnection = require('../config/database');
 // Password hashing
 const bcrypt = require("bcrypt");
 
+// Secret or private key (token) generator for verification purpose
+const jwt = require('jsonwebtoken');
+
 
 // Requests
 exports.signup = (req, res) => { 
@@ -47,7 +50,7 @@ exports.signup = (req, res) => {
 							// Encrypt password
 							let hashedPassword = bcrypt.hashSync(req.body.password, 10);
 					
-							// Define new user and get all required elements
+							// Define new user with all required elements
 							const newUser = {
 								firstName: req.body.firstName,
 								lastName: req.body.lastName,
@@ -95,37 +98,48 @@ exports.login = (req, res) => {
 			throw err;
 
 		} else {
-
-			// console.log(req.body)
-
-			// TODO
-			// 1. FE to send EMAIL & PASS to validate
-			// 2. BE to validate if EMAIL exists
-			// 3. If exists, HASH the Pass + COMPARE it to the existing hashed pass
-			// 4. If MATCHED, create JWT
-			// 5. RETURN/SEND this specific user info to the FE (userID, FIRST NAME, TOKEN)
 	
 			// Request data
 			let email = req.body.email;
-			let password = req.body.password;
 	
-			// SQL Queries
+			// SQL Queries : if user already exists, continue, else throw error
 			const query = 'SELECT * FROM User WHERE email = ?';
 	
 			connection.query(query, [email], (err, rows) => {
 				if(!err) {
 					if(rows.length > 0) { // There's data
-						res.status(200).json({
-							userId: rows[0].userID, 
-							firstName: rows[0].firstName
-						})
+
+						// Compare entered password and db password
+						const pswdMatch = bcrypt.compareSync(req.body.password, rows[0].password) 
+
+						if(pswdMatch) { // If passwords match
+
+							// Create token
+							const token = jwt.sign({
+								email: rows[0].email,
+								userId: rows[0].userID
+							},
+							'RANDOM_SECRET_TOKEN_WHICH_IS_LONG_BECAUSE_IT_IS_MORE_SECURE',
+							{ expiresIn: '24h'}
+							);
+
+							// Send response data
+							res.status(200).json({
+								userId: rows[0].userID, 
+								firstName: rows[0].firstName,
+								token: token
+							})
+							
+						} else { // Throw error
+							res.status(400).json({
+								error: "Password incorrect."
+							})
+						}
 					} else { // No data
 						res.status(400).json({
-							error: "Incorrect email or password."
+							error: "User does not exist."
 						})
-					}
-					console.log(rows)
-					
+					}					
 				} else {
 					console.log(err)
 				}
@@ -137,7 +151,7 @@ exports.login = (req, res) => {
 exports.getUser = (req, res) => {
 
 	// Retrieve user
-    mySqlConnection.getConnection((err, connection) => {
+    	mySqlConnection.getConnection((err, connection) => {
 
 		// If there's a problem throw error, else, continue 
 		if(err) {
@@ -154,6 +168,8 @@ exports.getUser = (req, res) => {
 			let userID = req.params.id;
 	
 			const query = 'SELECT * FROM User WHERE userID = ?';
+
+			console.log(userID)
 	
 			// SQL Queries
 			connection.query(query, [userID], (err, rows) => {
@@ -170,7 +186,6 @@ exports.getUser = (req, res) => {
 							error: "This user does not exist."
 						})
 					}
-					console.log(rows)
 				} else {
 					console.log(err)
 				}
@@ -187,6 +202,7 @@ exports.modifyUser = (req, res) => {
 		// If there's a problem throw error, else, continue
 		if(err) {
 			throw err;
+			
 		} else {
 
 			console.log(req.body)
