@@ -211,20 +211,43 @@
 
 import Header from "./header.vue"
 
-export default {
-  name: 'MainPage',
-  data() {
-    return{
-		isLiked: false,
-		seeComments: false,
-    }
-  },
-  methods: {
+// import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
+import axios from 'axios'; 
 
-  },
-  components: {
-		"Header": Header, 
-  }
+export default {
+   name: 'MainPage',
+   data() {
+      return{
+         isLiked: false,
+         seeComments: false,
+         user: {},
+      }
+   },
+   methods: {
+      
+      getPost() {
+         let postId = JSON.parse(window.localStorage.getItem('post')).postId;
+         console.log(postId)
+
+         axios.get("http://localhost:3000/user/" + postId)
+         .then(res => {
+
+            console.log(res.data);
+            this.user = res.data;
+            
+         })
+         .catch(error => {
+         console.error(error);
+         })
+      },
+
+   },
+   beforeMount() {
+		this.getUser()
+	},
+   components: {
+      "Header": Header, 
+   }
 }
 
 </script>

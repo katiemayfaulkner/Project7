@@ -10,19 +10,22 @@ exports.createPost = (req, res, next) => {
 		// If there's a problem throw error, else, continue
 		if(err) {
 			throw err;
+			
 		} else {
 
 			console.log(req.body)
+
+			let userId = req.session.id
+			console.log(userId)
 	
 			const newPost = {
-                userID: req.body.userID,
-				creator: req.body.creator,
 				imageUrl: req.body.imageUrl,
 				caption: req.body.caption,
 			}
+
+			console.log(newPost);
 	
-			// const query = 'UPDATE Post SET ? WHERE postID = ?';
-            const query = 'INSERT INTO Post(userID,creator,imageUrl,caption) VALUES (userID,creator,imageUrl,caption)';
+            const query = 'INSERT INTO Post Set ?';
 	
 			// SQL Queries
 			connection.query(query, [newPost, 1], (err, rows) => {
@@ -30,13 +33,13 @@ exports.createPost = (req, res, next) => {
 				if(!err) {
 					console.log(rows);
 					res.send('Your post has been created successfully!');
+
 				} else {
 					console.log(err)
 				}
 			})
 
-		}
-		
+		}	
 	})
 }
 
@@ -82,12 +85,12 @@ exports.deletePost = (req, res, next)=> {
 			console.log(req.body)
 	
 			// SELECT * FROM Post
-			let postID = req.body.postID;
+			let postId = req.body.postId;
 	
-			const query = 'DELETE FROM Post WHERE postID = ?';
+			const query = 'DELETE FROM Post WHERE postId = ?';
 	
 			// SQL Queries
-			connection.query(query, [postID], (err, rows) => {
+			connection.query(query, [postId], (err, rows) => {
 				if(!err) {
 					console.log(rows)
 					res.send('Post successfully deleted!');
@@ -112,12 +115,12 @@ exports.postComment = (req, res, next) => {
 			console.log(req.body)
 	
 			const newComment = {
-                userID: req.body.userID,
+                userId: req.body.userId,
 				comments: req.body.comments,
 
 			}
 	
-			// const query = 'UPDATE Post SET ? WHERE postID = ?';
+			// const query = 'UPDATE Post SET ? WHERE postId = ?';
             const query = 'INSERT INTO Post(comments) VALUES (comments)';
 	
 			// SQL Queries
@@ -177,12 +180,12 @@ exports.likePost = (req, res, next) => {
 			console.log(req.body)
 	
 			const newLike = {
-                userID: req.body.userID,
+                userId: req.body.userId,
 				likes: req.body.likes,
 
 			}
 	
-			// const query = 'UPDATE Post SET ? WHERE postID = ?';
+			// const query = 'UPDATE Post SET ? WHERE postId = ?';
             const query = 'INSERT INTO Post(likes) VALUES (likes)';
 	
 			// SQL Queries
@@ -214,12 +217,12 @@ exports.dislikePost = (req, res, next) => {
 			console.log(req.body)
 	
 			const newDislike = {
-                userID: req.body.userID,
+                userId: req.body.userId,
 				dislikes: req.body.dislikes,
 
 			}
 	
-			// const query = 'UPDATE Post SET ? WHERE postID = ?';
+			// const query = 'UPDATE Post SET ? WHERE postId = ?';
             const query = 'INSERT INTO Post(dislikes) VALUES (dislikes)';
 	
 			// SQL Queries

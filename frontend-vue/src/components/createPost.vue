@@ -7,18 +7,18 @@
 			</router-link>
 			<div class="content">
 				<h1> Create a new post: </h1>
-				<form class="create-post"> 					
-					<div class="img-input">
-						<input type="file" id="postImg" accept="image/*" @input="pickFile" ref="fileInput" required="true">
-						<img class="img-preview" style="{ 'background-image': `url(${previewImage})` }" @click="selectImage">
-					</div>
+				<form class="create-post" v-on:submit.prevent="onSubmit"> 					
+					<!-- <div class="img-input">
+						<input type="file" required="true">
+						<img class="img-preview">
+					</div> -->
 
 					<div class="text-input">
 						<label for="text"> Insert your caption: </label>
-						<input type="text" maxlength="150" required="true">
+						<input type="text" maxlength="150" required="true" v-model="form.caption">
 					</div>
 
-					<input type="submit" value="Submit" class="submit-btn">
+					<button class="submit-btn" type="submit"> Submit </button>
 				</form>
 			</div>
 		</section>
@@ -28,37 +28,59 @@
 <script>
 import Header from "./header.vue"
 
+// import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
+import axios from 'axios'; 
+
 export default {
-  name: 'createPost',
+	name: 'createPost',
 
-  data() {
-    return {
-      previewImage: null
-    };
-  },
+	data() {
+		return {
+			form: {
+				caption: "",
+			},
+		};
+	},
+	methods: {
+		onSubmit : function () {
+			this.createPost();
+		},
 
-  methods: {
+		// getUser() {
+		// 	let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 
-    selectImage () {
-      this.$refs.fileInput.click()
-    },
+		// 	axios.get("http://localhost:3000/user/" + userId)
+		// 		.then(res => {
 
-    pickFile () {
-      let input = this.$refs.fileInput
-      let file = input.files
-      if (file && file[0]) {
-        let reader = new FileReader
-        reader.onload = e => {
-          this.previewImage = e.target.result
-        }
-        reader.readAsDataURL(file[0])
-        this.$emit('input', file[0])
-      }
-    }
-  },
-  components: {
+		// 			console.log(res.data);
+		// 			this.user = res.data;
+					
+		// 		})
+		// 		.catch(error => {
+		// 		console.error(error);
+		// 	})
+		// },
+
+		createPost() {
+			// this.getUser(); 
+			
+			let postDetails = this.form;
+
+			axios.post("http://localhost:3000/post", postDetails)
+			.then(response => {
+					console.log(response.data);
+					
+					// this.$router.push({ path: "/home" });
+			})
+			.catch(error => {
+					console.error(error);
+			})
+			
+		}
+	},
+	components: {
 		"Header": Header,
-  }
+	}
 }
 </script>
 

@@ -117,7 +117,7 @@ exports.login = (req, res) => {
 							// Create token
 							const token = jwt.sign({
 								email: rows[0].email,
-								userId: rows[0].userID
+								userId: rows[0].userId
 							},
 							'RANDOM_SECRET_TOKEN_WHICH_IS_LONG_BECAUSE_IT_IS_MORE_SECURE',
 							{ expiresIn: '24h'}
@@ -125,7 +125,7 @@ exports.login = (req, res) => {
 
 							// Send response data
 							res.status(200).json({
-								userId: rows[0].userID, 
+								userId: rows[0].userId, 
 								firstName: rows[0].firstName,
 								token: token
 							})
@@ -165,14 +165,14 @@ exports.getUser = (req, res) => {
 			
 	
 			// SELECT * FROM users
-			let userID = req.params.id;
+			let userId = req.params.id;
 	
-			const query = 'SELECT * FROM User WHERE userID = ?';
+			const query = 'SELECT * FROM User WHERE userId = ?';
 
-			console.log(userID)
+			console.log(userId)
 	
 			// SQL Queries
-			connection.query(query, [userID], (err, rows) => {
+			connection.query(query, [userId], (err, rows) => {
 				if(!err) {
 					if(rows.length > 0) { // There's data
 						res.status(200).json({
@@ -214,7 +214,7 @@ exports.modifyUser = (req, res) => {
 				password: req.body.password,
 			}
 	
-			const query = 'UPDATE User SET ? WHERE userID = ?';
+			const query = 'UPDATE User SET ? WHERE userId = ?';
 	
 			// SQL Queries
 			connection.query(query, [newUser, 1], (err, rows) => {
@@ -244,14 +244,14 @@ exports.deleteUser = (req, res)=> {
 		} else {
 	
 			// DELETE FROM users
-			let userID = req.params.id;
+			let userId = req.params.id;
 
-			console.log(userID)
+			console.log(userId)
 	
-			const query = 'DELETE FROM User WHERE userID = ?';
+			const query = 'DELETE FROM User WHERE userId = ?';
 	
 			// SQL Queries
-			connection.query(query, [userID], (err, rows) => {
+			connection.query(query, [userId], (err, rows) => {
 				if(!err) {
 
 					console.log(rows)
