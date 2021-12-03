@@ -162,14 +162,11 @@
                     let userDetails = this.form;
 
                     axios.post("http://localhost:3000/user/signup", userDetails)
-                    .then(response => {
-                        console.log(response.data);
+                    .then(res => {
+                        console.log(res.data);
                         console.log(userDetails.firstName,", your account has successfully been created!"),
-
-                        // localStorage.setItem('token', response.data.token);
                         
-                        localStorage.setItem('user', JSON.stringify(userDetails));
-                        this.$router.push({ path: "/home" });
+                        this.$router.push({ path: "/login" });
                     })
                     .catch(error => {
                         console.error(error);

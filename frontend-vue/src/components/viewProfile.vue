@@ -16,15 +16,11 @@
 					</div>
 					<div>
 						<p class="title">Last name:</p>
-						<p> {{user.lastName}}</p>
+						<p> {{user.lastName}} </p>
 					</div>
 					<div>
 						<p class="title">Email:</p>
 						<p> {{user.email}}</p>
-					</div>
-					<div>
-						<p class="title">Password:</p>
-						<p> {{user.password}} </p>
 					</div>
 				</div>
 

@@ -15,8 +15,8 @@ exports.createPost = (req, res, next) => {
 
 			console.log(req.body)
 
-			let userId = req.session.id
-			console.log(userId)
+			// let userId = req.session.id
+			// console.log(userId)
 	
 			const newPost = {
 				imageUrl: req.body.imageUrl,

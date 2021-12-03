@@ -151,7 +151,7 @@ exports.login = (req, res) => {
 exports.getUser = (req, res) => {
 
 	// Retrieve user
-    	mySqlConnection.getConnection((err, connection) => {
+    mySqlConnection.getConnection((err, connection) => {
 
 		// If there's a problem throw error, else, continue 
 		if(err) {
@@ -213,6 +213,8 @@ exports.modifyUser = (req, res) => {
 				email: req.body.email,
 				password: req.body.password,
 			}
+
+			console.log(newUser)
 	
 			const query = 'UPDATE User SET ? WHERE userId = ?';
 	

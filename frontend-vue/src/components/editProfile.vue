@@ -2,38 +2,39 @@
 	<div>
 		<Header/>
 		<section class="container edit-profile">
-			<router-link to="/home">
+			<router-link to="/profile">
 				<p> Return </p>
 			</router-link>
 			<div class="content">
 				<h1> Enter your new details: </h1> 
 
-				<div class="profile">
+				<form class="profile" v-on:submit.prevent="onSubmit">
 					<img src="../assets/user-black.png" alt="">
 					<div>
 						<p class="title">First name:</p>
-						<input type="text">
+						<input type="text" v-model="form.firstName" required>
 					</div>
 					<div>
 						<p class="title">Last name:</p>
-						<input type="text">
+						<input type="text" v-model="form.lastName" required> 
 					</div>
 					<div>
 						<p class="title">Email:</p>
-						<input type="text">
+						<input type="text" v-model="form.email" required>
 					</div>
 					<div>
-						<p class="title">Password:</p>
-						<input type="password">
+						<p class="title">New Password:</p>
+						<input type="password" v-model="form.password">
 					</div>
-				</div>
+					<div>
+						<p class="title">Confirm New Password:</p>
+						<input type="password" v-model="form.retypePassword">
+					</div>
 
-				<div class="profile-btns">
-					<input type="submit" value="Submit" id="submitChanges">
-					<router-link to="/profile">
-						<input type="button" value="Cancel">
-					</router-link>
-				</div>
+					<div class="profile-btns">
+						<button type="submit"> Submit </button>
+					</div>
+				</form>
 			</div>
 		</section>
 	</div>
@@ -47,8 +48,56 @@ import axios from 'axios';
 
 export default {
 	name: 'editProfile',
+	data() {
+		return {
+			user: {},
+			form: {
+				firstName: "",
+				lastName: "",
+				email: "",
+				password: "",
+				retypePassword: "",
+			},
+		};
+	},
 	methods: {
 
+		getUser() {
+			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
+
+			axios.get("http://localhost:3000/user/" + userId)
+				.then(res => {
+
+					console.log(res.data);
+					this.form = res.data;
+					
+				})
+				.catch(error => {
+				console.error(error);
+			})
+		},
+
+		onSubmit: function() {
+
+			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
+			let userDetails = this.form;
+
+			axios.put("http://localhost:3000/user/" + userId, userDetails)
+				.then(res => {
+
+					console.log(res.data);
+					console.log(userDetails.firstName,", your account has successfully been updated!");
+                        
+                    // localStorage.setItem('user', JSON.stringify(userDetails));
+					
+				})
+				.catch(error => {
+				console.error(error);
+			})
+		}
+	},
+	beforeMount() {
+		this.getUser()
 	},
 	components: {
 		"Header": Header,
@@ -117,18 +166,19 @@ export default {
 					border-radius: 8px;
 				}
 			}
-		}
-		.profile-btns {
 
-			input {
-				padding: 10px;
-				margin: 0 10px 15px 0;
-				border-radius: 12px;
-				border: none;
-				background-color: #091F43;
-				font-weight: 500;
-				color: white;
-				font-size: 17px;
+			.profile-btns {
+
+				button {
+					padding: 10px;
+					margin: 0 10px 15px 0;
+					border-radius: 12px;
+					border: none;
+					background-color: #091F43;
+					font-weight: 500;
+					color: white;
+					font-size: 17px;
+				}
 			}
 		}
 	}
