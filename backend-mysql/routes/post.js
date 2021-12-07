@@ -4,8 +4,11 @@ const router = express.Router();
 // Controllers
 const post = require('../controllers/post.js')
 
+// Middleware for handling multimedia data (in this case images)
+const multer = require('../middleware/multer.config'); 
+
 // API Endpoints
-router.post('', post.createPost);
+router.post('', multer, post.createPost);
 router.get('', post.getAllPosts);
 // router.put('/:id', post.modifyPost);
 router.delete('/:id', post.deletePost);

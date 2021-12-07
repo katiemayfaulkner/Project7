@@ -2,6 +2,7 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');   // Import node package "path", which allows access to folder paths
 
 // Express App & Configuration
 const port = process.env.PORT || 3000;
@@ -19,6 +20,8 @@ app.use(bodyParser.json());
 app.use(cors({
     origin: "*",
 }))
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Routes
 app.use('/user', userRoutes);

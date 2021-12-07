@@ -19,7 +19,7 @@ exports.createPost = (req, res, next) => {
 			// console.log(userId)
 	
 			const newPost = {
-				imageUrl: req.body.imageUrl,
+				// imageUrl: req.body.imageUrl,
 				caption: req.body.caption,
 			}
 

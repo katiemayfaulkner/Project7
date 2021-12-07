@@ -8,8 +8,9 @@
 			<div class="content">
 				<h1> Enter your new details: </h1> 
 
-				<form class="profile" v-on:submit.prevent="onSubmit">
+				<form class="profile" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
 					<img src="../assets/user-black.png" alt="">
+					<input class="profile-picture" type="file">
 					<div>
 						<p class="title">First name:</p>
 						<input type="text" v-model="form.firstName" required>
@@ -53,6 +54,7 @@ export default {
 			passwordsMatched: false,
             error: "",
 			form: {
+				imageUrl: "",
 				firstName: "",
 				lastName: "",
 				email: "",
@@ -69,16 +71,13 @@ export default {
 			axios.get("http://localhost:3000/user/" + userId)
 				.then(res => {
 
-					console.log(res.data);
-					this.form = res.data;
-					
+					this.form = res.data;					
 				})
 				.catch(error => {
 				console.error(error);
 			})
 		},
  
-
 		onSubmit: function(){
 
 			if(this.form.password === this.form.retypePassword){
@@ -109,7 +108,7 @@ export default {
 			.catch(error => {
 			console.error(error);
 			})
-		}
+		},
 	},
 	beforeMount() {
 		this.getUser()
@@ -136,6 +135,7 @@ export default {
 		}
 
 	}
+
 	.content{
 		padding: 25px;
 		width: 100%;
@@ -156,6 +156,11 @@ export default {
 				width: 60px;
 				height: auto;
 				margin-bottom: 15px;
+			}
+
+			.profile-picture{
+
+				margin: 15px;
 			}
 
 			div {
