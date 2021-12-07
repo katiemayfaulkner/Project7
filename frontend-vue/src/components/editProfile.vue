@@ -22,6 +22,7 @@
 						<p class="title">Email:</p>
 						<input type="text" v-model="form.email" required>
 					</div>
+					<p>Optional: </p>
 					<div>
 						<p class="title">New Password:</p>
 						<input type="password" v-model="form.password">
@@ -31,9 +32,8 @@
 						<input type="password" v-model="form.retypePassword">
 					</div>
 
-					<div class="profile-btns">
-						<button type="submit"> Submit </button>
-					</div>
+					<button type="submit"> Submit </button>
+					<p class="alert alert-danger" v-if="this.error">{{this.error}}</p>
 				</form>
 			</div>
 		</section>
@@ -50,7 +50,8 @@ export default {
 	name: 'editProfile',
 	data() {
 		return {
-			user: {},
+			passwordsMatched: false,
+            error: "",
 			form: {
 				firstName: "",
 				lastName: "",
@@ -76,23 +77,37 @@ export default {
 				console.error(error);
 			})
 		},
+ 
 
-		onSubmit: function() {
+		onSubmit: function(){
 
+			if(this.form.password === this.form.retypePassword){
+				this.passwordsMatched = true;
+				this.error = ""
+			} else {
+				this.passwordsMatched = false;
+				this.error = "Passwords must match!"
+			}
+
+			this.modifyUser();
+		
+		},
+
+		modifyUser() {
 			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 			let userDetails = this.form;
 
 			axios.put("http://localhost:3000/user/" + userId, userDetails)
-				.then(res => {
+			.then(res => {
 
-					console.log(res.data);
-					console.log(userDetails.firstName,", your account has successfully been updated!");
-                        
-                    // localStorage.setItem('user', JSON.stringify(userDetails));
+				
+				console.log(userDetails.firstName,", your account has successfully been updated!");
 					
-				})
-				.catch(error => {
-				console.error(error);
+				this.$router.push({ path: "/login" });
+				
+			})
+			.catch(error => {
+			console.error(error);
 			})
 		}
 	},
@@ -167,18 +182,15 @@ export default {
 				}
 			}
 
-			.profile-btns {
-
-				button {
-					padding: 10px;
-					margin: 0 10px 15px 0;
-					border-radius: 12px;
-					border: none;
-					background-color: #091F43;
-					font-weight: 500;
-					color: white;
-					font-size: 17px;
-				}
+			button {
+				padding: 10px;
+				margin: 0 10px 15px 0;
+				border-radius: 12px;
+				border: none;
+				background-color: #091F43;
+				font-weight: 500;
+				color: white;
+				font-size: 17px;
 			}
 		}
 	}

@@ -225,26 +225,26 @@ export default {
    },
    methods: {
       
-      getPost() {
-         let postId = JSON.parse(window.localStorage.getItem('post')).postId;
-         console.log(postId)
+    //   getPost() {
+    //      let postId = JSON.parse(window.localStorage.getItem('post')).postId;
+    //     //  console.log(postId)
 
-         axios.get("http://localhost:3000/user/" + postId)
-         .then(res => {
+    //      axios.get("http://localhost:3000/user/" + postId)
+    //      .then(res => {
 
-            console.log(res.data);
-            this.user = res.data;
+    //         console.log(res.data);
+    //         this.user = res.data;
             
-         })
-         .catch(error => {
-         console.error(error);
-         })
-      },
+    //      })
+    //      .catch(error => {
+    //      console.error(error);
+    //      })
+    //   },
 
    },
-   beforeMount() {
-		this.getUser()
-	},
+//    beforeMount() {
+// 		this.getPost()
+// 	},
    components: {
       "Header": Header, 
    }
