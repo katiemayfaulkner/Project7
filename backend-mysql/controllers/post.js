@@ -2,7 +2,7 @@
 const mySqlConnection = require('../config/database');
 
 // Requests
-exports.createPost = (req, res, next) => {
+exports.createPost = (req, res) => {
 	
 	// Adding a new post
 	mySqlConnection.getConnection((err, connection) => {
@@ -43,7 +43,7 @@ exports.createPost = (req, res, next) => {
 	})
 }
 
-exports.getAllPosts = (req, res, next) => {
+exports.getAllPosts = (req, res) => {
 
 	// Retrieve post
     mySqlConnection.getConnection((err, connection) => {
@@ -62,16 +62,19 @@ exports.getAllPosts = (req, res, next) => {
 			connection.query(query, (err, rows) => {
 				if(!err) {
 					console.log(rows)
-					res.send('Posts have been retrieved successfully!');
+					res.send(rows)
+
 				} else {
-					console.log(err)
+					res.status(400).json({
+						error: "Posts cannot be retrieved."
+					})
 				}
 			})
 		}
 	})
 };
 
-exports.deletePost = (req, res, next)=> {
+exports.deletePost = (req, res)=> {
 
 	// Delete post
 	mySqlConnection.getConnection((err, connection) => {
@@ -102,7 +105,7 @@ exports.deletePost = (req, res, next)=> {
 	})
 };
 
-exports.postComment = (req, res, next) => {
+exports.postComment = (req, res) => {
 	
 	// Adding a new comment
 	mySqlConnection.getConnection((err, connection) => {
@@ -139,7 +142,7 @@ exports.postComment = (req, res, next) => {
 	})
 }
 
-exports.getComments = (req, res, next) => {
+exports.getComments = (req, res) => {
 
 	// Retrieve comments
     mySqlConnection.getConnection((err, connection) => {
@@ -167,7 +170,7 @@ exports.getComments = (req, res, next) => {
 	})
 };
 
-exports.likePost = (req, res, next) => {
+exports.likePost = (req, res) => {
 	
 	// Adding a new like
 	mySqlConnection.getConnection((err, connection) => {
@@ -204,7 +207,7 @@ exports.likePost = (req, res, next) => {
 	})
 }
 
-exports.dislikePost = (req, res, next) => {
+exports.dislikePost = (req, res) => {
 	
 	// Adding a new dislike
 	mySqlConnection.getConnection((err, connection) => {

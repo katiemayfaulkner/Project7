@@ -205,72 +205,72 @@ exports.modifyUser = (req, res) => {
 			
 		} else {
 
-			if (!req.file) {
-				console.log('IMAGE NOT FOUND')
+			// if (!req.file) {
+			// 	console.log('IMAGE NOT FOUND')
 				
-			} else {
-				console.log('IMAGE FOUND')
+			// } else {
+			// 	console.log('IMAGE FOUND')
 
-			}
-
-			// // Request data
-			// let userId = req.params.id;
-			// let firstName = req.body.firstName;
-			// let lastName = req.body.lastName;
-			// let email = req.body.email;
-			// let password = req.body.password;
-
-			// // If password input has not been filled in by user, only send firstName, lastName, email
-			// if(!password) {
-
-			// 	let query = 'UPDATE User SET imageUrl = ?, firstName = ?, lastName = ?, email = ? WHERE userId = ?';
-			// 	let inserts = [imageUrl, firstName, lastName, email, userId];
-
-			// 	// SQL Queries
-			// 	connection.query(query, inserts, (err, rows) => {
-					
-			// 		if(!err) {
-			// 			console.log(rows);
-			// 			res.send('Your account has been updated successfully!');
-						
-			// 		} else {
-			// 			console.log(err)
-			// 		}
-			// 	})
-
-			// } else { // else send firstName, lastName, email AND password
-
-			// 	// Define strong password
-			// 	let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})');
-
-			// 	// If entered password is a strong password, continue, else throw error
-			// 	if(strongPassword.test(req.body.password) && req.body.password.length >= 8) {
-
-			// 		// Encrypt password
-			// 		let hashedPassword = bcrypt.hashSync(req.body.password, 10);
-
-			// 		// SQL Queries
-			// 		let query = 'UPDATE User SET firstName = ?, lastName = ?, email = ?, password = ? WHERE userId = ?';
-			// 		let inserts = [firstName, lastName, email, hashedPassword, userId];
-
-			// 		connection.query(query, inserts, (err, rows) => {
-						
-			// 			if(!err) {
-			// 				console.log(rows);
-			// 				res.send('Your account has been updated successfully!');
-							
-			// 			} else {
-			// 				console.log(err)
-			// 			}
-			// 		})
-
-			// 	} else {
-			// 		// It's a weak password, throw error and alert user
-			// 		res.status(400).json({
-			// 			message: "Weak password. Password must be at least 8 character, and contain at least one uppercase, one lowercase, one number and a special character!"
-			// 		});
-			// 	}
 			// }
+
+			// Request data
+			let userId = req.params.id;
+			let firstName = req.body.firstName;
+			let lastName = req.body.lastName;
+			let email = req.body.email;
+			let password = req.body.password;
+
+			// If password input has not been filled in by user, only send firstName, lastName, email
+			if(!password) {
+
+				let query = 'UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE userId = ?';
+				let inserts = [firstName, lastName, email, userId];
+
+				// SQL Queries
+				connection.query(query, inserts, (err, rows) => {
+					
+					if(!err) {
+						console.log(rows);
+						res.send('Your account has been updated successfully!');
+						
+					} else {
+						console.log(err)
+					}
+				})
+
+			} else { // else send firstName, lastName, email AND password
+
+				// Define strong password
+				let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})');
+
+				// If entered password is a strong password, continue, else throw error
+				if(strongPassword.test(req.body.password) && req.body.password.length >= 8) {
+
+					// Encrypt password
+					let hashedPassword = bcrypt.hashSync(req.body.password, 10);
+
+					// SQL Queries
+					let query = 'UPDATE User SET firstName = ?, lastName = ?, email = ?, password = ? WHERE userId = ?';
+					let inserts = [firstName, lastName, email, hashedPassword, userId];
+
+					connection.query(query, inserts, (err, rows) => {
+						
+						if(!err) {
+							console.log(rows);
+							res.send('Your account has been updated successfully!');
+							
+						} else {
+							console.log(err)
+						}
+					})
+
+				} else {
+					// It's a weak password, throw error and alert user
+					res.status(400).json({
+						message: "Weak password. Password must be at least 8 character, and contain at least one uppercase, one lowercase, one number and a special character!"
+					});
+				}
+			}
 		}	
 	})
 };

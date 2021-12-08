@@ -46,37 +46,19 @@ export default {
 			this.createPost();
 		},
 
-		// getUser() {
-		// 	let userId = JSON.parse(window.localStorage.getItem('user')).userId;
-
-		// 	axios.get("http://localhost:3000/user/" + userId)
-		// 		.then(res => {
-
-		// 			console.log(res.data);
-		// 			this.user = res.data;
-					
-		// 		})
-		// 		.catch(error => {
-		// 		console.error(error);
-		// 	})
-		// },
-
 		createPost() {
-			// this.getUser(); 
-			
 			let postDetails = this.form;
 
 			axios.post("http://localhost:3000/post", postDetails)
-			.then(response => {
-					console.log(response.data);
-					
-					// this.$router.push({ path: "/home" });
+			.then(res => {
+
+				console.log(res.data);				
+				// this.$router.push({ path: "/home" });
 			})
 			.catch(error => {
-					console.error(error);
-			})
-			
-		}
+				console.error(error);
+			})	
+		},
 	},
 	components: {
 		"Header": Header,

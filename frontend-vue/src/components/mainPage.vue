@@ -3,12 +3,12 @@
 		<Header/>
 		<section class="main-page">
 			<div class="container">  
-			<!-- <article class="no-posts col-lg-9 col-md-8">
+			<article class="no-posts col-lg-9 col-md-8" v-if="posts.length === 0">
 				<div>
 				<h2> Sorry! It seems that nothing has been posted yet..</h2>
 				<button> <router-link to="/createPost"> Create new post </router-link> </button> 
 				</div>
-			</article> -->
+			</article>
 
 			<article class=" col-lg-9 col-md-8">
 				<h2>Discover our posts</h2>
@@ -34,10 +34,7 @@
 								</div>
 
 								<div class="caption-container">
-									<p> However iconic and well-known his image, Ross is still a man of surprises. One glaring fact, that even the most faithful
-									television watchers do not often notice, is that Ross was missing a finger. It was cut off on a saw while woodworking
-									with his father in his youth. If you look carefully, you will see that Ross hid his missing digit by holding his palette
-									with the hand missing the finger.</p>
+									<p>  {{posts.caption}}</p>
 								</div>
 
 								<div class="post-actions">
@@ -216,38 +213,36 @@ import axios from 'axios';
 
 export default {
    name: 'MainPage',
-   data() {
-      return{
-         isLiked: false,
-         seeComments: false,
-         user: {},
-      }
-   },
-   methods: {
+	data() {
+		return{
+			isLiked: false,
+			seeComments: false,
+			posts: [],
+
+			// v-for= "post in posts" :key="post.postId"
+		}
+	},
+	methods: {
       
-    //   getPost() {
-    //      let postId = JSON.parse(window.localStorage.getItem('post')).postId;
-    //     //  console.log(postId)
+		getPosts() {
+			axios.get("http://localhost:3000/post")
+			.then(res => {
 
-    //      axios.get("http://localhost:3000/user/" + postId)
-    //      .then(res => {
+				console.log(res.data);
+				this.posts = res.data[0];
 
-    //         console.log(res.data);
-    //         this.user = res.data;
-            
-    //      })
-    //      .catch(error => {
-    //      console.error(error);
-    //      })
-    //   },
-
-   },
-//    beforeMount() {
-// 		this.getPost()
-// 	},
-   components: {
-      "Header": Header, 
-   }
+			})
+			.catch(error => {
+				console.error(error);
+			})
+		},
+	},
+	mounted() {
+		this.getPosts()
+	},
+	components: {
+		"Header": Header, 
+	}
 }
 
 </script>

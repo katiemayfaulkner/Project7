@@ -10,7 +10,6 @@ const multer = require('../middleware/multer.config');
 // API Endpoints
 router.post('', multer, post.createPost);
 router.get('', post.getAllPosts);
-// router.put('/:id', post.modifyPost);
 router.delete('/:id', post.deletePost);
 router.post('/comment', post.postComment);
 router.get('/comments', post.getComments);
