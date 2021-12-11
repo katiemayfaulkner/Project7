@@ -10,7 +10,8 @@ const multer = require('../middleware/multer.config');
 // API Endpoints
 router.post('/signup', user.signup);
 router.post('/login', user.login);
-router.get('/:id', user.getUser);
+// router.get('', user.getAllUsers);
+router.get('/:id', user.getOneUser);
 router.delete('/:id', user.deleteUser);
 router.put('/:id', multer, user.modifyUser);
 

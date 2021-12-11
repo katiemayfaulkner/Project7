@@ -13,35 +13,56 @@ exports.createPost = (req, res) => {
 			
 		} else {
 
-			console.log(req.body)
+			try{
+				let image = null;
+				if (req.file) {
+					const image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
 
-			// let userId = req.session.id
-			// console.log(userId)
-	
-			const newPost = {
-				// imageUrl: req.body.imageUrl,
-				caption: req.body.caption,
-			}
-
-			console.log(newPost);
-	
-            const query = 'INSERT INTO Post Set ?';
-	
-			// SQL Queries
-			connection.query(query, [newPost, 1], (err, rows) => {
-				
-				if(!err) {
-					console.log(rows);
-					res.send('Your post has been created successfully!');
+					const newPost = {
+						imageUrl: image,
+						caption: req.body.caption,
+					}
+					console.log(newPost)
+					console.log(req.file)
 
 				} else {
-					console.log(err)
+					res.send('No image found!');
 				}
-			})
+			} catch (err) {
+				console.log(err)
+			}
 
+			// console.log(req.body)
+
+			// // let userId = req.session.id
+			// // console.log(userId)
+
+			// const url = req.protocol + '://' + req.get('host');
+	
+			// const newPost = {
+			// 	imageUrl: url + '/images/' + req.file.filename,
+			// 	caption: req.body.caption,
+			// }
+
+			// console.log(imageUrl)
+			// console.log(newPost);
+	
+            // const query = 'INSERT INTO Post Set ?';
+	
+			// // SQL Queries
+			// connection.query(query, [newPost, 1], (err, rows) => {
+				
+			// 	if(!err) {
+			// 		console.log(rows);
+			// 		res.send('Your post has been created successfully!');
+
+			// 	} else {
+			// 		console.log(err)
+			// 	}
+			// })
 		}	
 	})
-}
+};
 
 exports.getAllPosts = (req, res) => {
 
@@ -74,7 +95,7 @@ exports.getAllPosts = (req, res) => {
 	})
 };
 
-exports.deletePost = (req, res)=> {
+exports.deletePost = (req, res) => {
 
 	// Delete post
 	mySqlConnection.getConnection((err, connection) => {
@@ -88,15 +109,19 @@ exports.deletePost = (req, res)=> {
 			console.log(req.body)
 	
 			// SELECT * FROM Post
-			let postId = req.body.postId;
+			let postId = req.params.id;
+
+			console.log(postId)
 	
 			const query = 'DELETE FROM Post WHERE postId = ?';
 	
 			// SQL Queries
 			connection.query(query, [postId], (err, rows) => {
+
 				if(!err) {
 					console.log(rows)
 					res.send('Post successfully deleted!');
+
 				} else {
 					console.log(err)
 				}
@@ -205,7 +230,7 @@ exports.likePost = (req, res) => {
 		}
 		
 	})
-}
+};
 
 exports.dislikePost = (req, res) => {
 	
@@ -242,4 +267,4 @@ exports.dislikePost = (req, res) => {
 		}
 		
 	})
-}
+};

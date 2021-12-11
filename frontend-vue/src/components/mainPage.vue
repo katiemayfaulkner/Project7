@@ -3,202 +3,120 @@
 		<Header/>
 		<section class="main-page">
 			<div class="container">  
-			<article class="no-posts col-lg-9 col-md-8" v-if="posts.length === 0">
-				<div>
-				<h2> Sorry! It seems that nothing has been posted yet..</h2>
-				<button> <router-link to="/createPost"> Create new post </router-link> </button> 
-				</div>
-			</article>
+				<article class="col-lg-9 col-md-8">
+					<h2>Discover our posts</h2>
 
-			<article class=" col-lg-9 col-md-8">
-				<h2>Discover our posts</h2>
+					<div class="no-posts" v-if="posts.length === 0">
+						<div>
+						<h2> Sorry! It seems that nothing has been posted yet..</h2>
+						<button> <router-link to="/create-post"> Create new post </router-link> </button> 
+						</div>
+					</div>
 
-				<div class="box">
-					<div class="post col-lg-6">
-						<div class="contents">
-							<div class="post-content" v-if="!seeComments" v-bind:class="{active: seeComments}">
-								<div class="top-bar">
-									<div class="user-info">
-										<img src="../assets/user-black.png" alt="">
-										<p class="name-container"> Katie May </p>
+					<div class="box">
+						<div class="post col-lg-6" v-for= "post in posts" :key="post.postId">
+							<div class="contents">
+								<div class="post-content" v-if="!seeComments" v-bind:class="{active: seeComments}">
+									<div class="top-bar">
+										<div class="user-info">
+											<img src="../assets/user-black.png" alt="">
+											<p class="name-container"> Katie May {{user.firstName}} </p>
+										</div>
+
+										<div>
+											<img src="../assets/bin-black.png" alt="" @click="deletePost()">		
+											<img src="../assets/comments.png" alt="" @click="seeComments = !seeComments">	
+										</div>
 									</div>
 
-									<div>
-										<img src="../assets/bin-black.png" alt="">		
+									<div class="img-container">
+										<img src="../assets/bob.jpg" alt="">
+										{{post.imageUrl}}
+									</div>
+
+									<div class="caption-container">
+										<p> {{post.caption}} </p>
+									</div>
+
+									<div class="post-actions">
+										<div class="like">
+											<img 
+											src="../assets/like-active.png"								  
+												v-bind:class="{active: isLiked}"
+												@click="isLiked = !isLiked"
+											>  
+										</div>
+
+										<form class="comments">
+											<input class="input" type="text" name="comments" placeholder="Write a comment...">
+											<input class="btn" type="submit" value="Submit">
+										</form>
+									</div>
+								</div>
+
+								<div class="post-comments">
+									<div class="hero">
+										<h1> Comments: </h1>				
 										<img src="../assets/comments.png" alt="" @click="seeComments = !seeComments">	
 									</div>
-								</div>
 
-								<div class="img-container">
-									<img src="../assets/bob.jpg" alt="">
-								</div>
-
-								<div class="caption-container">
-									<p>  {{posts.caption}}</p>
-								</div>
-
-								<div class="post-actions">
-									<div class="like">
-										<img 
-										src="../assets/like-active.png"								  
-											v-bind:class="{active: isLiked}"
-											@click="isLiked = !isLiked"
-										>  
-									</div>
-
-									<form class="comments">
-										<input class="input" type="text" name="comments" placeholder="Write a comment...">
-										<input class="btn" type="submit" value="Submit">
-									</form>
-								</div>
-							</div>
-
-							<div class="post-comments">
-								<div class="hero">
-									<h1> Comments: </h1>				
-									<img src="../assets/comments.png" alt="" @click="seeComments = !seeComments">	
-								</div>
-
-								<div class="items">
-									<div class="item">
-										<div class="user">
-											<img src="img/user.png" alt="">
-											<p class="user-name"> Katie May : </p>
+									<div class="items">
+										<div class="item">
+											<div class="user">
+												<img src="img/user.png" alt="">
+												<p class="user-name"> Katie May : </p>
+											</div>
+											<p class="comment"> woww </p>
 										</div>
-										<p class="comment"> woww </p>
-									</div>
-							
-									<div class="item">
-										<div class="user">
-											<img src="img/user.png" alt="">
-											<p class="user-name"> Jason John : </p>
+								
+										<div class="item">
+											<div class="user">
+												<img src="img/user.png" alt="">
+												<p class="user-name"> Jason John : </p>
+											</div>
+											<p class="comment"> bob ross is so awesome! </p>
 										</div>
-										<p class="comment"> bob ross is so awesome! </p>
-									</div>
-							
-									<div class="item">
-										<div class="user">
-											<img src="img/user.png" alt="">
-											<p class="user-name"> Amy Pond : </p>
+								
+										<div class="item">
+											<div class="user">
+												<img src="img/user.png" alt="">
+												<p class="user-name"> Amy Pond : </p>
+											</div>
+											<p class="comment"> cool fact!! </p>
+								
 										</div>
-										<p class="comment"> cool fact!! </p>
-							
-									</div>
-							
-									<div class="item">
-										<div class="user">
-											<img src="img/user.png" alt="">
-											<p class="user-name"> Jill Hall : </p>
+								
+										<div class="item">
+											<div class="user">
+												<img src="img/user.png" alt="">
+												<p class="user-name"> Jill Hall : </p>
+											</div>
+											<p class="comment"> my fav painter! </p>
 										</div>
-										<p class="comment"> my fav painter! </p>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-
-					<div class="post col-lg-6">
-						<div class="contents">
-							<div class="post-content" v-if="!seeComments" v-bind:class="{active: seeComments}">
-								<div class="top-bar">
-									<div class="user-info">
-										<img src="../assets/user-black.png" alt="">
-										<p class="name-container"> John Ross </p>
-									</div>
-
-									<div>
-										<img src="../assets/bin-black.png" alt="">		
-										<img src="../assets/comments.png" alt="" @click="seeComments = !seeComments">	
-									</div>
-								</div>
-
-								<div class="img-container">
-									<img src="../assets/POST-3.jpeg" alt="">
-								</div>
-
-								<div class="caption-container">
-									<p> FLOWER :))</p>
-								</div>
-
-								<div class="post-actions">
-									<div class="like">
-										<img 
-										src="../assets/like-active.png"								  
-											v-bind:class="{active: isLiked}"
-											@click="isLiked = !isLiked"
-										>  
-									</div>
-
-									<form class="comments">
-										<input class="input" type="text" name="comments" placeholder="Write a comment...">
-										<input class="btn" type="submit" value="Submit">
-									</form>
-								</div>
-							</div>
-
-							<div class="post-comments">
-								<div class="hero">
-									<h1> Comments: </h1>				
-									<img src="../assets/comments.png" alt="" @click="seeComments = !seeComments">	
-								</div>
-
-								<div class="items">
-									<div class="item">
-										<div class="user">
-											<img src="img/user.png" alt="">
-											<p class="user-name"> Katie May : </p>
-										</div>
-										<p class="comment"> woww </p>
-									</div>
-							
-									<div class="item">
-										<div class="user">
-											<img src="img/user.png" alt="">
-											<p class="user-name"> Jason John : </p>
-										</div>
-										<p class="comment"> bob ross is so awesome! </p>
-									</div>
-							
-									<div class="item">
-										<div class="user">
-											<img src="img/user.png" alt="">
-											<p class="user-name"> Amy Pond : </p>
-										</div>
-										<p class="comment"> cool fact!! </p>
-							
-									</div>
-							
-									<div class="item">
-										<div class="user">
-											<img src="img/user.png" alt="">
-											<p class="user-name"> Jill Hall : </p>
-										</div>
-										<p class="comment"> my fav painter! </p>
-									</div>
-								</div>
-							</div>
+					</div> 
+				</article>
+					
+				<div class="col-lg-3 col-md-4">
+					<div class="sticky-items">
+						<div class="footer">
+							<p> About </p>
+							<p> User Agreement </p>
+							<p> Content Policy </p>
+							<p> Privacy Policy </p>
+							<p> Moderator Guidelines</p>
+							<p> Help </p>
+							<span> © 2021 Club Groupomania, Inc. All rights reserved.</span>
 						</div>
-					</div>
-				</div>
-			</article>
-				
-			<div class="col-lg-3 col-md-4">
-				<div class="sticky-items">
-					<div class="footer">
-						<p> About </p>
-						<p> User Agreement </p>
-						<p> Content Policy </p>
-						<p> Privacy Policy </p>
-						<p> Moderator Guidelines</p>
-						<p> Help </p>
-						<span> © 2021 Club Groupomania, Inc. All rights reserved.</span>
-					</div>
 
-					<a href="#scroll-top">
-						<button class="scroll-btn"> Back to top </button>
-					</a>    
-				</div>  
-			</div>
+						<a href="#scroll-top">
+							<button class="scroll-btn"> Back to top </button>
+						</a>    
+					</div>  
+				</div>
 			</div>
 		</section>
 	</div>
@@ -217,28 +135,72 @@ export default {
 		return{
 			isLiked: false,
 			seeComments: false,
-			posts: [],
+			posts: [
+				
+			],
+			user: {},
 
 			// v-for= "post in posts" :key="post.postId"
 		}
 	},
 	methods: {
+
+		getUsers() {
+
+			let userId = JSON.parse(window.localStorage.getItem('post')).userId;
+			console.log(userId)
+
+			axios.get("http://localhost:3000/user/" + userId)
+			.then(res => {
+
+				console.log(res.data);
+				this.user = res.data;
+				
+			})
+			.catch(error => {
+				console.error(error);
+			})
+		},
       
 		getPosts() {
+
+			// let newPosts = ['kqyn', 'sorqkq', 'vqrus', 'jax'];
+			// setTimeout(() => {
+			// 	this.posts = newPosts;
+			// }, 2000)
+
 			axios.get("http://localhost:3000/post")
 			.then(res => {
 
 				console.log(res.data);
-				this.posts = res.data[0];
+				this.posts = res.data;
+
+				localStorage.setItem('post', JSON.stringify(res.data));
 
 			})
 			.catch(error => {
 				console.error(error);
 			})
 		},
+
+		// deletePost() {
+		// 	let postId = JSON.parse(window.localStorage.getItem('post')).postId;
+
+		// 	axios.delete('http://localhost:3000/post/' + postId,
+		// 	// { headers: {'Authorization': `Basic ${token}`,}}
+		// 	).then(res => {
+
+		// 		console.log(res.data);
+		// 		console.log('Your post has successfully been deleted!');
+		// 	})
+		// 	.catch(function (err) {
+		// 		console.log("Error", err);
+		// 	})
+		// },
 	},
-	mounted() {
+	beforeMount() {
 		this.getPosts()
+		// this.getUsers()
 	},
 	components: {
 		"Header": Header, 
@@ -256,44 +218,44 @@ export default {
 		flex-wrap: wrap;
 		margin-top: 30px;
 
-		.no-posts {
-			margin: 20px 0;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-
-			div {
-				text-align: center;
-
-				h2 {
-					width: 100%;
-					font-size: 23px;
-					margin-bottom: 20px;
-				}
-
-				button {
-					padding: 7px;
-					margin: 0 5px;
-					border-radius: 12px;
-					width: 150px;
-					border: 2px solid black;
-					background-color: #091F43;
-
-					a {
-						color: white;
-						text-decoration: none;
-						font-weight: 500;
-					}
-				}
-			}
-		}
-
 		article {
 			margin: 20px 0;
 
 			h2 {
 				font-size: 25px;
 				padding-left: 15px;
+			}
+
+			.no-posts {
+				margin-top: 70px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				div {
+					text-align: center;
+
+					h2 {
+						width: 100%;
+						font-size: 23px;
+						margin-bottom: 20px;
+					}
+
+					button {
+						padding: 7px;
+						margin: 0 5px;
+						border-radius: 12px;
+						width: 150px;
+						border: 2px solid black;
+						background-color: #091F43;
+
+						a {
+							color: white;
+							text-decoration: none;
+							font-weight: 500;
+						}
+					}
+				}
 			}
 
 			.box {

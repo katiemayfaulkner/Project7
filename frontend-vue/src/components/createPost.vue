@@ -8,10 +8,10 @@
 			<div class="content">
 				<h1> Create a new post: </h1>
 				<form class="create-post" v-on:submit.prevent="onSubmit"> 					
-					<!-- <div class="img-input">
+					<div class="img-input">
 						<input type="file" required="true">
 						<img class="img-preview">
-					</div> -->
+					</div>
 
 					<div class="text-input">
 						<label for="text"> Insert your caption: </label>
@@ -37,6 +37,7 @@ export default {
 	data() {
 		return {
 			form: {
+				imageUrl: "",
 				caption: "",
 			},
 		};

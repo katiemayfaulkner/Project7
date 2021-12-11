@@ -49,9 +49,7 @@ export default {
 	data() {
 		return {
 			user: {},
-			people: [
-				
-			],
+			people: [],
 		};
 	},
 	methods: {

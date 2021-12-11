@@ -2,7 +2,7 @@
 const multer = require('multer');
 
 // Import node package "path", which allows access to folder paths
-const path = require('path'); 
+// const path = require('path'); 
 
 // Different types of media
 const MIME_TYPES = {
@@ -33,3 +33,5 @@ module.exports = multer({ storage: storage,
         callback(null, true)
     }
 }).single('image');
+
+// module.exports = multer({storage: storage}).single('image');
