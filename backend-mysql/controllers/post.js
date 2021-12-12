@@ -5,16 +5,24 @@ const mySqlConnection = require('../config/database');
 exports.createPost = (req, res) => {
 	
 		
-	if(req.file) {
-		let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+	// if(req.file) {
+	// 	let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
 
-		const newPost = {
-			caption: req.body.caption,
-			imageUrl: image,
-		} 
+	// 	const newPost = {
+	// 		caption: req.body.caption,
+	// 		imageUrl: image,
+	// 	} 
 
-		res.send(newPost)
-	} 
+	// 	res.send(newPost)
+	// } 
+
+	// if (!req.file) {
+	// 	res.send("File was not found");
+	// 	return;
+	// }
+
+	// const file = req.file.filename;
+	// res.send(`${file.name} File Uploaded`);
 
 	
 	// Adding a new post
@@ -25,63 +33,33 @@ exports.createPost = (req, res) => {
 			throw err;
 			
 		} else {
-
-			
-			// if (req.file) {
-			// 	const image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-
-			// 	const newPost = {
-			// 		imageUrl: image,
-			// 		caption: req.body.caption,
-			// 	}
-
-			// 	console.log(newPost)
-			// 	console.log(req.file)
-
-			// } else {
-			// 	res.send('No image found GRRRRR!');
-			// }
-
-			if (!req.file) {
-				res.send("File was not found");
-				return;
-			}
-
-			const file = req.file.filename;
-			res.send(`${file.name} File Uploaded`);
-
-
-
-
-
 		
-			// // let userId = req.session.id
-			// // console.log(userId)
+			// let userId = req.session.id
+			// console.log(userId)
 
 			// const url = req.protocol + '://' + req.get('host');
+			
 	
-			// const newPost = {
-			// 	imageUrl: url + '/images/' + req.file.filename,
-			// 	caption: req.body.caption,
-			// }
-
-			// console.log(req.file)
-			// console.log(imageUrl)
-			// console.log(newPost);
+			const newPost = {
+				// imageUrl: url + '/images/' + req.file.filename,
+				caption: req.body.caption,
+			}
+		
+			console.log(newPost);
 	
-            // const query = 'INSERT INTO Post Set ?';
+            const query = 'INSERT INTO Post Set ?';
 	
-			// // SQL Queries
-			// connection.query(query, [newPost, 1], (err, rows) => {
+			// SQL Queries
+			connection.query(query, [newPost, 1], (err, rows) => {
 				
-			// 	if(!err) {
-			// 		console.log(rows);
-			// 		res.send('Your post has been created successfully!');
+				if(!err) {
+					console.log(rows);
+					res.send('Your post has been created successfully!');
 
-			// 	} else {
-			// 		console.log(err)
-			// 	}
-			// })
+				} else {
+					console.log(err)
+				}
+			})
 		}	
 	})
 };
@@ -165,16 +143,16 @@ exports.postComment = (req, res) => {
 			console.log(req.body)
 	
 			const newComment = {
-                userId: req.body.userId,
-				comments: req.body.comments,
-
+				content: req.body.content,
 			}
+
+			console.log(newComment)
 	
 			// const query = 'UPDATE Post SET ? WHERE postId = ?';
-            const query = 'INSERT INTO Post(comments) VALUES (comments)';
+            const query = 'INSERT INTO Comments SET ?';
 	
 			// SQL Queries
-			connection.query(query, [newComment, 1], (err, rows) => {
+			connection.query(query, [newComment], (err, rows) => {
 				
 				if(!err) {
 					console.log(rows);
@@ -202,13 +180,15 @@ exports.getComments = (req, res) => {
 
 			console.log(req.body)
 	
-			const query = 'SELECT comments FROM Post';
+			const query = 'SELECT * FROM Comments';
 	
 			// SQL Queries
 			connection.query(query, (err, rows) => {
 				if(!err) {
+
 					console.log(rows)
-					res.send('Comments have been retrieved successfully!');
+					res.send(rows)
+
 				} else {
 					console.log(err)
 				}

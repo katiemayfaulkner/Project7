@@ -184,7 +184,7 @@ exports.getOneUser = (req, res) => {
     mySqlConnection.getConnection((err, connection) => {
 
 		// If there's a problem throw error, else, continue 
-		if(err) {
+		if(err) {	
 			throw err;
 
 		} else {

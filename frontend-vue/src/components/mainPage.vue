@@ -24,7 +24,7 @@
 										</div>
 
 										<div>
-											<img src="../assets/bin-black.png" alt="" @click="deletePost()">		
+											<img src="../assets/bin-black.png" alt="" @click="deletePost(post.postId)">		
 											<img src="../assets/comments.png" alt="" @click="seeComments = !seeComments">	
 										</div>
 									</div>
@@ -47,9 +47,9 @@
 											>  
 										</div>
 
-										<form class="comments">
-											<input class="input" type="text" name="comments" placeholder="Write a comment...">
-											<input class="btn" type="submit" value="Submit">
+										<form class="comments" v-on:submit.prevent="onSubmit">
+											<input class="input" type="text" placeholder="Write a comment..." v-model="form.content">
+											<button type="submit"> Submit </button>
 										</form>
 									</div>
 								</div>
@@ -61,37 +61,12 @@
 									</div>
 
 									<div class="items">
-										<div class="item">
+										<div class="item" v-for= "comment in comments" :key="comment.commentId">
 											<div class="user">
 												<img src="img/user.png" alt="">
 												<p class="user-name"> Katie May : </p>
 											</div>
-											<p class="comment"> woww </p>
-										</div>
-								
-										<div class="item">
-											<div class="user">
-												<img src="img/user.png" alt="">
-												<p class="user-name"> Jason John : </p>
-											</div>
-											<p class="comment"> bob ross is so awesome! </p>
-										</div>
-								
-										<div class="item">
-											<div class="user">
-												<img src="img/user.png" alt="">
-												<p class="user-name"> Amy Pond : </p>
-											</div>
-											<p class="comment"> cool fact!! </p>
-								
-										</div>
-								
-										<div class="item">
-											<div class="user">
-												<img src="img/user.png" alt="">
-												<p class="user-name"> Jill Hall : </p>
-											</div>
-											<p class="comment"> my fav painter! </p>
+											<p class="comment"> {{comment.content}} </p>
 										</div>
 									</div>
 								</div>
@@ -131,35 +106,28 @@ import axios from 'axios';
 
 export default {
    name: 'MainPage',
+	components: {
+		"Header": Header, 
+	},
+
 	data() {
 		return{
 			isLiked: false,
 			seeComments: false,
-			posts: [
-				
-			],
+			form: {
+				content: "",
+			},
+			posts: [],
+			comments: [],
 			user: {},
 
-			// v-for= "post in posts" :key="post.postId"
-		}
+		};
 	},
+	
 	methods: {
 
-		getUsers() {
-
-			let userId = JSON.parse(window.localStorage.getItem('post')).userId;
-			console.log(userId)
-
-			axios.get("http://localhost:3000/user/" + userId)
-			.then(res => {
-
-				console.log(res.data);
-				this.user = res.data;
-				
-			})
-			.catch(error => {
-				console.error(error);
-			})
+		onSubmit: function (){
+			this.postComment();
 		},
       
 		getPosts() {
@@ -172,7 +140,7 @@ export default {
 			axios.get("http://localhost:3000/post")
 			.then(res => {
 
-				console.log(res.data);
+				// console.log(res.data);
 				this.posts = res.data;
 
 				localStorage.setItem('post', JSON.stringify(res.data));
@@ -183,28 +151,76 @@ export default {
 			})
 		},
 
-		// deletePost() {
-		// 	let postId = JSON.parse(window.localStorage.getItem('post')).postId;
+		deletePost() {
+			
+			let postId = JSON.parse(window.localStorage.getItem('post')).postId;
+			console.log(postId)
 
-		// 	axios.delete('http://localhost:3000/post/' + postId,
-		// 	// { headers: {'Authorization': `Basic ${token}`,}}
-		// 	).then(res => {
+			axios.delete('http://localhost:3000/post/' + postId,
+			// { headers: {'Authorization': `Basic ${token}`,}}
+			).then(res => {
+
+				console.log(res.data);
+				console.log('Your post has successfully been deleted!');
+			})
+			.catch(function (err) {
+				console.log("Error", err);
+			})
+		},
+
+		postComment() {
+
+			let commentContent = this.form;
+			console.log(commentContent)
+
+			axios.post("http://localhost:3000/post/comment", commentContent)
+			.then(res => {
+
+				console.log(res.data);
+				this.comments = res.data;
+			})
+			.catch(error => {
+				console.error(error);
+			})
+		},
+
+		getComments() {
+			
+			axios.get("http://localhost:3000/post/comments")
+			.then(res => {
+
+				console.log(res.data);
+				this.comments = res.data;
+			})
+			.catch(error => {
+				console.error(error);
+			})
+		}
+
+
+		// getUsers() {
+
+		// 	let userId = JSON.parse(window.localStorage.getItem('post')).userId;
+		// 	console.log(userId)
+
+		// 	axios.get("http://localhost:3000/user/" + userId)
+		// 	.then(res => {
 
 		// 		console.log(res.data);
-		// 		console.log('Your post has successfully been deleted!');
+		// 		this.user = res.data;
+				
 		// 	})
-		// 	.catch(function (err) {
-		// 		console.log("Error", err);
+		// 	.catch(error => {
+		// 		console.error(error);
 		// 	})
 		// },
 	},
+
 	beforeMount() {
-		this.getPosts()
+		this.getPosts(),
 		// this.getUsers()
+		this.getComments()
 	},
-	components: {
-		"Header": Header, 
-	}
 }
 
 </script>
@@ -360,7 +376,7 @@ export default {
 										padding-left: 5px;
 									}
 	
-									.btn {
+									button {
 										margin-left: 5px;
 										padding: 7px;
 										border-radius: 12px;

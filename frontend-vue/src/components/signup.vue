@@ -109,6 +109,7 @@
                 },
             };
         },
+        
         methods: {
             // Password visibility toggle
             showFirstPassword: function () {
@@ -175,6 +176,7 @@
             },
         },
     };
+
 </script>
 
 <style lang="scss">
