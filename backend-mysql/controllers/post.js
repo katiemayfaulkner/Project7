@@ -4,6 +4,19 @@ const mySqlConnection = require('../config/database');
 // Requests
 exports.createPost = (req, res) => {
 	
+		
+	if(req.file) {
+		let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+
+		const newPost = {
+			caption: req.body.caption,
+			imageUrl: image,
+		} 
+
+		res.send(newPost)
+	} 
+
+	
 	// Adding a new post
 	mySqlConnection.getConnection((err, connection) => {
 
@@ -13,27 +26,35 @@ exports.createPost = (req, res) => {
 			
 		} else {
 
-			try{
-				let image = null;
-				if (req.file) {
-					const image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+			
+			// if (req.file) {
+			// 	const image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
 
-					const newPost = {
-						imageUrl: image,
-						caption: req.body.caption,
-					}
-					console.log(newPost)
-					console.log(req.file)
+			// 	const newPost = {
+			// 		imageUrl: image,
+			// 		caption: req.body.caption,
+			// 	}
 
-				} else {
-					res.send('No image found!');
-				}
-			} catch (err) {
-				console.log(err)
+			// 	console.log(newPost)
+			// 	console.log(req.file)
+
+			// } else {
+			// 	res.send('No image found GRRRRR!');
+			// }
+
+			if (!req.file) {
+				res.send("File was not found");
+				return;
 			}
 
-			// console.log(req.body)
+			const file = req.file.filename;
+			res.send(`${file.name} File Uploaded`);
 
+
+
+
+
+		
 			// // let userId = req.session.id
 			// // console.log(userId)
 
@@ -44,6 +65,7 @@ exports.createPost = (req, res) => {
 			// 	caption: req.body.caption,
 			// }
 
+			// console.log(req.file)
 			// console.log(imageUrl)
 			// console.log(newPost);
 	

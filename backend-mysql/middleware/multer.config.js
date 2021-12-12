@@ -18,20 +18,20 @@ const storage = multer.diskStorage({
 
   },
   filename: (req, file, callback) => {                      // Tells multer to use original name, but..
-    const name = file.originalname.split(' ').join('_');    // spaces become underscores
+    const name = req.file.originalname.split(' ').join('_');    // spaces become underscores
     const extension = MIME_TYPES[file.mimetype];            // uses MIME type map to resolve appropriate file extension
     callback(null, name + Date.now() + '.' + extension);    // timestamp is added
   }
 });
 
-module.exports = multer({ storage: storage,                   
-    fileFilter: function (req, file, callback) {
-        var ext = path.extname(file.originalname);
-        if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
-            return callback(new Error('File format is invalid.'))
-        }
-        callback(null, true)
-    }
-}).single('image');
+// module.exports = multer({ storage: storage,                   
+//     fileFilter: function (req, file, callback) {
+//         var ext = path.extname(file.originalname);
+//         if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+//             return callback(new Error('File format is invalid.'))
+//         }
+//         callback(null, true)
+//     }
+// }).single('image');
 
-// module.exports = multer({storage: storage}).single('image');
+module.exports = multer({storage: storage}).single('image');

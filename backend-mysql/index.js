@@ -20,16 +20,16 @@ app.use(bodyParser.json());
 
 app.use(fileupload());
 
-// Image upload error handler
-app.post("/", (req, res) => {
-  if (!req.file) {
-    res.send("File was not found");
-    return;
-  }
+// // Image upload error handler
+// app.post("/", (req, res) => {
+//   if (!req.file) {
+//     res.send("File was not found");
+//     return;
+//   }
 
-  const file = req.file.filename;
-  res.send(`${file.name} File Uploaded`);
-});
+//   const file = req.file.filename;
+//   res.send(`${file.name} File Uploaded`);
+// });
 
 app.use(cors({
     origin: "*",
