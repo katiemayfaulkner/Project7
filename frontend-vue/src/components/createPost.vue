@@ -9,7 +9,7 @@
 				<h1> Create a new post: </h1>
 				<form class="create-post" v-on:submit.prevent="onSubmit"> 					
 					<div class="img-input">
-						<input type="file" required="true">
+						<input type="file" ref="file" name="imageUrl" @change="fileChange()" accept=".jpg, .jpeg, .gif, .png" required>
 						<img class="img-preview">
 					</div>
 
@@ -38,6 +38,7 @@ export default {
 		return {
 			form: {
 				imageUrl: "",
+				file: null,
 				caption: "",
 			},
 		};
@@ -45,6 +46,11 @@ export default {
 	methods: {
 		onSubmit : function () {
 			this.createPost();
+		},
+
+		fileChange() {
+			this.file = this.$refs.file.files[0];
+			this.imageUrl = URL.createObjectURL(this.file);
 		},
 
 		createPost() {

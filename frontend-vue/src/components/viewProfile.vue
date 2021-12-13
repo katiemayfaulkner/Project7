@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<Header/>	
-		<p v-if="people.length == 0">You've no posts</p>
-		<p v-for="person in people" v-bind:key='person'>NAME: {{person}} </p>
+		<!-- <p v-if="people.length == 0">You've no posts</p>
+		<p v-for="person in people" v-bind:key='person'>NAME: {{person}} </p> -->
 		<section class="container view-profile">
 			<router-link to="/home">
 				<p> Return </p>
@@ -49,17 +49,17 @@ export default {
 	data() {
 		return {
 			user: {},
-			people: [],
+			// people: [],
 		};
 	},
 	methods: {
 
 		getUser() {
 
-			let newPeople = ['kqyn', 'sorqkq', 'vqrus', 'jax'];
-			setTimeout(() => {
-				this.people = newPeople;
-			}, 3000)
+			// let newPeople = ['kqyn', 'sorqkq', 'vqrus', 'jax'];
+			// setTimeout(() => {
+			// 	this.people = newPeople;
+			// }, 3000)
 
 			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 

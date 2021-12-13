@@ -30,8 +30,7 @@
 									</div>
 
 									<div class="img-container">
-										<img src="../assets/bob.jpg" alt="">
-										{{post.imageUrl}}
+										<img :src="post.imageUrl" >
 									</div>
 
 									<div class="caption-container">
@@ -39,11 +38,11 @@
 									</div>
 
 									<div class="post-actions">
-										<div class="like">
+										<div class="seen">
 											<img 
-											src="../assets/like-active.png"								  
-												v-bind:class="{active: isLiked}"
-												@click="isLiked = !isLiked"
+											src="../assets/seen.png"								  
+												v-bind:class="{active: isSeen}"
+												@click="isSeen = !isSeen"
 											>  
 										</div>
 
@@ -112,7 +111,7 @@ export default {
 
 	data() {
 		return{
-			isLiked: false,
+			isSeen: false,
 			seeComments: false,
 			form: {
 				content: "",
@@ -346,7 +345,7 @@ export default {
 								display: flex;
 								justify-content: space-around;
 	
-								.like {
+								.seen {
 									position: relative;
 									padding: 0;
 									width: 45px;
@@ -354,14 +353,14 @@ export default {
 									img {
 										position: absolute;
 										margin-right: 15px;
-										width: 30px;
+										width: 40px;
 										height: auto;
 										cursor: pointer;
 										filter: brightness(1);		
 										opacity: 35%;
 									}
 									img.active {
-										filter: brightness(0);
+										filter: brightness(1.5);
 										opacity: 100%;
 									}
 								}

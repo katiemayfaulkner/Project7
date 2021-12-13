@@ -35,17 +35,16 @@ exports.createPost = (req, res) => {
 		} else {
 		
 			// let userId = req.session.id
-			// console.log(userId)
-
-			// const url = req.protocol + '://' + req.get('host');
-			
+			// console.log(userId)			
 	
+			let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+
 			const newPost = {
-				// imageUrl: url + '/images/' + req.file.filename,
 				caption: req.body.caption,
+				imageUrl: image,	
 			}
-		
-			console.log(newPost);
+			
+			console.log(newPost)
 	
             const query = 'INSERT INTO Post Set ?';
 	

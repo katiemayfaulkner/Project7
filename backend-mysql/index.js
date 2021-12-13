@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');   // Import node package "path", which allows access to folder paths
-const fileupload = require("express-fileupload");
 
 // Express App & Configuration
 const port = process.env.PORT || 3000;
@@ -17,19 +16,6 @@ const postRoutes = require('./routes/post');
 // app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use(fileupload());
-
-// // Image upload error handler
-// app.post("/", (req, res) => {
-//   if (!req.file) {
-//     res.send("File was not found");
-//     return;
-//   }
-
-//   const file = req.file.filename;
-//   res.send(`${file.name} File Uploaded`);
-// });
 
 app.use(cors({
     origin: "*",
