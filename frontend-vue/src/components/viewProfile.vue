@@ -11,7 +11,9 @@
 				<h1> My account: </h1> 
 
 				<div class="profile">
-					<img src="../assets/user-black.png" alt="">
+					<div class="user-img"> 
+						<img src="../assets/bob.jpg" alt="">
+					</div>
 					<div>
 						<p class="title">First name:</p>
 						<p> {{user.firstName}}</p>
@@ -141,10 +143,20 @@ export default {
 		.profile {
 			margin: 30px 0;
 
-			img {
-				width: 60px;
-				height: auto;
+			.user-img {
+				border: 1px solid black;
+				width: 64px;
+				height: 64px;
+				border-radius: 50%;
+				overflow: hidden;
 				margin-bottom: 15px;
+			
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+
+				}
 			}
 
 			div {

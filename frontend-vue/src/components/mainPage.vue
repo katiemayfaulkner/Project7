@@ -19,8 +19,10 @@
 								<div class="post-content" v-if="!seeComments" v-bind:class="{active: seeComments}">
 									<div class="top-bar">
 										<div class="user-info">
-											<img src="../assets/user-black.png" alt="">
-											<p class="name-container"> Katie May {{user.firstName}} </p>
+											<div class="user-img"> 
+												<img src="../assets/bob.jpg" alt="">
+											</div>
+											<p> Katie May {{user.firstName}} </p>
 										</div>
 
 										<div>
@@ -31,6 +33,7 @@
 
 									<div class="img-container">
 										<img :src="post.imageUrl" >
+										
 									</div>
 
 									<div class="caption-container">
@@ -314,28 +317,43 @@ export default {
 	
 								.user-info {
 									display: flex;
+
+									.user-img {
+										border: 1px solid black;
+										width: 40px;
+										height: 40px;
+										border-radius: 50%;
+										overflow: hidden;
+										margin-bottom: 15px;
+										margin-right: 10px;
+
+										img {
+											width: 100%;
+											height: 100%;
+											object-fit: fill;
+										}
+									}
 	
 									p {
-										line-height: 30px;
+										line-height: 40px;
 									}
 								}
 							}
 	
 							.img-container {
 								position: relative;
-								text-align: center;
+								height: 220px;
 								overflow: hidden;
 	
 								img {
-									height: 220px;
-									width: auto;
-									border: 1px solid rgba(167, 164, 164, 0.459);
-									box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+									width: 100%;
+									height: 100%;
+									object-fit: contain;
 								}
 							}
 	
 							.caption-container {
-								height: 100px;
+								height: 90px;
 								margin: 15px 0;
 								overflow-y: scroll;
 								border-radius: 12px;

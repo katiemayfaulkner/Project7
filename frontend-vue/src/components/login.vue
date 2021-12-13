@@ -52,16 +52,19 @@ export default {
   methods: {
     // Check both passwords are the same
     onSubmit: function () {
+
       this.error = ''; // To reset any previously happened errors
+
       axios.post("http://localhost:3000/user/login", this.form)
         .then(res => {
           console.log(res.data);
             
           localStorage.setItem('user', JSON.stringify(res.data));
           this.$router.push({ path: "/home" });
+
         })
         .catch(err => {
-            this.error = "Incorrect email or password.";
+			this.error = "Please check your information is correct and linked to a valid account.";
             // console.error(error);
         })
     }
@@ -116,7 +119,7 @@ export default {
 			align-items: center;
 			width: 220px;
 			margin: 25px auto;
-      position: relative;
+			position: relative;
 
 			.authInput {
 				height: 40px;
@@ -134,21 +137,21 @@ export default {
 
 			img {
 				position: absolute;
-        top: 0;
+				top: 0;
 				right: 0;
 				height: 20px;
 				margin: 15px 0;
-        cursor: pointer;
+				cursor: pointer;
 			}
-      img.nonLiked {
-        filter: brightness(0);
-      }
+			img.nonLiked {
+			filter: brightness(0);
+			}
 
 			.authBtn {
 				padding: 7px;
 				margin: 5px 5px 10px 5px;
 				border-radius: 12px;
-        font-weight: 500;
+				font-weight: 500;
 				width: 100px;
 				border: 2px solid black;
 				background-color: white;
@@ -156,11 +159,13 @@ export default {
 				font-size: 17px;
 			}
 
-      p{
-        position: absolute;
-        padding: 10px;
-        margin: 0 5px;
-      }
+			p{
+				position: absolute;
+				left: -40px;
+				padding: 10px;
+				margin: 0 5px;
+				width: 300px
+			}
 		}
 	}
 }

@@ -9,26 +9,30 @@
 				<h1> Enter your new details: </h1> 
 
 				<form class="profile" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
-					<img src="../assets/user-black.png" alt="">
-					<input class="profile-picture" type="file">
-					<div>
+					<div class="profile-picture">
+						<div class="user-img"> 
+							<img src="../assets/bob.jpg" alt="">
+						</div>
+						<input type="file">
+					</div>
+					<div class="user-input">
 						<p class="title">First name:</p>
 						<input type="text" v-model="form.firstName" required>
 					</div>
-					<div>
+					<div class="user-input">
 						<p class="title">Last name:</p>
 						<input type="text" v-model="form.lastName" required> 
 					</div>
-					<div>
+					<div class="user-input">
 						<p class="title">Email:</p>
-						<input type="text" v-model="form.email" required>
+						<input type="text" v-model="form.email">
 					</div>
 					<p>Optional: </p>
-					<div>
+					<div class="user-input">
 						<p class="title">New Password:</p>
 						<input type="password" v-model="form.password">
 					</div>
-					<div>
+					<div class="user-input">
 						<p class="title">Confirm New Password:</p>
 						<input type="password" v-model="form.retypePassword">
 					</div>
@@ -69,11 +73,12 @@ export default {
 			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 
 			axios.get("http://localhost:3000/user/" + userId)
-				.then(res => {
+			.then(res => {
 
-					this.form = res.data;					
-				})
-				.catch(error => {
+				this.form.firstName = res.data.firstName
+				this.form.lastName = res.data.lastName					
+			})
+			.catch(error => {
 				console.error(error);
 			})
 		},
@@ -93,21 +98,24 @@ export default {
 		},
 
 		modifyUser() {
-			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
-			let userDetails = this.form;
 
-			axios.put("http://localhost:3000/user/" + userId, userDetails)
-			.then(res => {
+			if(this.passwordsMatched) {
 
-				
-				console.log(userDetails.firstName,", your account has successfully been updated!");
+				let userId = JSON.parse(window.localStorage.getItem('user')).userId;
+				let userDetails = this.form;
+	
+				axios.put("http://localhost:3000/user/" + userId, userDetails)
+				.then(res => {
 					
-				this.$router.push({ path: "/login" });
-				
-			})
-			.catch(error => {
-			console.error(error);
-			})
+					console.log(userDetails.firstName,", your account has successfully been updated!");	
+					this.$router.push({ path: "/login" });
+					
+				})
+				.catch(error => {
+					console.error(error);
+					this.error = "Please check your password has minimum 8 characters (uppercase & lowercase, numbers, & special characters), and your email is not in use!"
+				})
+			}
 		},
 	},
 	beforeMount() {
@@ -152,18 +160,31 @@ export default {
 		.profile {
 			margin: 30px 0;
 
-			img {
-				width: 60px;
-				height: auto;
-				margin-bottom: 15px;
+			.profile-picture {
+				display: flex;
+
+				.user-img {
+					border: 1px solid black;
+					width: 64px;
+					height: 64px;
+					border-radius: 50%;
+					overflow: hidden;
+					margin-bottom: 15px;
+
+					img {
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+
+					}
+				}
+
+				input{
+					margin: 15px;
+				}
 			}
 
-			.profile-picture{
-
-				margin: 15px;
-			}
-
-			div {
+			.user-input {
 				display: flex;
 				flex-wrap: wrap;
 				color: black;

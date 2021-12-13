@@ -149,6 +149,7 @@
                 if(this.form.password === this.form.retypePassword){
                     this.passwordsMatched = true;
                     this.error = ""
+                    
                 } else {
                     this.passwordsMatched = false;
                     this.error = "Passwords must match!"
@@ -169,8 +170,10 @@
                         
                         this.$router.push({ path: "/login" });
                     })
-                    .catch(error => {
-                        console.error(error);
+                    .catch(err => {
+                        console.error(err);
+                        this.error = "Check your password has min 8 chars (upper & lowercase, numbers, & special chars), and your email is not in use!";
+                        
                     })
                 }        
             },
@@ -264,8 +267,10 @@
 
             p{
                 position: absolute;
-                padding: 10px;
-                margin: 0 5px;
+				left: -120px;
+				padding: 10px;
+				margin: 0 5px;
+				width: 450px
             }
 		}
 	}
