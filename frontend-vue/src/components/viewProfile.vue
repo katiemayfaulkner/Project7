@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Header/>	
 		<!-- <p v-if="people.length == 0">You've no posts</p>
 		<p v-for="person in people" v-bind:key='person'>NAME: {{person}} </p> -->
 		<section class="container view-profile">
@@ -41,7 +40,6 @@
 </template>
 
 <script>
-import Header from "./header.vue"
 
 // import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
 import axios from 'axios'; 
@@ -103,9 +101,6 @@ export default {
 	},
 	beforeMount() {
 		this.getUser()
-	},
-	components: {
-		"Header": Header,
 	}
 }
 </script>

@@ -8,11 +8,6 @@ exports.createPost = (req, res) => {
 	// if(req.file) {
 	// 	let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
 
-	// 	const newPost = {
-	// 		caption: req.body.caption,
-	// 		imageUrl: image,
-	// 	} 
-
 	// 	res.send(newPost)
 	// } 
 
@@ -37,19 +32,24 @@ exports.createPost = (req, res) => {
 			// let userId = req.session.id
 			// console.log(userId)			
 	
-			let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+			// let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
 
 			const newPost = {
+				userId: req.body.userId,
 				caption: req.body.caption,
-				imageUrl: image,	
+				imageUrl: 'http://localhost:3000/images/HAPPY_SAUCE.jpeg1639427653157.jpg',	
+				likes: req.body.likes,
 			}
+
+			console.log('File: ', req.file)
+			console.log('body: ', req.body)
 			
-			console.log(newPost)
+			//console.log(newPost)
 	
             const query = 'INSERT INTO Post Set ?';
 	
 			// SQL Queries
-			connection.query(query, [newPost, 1], (err, rows) => {
+			connection.query(query, [newPost], (err, rows) => {
 				
 				if(!err) {
 					console.log(rows);
@@ -104,13 +104,9 @@ exports.deletePost = (req, res) => {
 			throw err;
 
 		} else {
-
-			console.log(req.body)
 	
 			// SELECT * FROM Post
 			let postId = req.params.id;
-
-			console.log(postId)
 	
 			const query = 'DELETE FROM Post WHERE postId = ?';
 	
@@ -128,6 +124,82 @@ exports.deletePost = (req, res) => {
 		}
 	})
 };
+
+exports.viewPost = (req, res) => {
+	
+	// Adding a new view
+	mySqlConnection.getConnection((err, connection) => {
+
+		// If there's a problem throw error, else, continue
+		if(err) {
+			throw err;
+		} else {
+
+			console.log(req.body)
+	
+			const newView = {
+                // userId: req.body.userId,
+				view: req.body.view,
+			}
+	
+			// const query = 'UPDATE Post SET ? WHERE postId = ?';
+            const query = 'INSERT INTO View SET ?';
+	
+			// SQL Queries
+			connection.query(query, [newView, 1], (err, rows) => {
+				
+				if(!err) {
+					console.log(rows);
+					res.send('Post successfully viewed!');
+				} else {
+					console.log(err)
+				}
+			})
+
+		}
+		
+	})
+};
+
+exports.unviewPost = (req, res) => {
+	
+	// Adding a new dislike
+	mySqlConnection.getConnection((err, connection) => {
+
+		// If there's a problem throw error, else, continue
+		if(err) {
+			throw err;
+		} else {
+
+			console.log(req.body)
+	
+			const newDislike = {
+                userId: req.body.userId,
+				dislikes: req.body.dislikes,
+
+			}
+	
+			// const query = 'UPDATE Post SET ? WHERE postId = ?';
+            const query = 'INSERT INTO Post(dislikes) VALUES (dislikes)';
+	
+			// SQL Queries
+			connection.query(query, [newDislike, 1], (err, rows) => {
+				
+				if(!err) {
+					console.log(rows);
+					res.send('Post successfully disliked!');
+				} else {
+					console.log(err)
+				}
+			})
+
+		}
+		
+	})
+};
+
+
+
 
 exports.postComment = (req, res) => {
 	
@@ -193,79 +265,5 @@ exports.getComments = (req, res) => {
 				}
 			})
 		}
-	})
-};
-
-exports.likePost = (req, res) => {
-	
-	// Adding a new like
-	mySqlConnection.getConnection((err, connection) => {
-
-		// If there's a problem throw error, else, continue
-		if(err) {
-			throw err;
-		} else {
-
-			console.log(req.body)
-	
-			const newLike = {
-                userId: req.body.userId,
-				likes: req.body.likes,
-
-			}
-	
-			// const query = 'UPDATE Post SET ? WHERE postId = ?';
-            const query = 'INSERT INTO Post(likes) VALUES (likes)';
-	
-			// SQL Queries
-			connection.query(query, [newLike, 1], (err, rows) => {
-				
-				if(!err) {
-					console.log(rows);
-					res.send('Post successfully liked!');
-				} else {
-					console.log(err)
-				}
-			})
-
-		}
-		
-	})
-};
-
-exports.dislikePost = (req, res) => {
-	
-	// Adding a new dislike
-	mySqlConnection.getConnection((err, connection) => {
-
-		// If there's a problem throw error, else, continue
-		if(err) {
-			throw err;
-		} else {
-
-			console.log(req.body)
-	
-			const newDislike = {
-                userId: req.body.userId,
-				dislikes: req.body.dislikes,
-
-			}
-	
-			// const query = 'UPDATE Post SET ? WHERE postId = ?';
-            const query = 'INSERT INTO Post(dislikes) VALUES (dislikes)';
-	
-			// SQL Queries
-			connection.query(query, [newDislike, 1], (err, rows) => {
-				
-				if(!err) {
-					console.log(rows);
-					res.send('Post successfully disliked!');
-				} else {
-					console.log(err)
-				}
-			})
-
-		}
-		
 	})
 };

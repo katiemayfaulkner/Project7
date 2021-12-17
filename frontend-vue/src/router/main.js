@@ -17,7 +17,7 @@ export default new Router({
   
   routes: [
     {
-      path: '/welcome',
+      path: '/',
       name: 'Welcome',
       component: Welcome
     },
@@ -50,6 +50,10 @@ export default new Router({
       path: '/edit-profile',
       name: 'editProfile',
       component: editProfile
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })

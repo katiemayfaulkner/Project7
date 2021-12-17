@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Header/>
 		<section class="container edit-profile">
 			<router-link to="/profile">
 				<p> Return </p>
@@ -46,7 +45,6 @@
 </template>
 
 <script>
-import Header from "./header.vue"
 
 // import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
 import axios from 'axios'; 
@@ -120,9 +118,6 @@ export default {
 	},
 	beforeMount() {
 		this.getUser()
-	},
-	components: {
-		"Header": Header,
 	}
 }
 </script>

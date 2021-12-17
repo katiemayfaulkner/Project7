@@ -1,8 +1,9 @@
 <template>
   <div id="app">
+    <Header/>
     <Welcome v-if="loggedIn"/>
-    <router-view/>
 
+    <router-view/>
   </div>
 </template>
 
@@ -11,13 +12,14 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 
 import Welcome from './components/welcome.vue'
-
+import Header from './components/header.vue'
 
 export default {
   name: 'app',
   loggedIn: false,
   components: {
     Welcome,
+    Header,
   }
 }
 

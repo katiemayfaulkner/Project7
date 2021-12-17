@@ -1,16 +1,15 @@
 <template>
-	<div>
-		<Header/>	
+	<div>	
 		<section class="container create-post">
 			<router-link to="/home">
 				<p> Return </p>
 			</router-link>
 			<div class="content">
 				<h1> Create a new post: </h1>
-				<form class="create-post" v-on:submit.prevent="onSubmit"> 					
+				<form class="create-post" v-on:submit.prevent="onSubmit" enctype="multipart/form-data"> 					
 					<div class="img-input">
 						<input type="file" ref="file" name="imageUrl" @change="fileChange()" accept=".jpg, .jpeg, .gif, .png" required>
-						<img class="img-preview">
+						<img class="img-preview" :src="form.imageUrl" v-if="form.imageUrl">
 					</div>
 
 					<div class="text-input">
@@ -26,7 +25,6 @@
 </template>
 
 <script>
-import Header from "./header.vue"
 
 // import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
 import axios from 'axios'; 
@@ -37,9 +35,11 @@ export default {
 	data() {
 		return {
 			form: {
+				userId: JSON.parse(localStorage.getItem('user')).userId,
 				imageUrl: "",
-				file: null,
+				file: "",
 				caption: "",
+				likes: 0,
 			},
 		};
 	},
@@ -49,26 +49,25 @@ export default {
 		},
 
 		fileChange() {
-			this.file = this.$refs.file.files[0];
-			this.imageUrl = URL.createObjectURL(this.file);
+			this.form.file = this.$refs.file.files[0];
+			this.form.imageUrl = URL.createObjectURL(this.form.file);
 		},
 
 		createPost() {
 			let postDetails = this.form;
+			console.log(this.form)
 
 			axios.post("http://localhost:3000/post", postDetails)
 			.then(res => {
 
 				console.log(res.data);				
-				// this.$router.push({ path: "/home" });
+				this.$router.push({ path: "/home" });
+				
 			})
 			.catch(error => {
 				console.error(error);
 			})	
 		},
-	},
-	components: {
-		"Header": Header,
 	}
 }
 </script>

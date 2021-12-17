@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<Header/>
 		<section class="main-page">
 			<div class="container">  
 				<article class="col-lg-9 col-md-8">
@@ -101,17 +100,11 @@
 
 <script>
 
-import Header from "./header.vue"
-
 // import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
 import axios from 'axios'; 
 
 export default {
    name: 'MainPage',
-	components: {
-		"Header": Header, 
-	},
-
 	data() {
 		return{
 			isSeen: false,
@@ -122,11 +115,17 @@ export default {
 			posts: [],
 			comments: [],
 			user: {},
-
 		};
 	},
 	
 	methods: {
+		isAuthenticated() {
+			// Checks for token
+			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
+			if(!hasToken) {
+				this.$router.push({ path: "/" });
+			}
+		},
 
 		onSubmit: function (){
 			this.postComment();
@@ -142,33 +141,30 @@ export default {
 			axios.get("http://localhost:3000/post")
 			.then(res => {
 
-				// console.log(res.data);
+				console.log(res.data);
 				this.posts = res.data;
-
-				localStorage.setItem('post', JSON.stringify(res.data));
-
 			})
 			.catch(error => {
 				console.error(error);
 			})
 		},
 
-		deletePost() {
-			
-			let postId = JSON.parse(window.localStorage.getItem('post')).postId;
-			console.log(postId)
-
-			axios.delete('http://localhost:3000/post/' + postId,
+		deletePost(id) {
+			console.log(id)
+			axios.delete('http://localhost:3000/post/' + id,
 			// { headers: {'Authorization': `Basic ${token}`,}}
 			).then(res => {
-
 				console.log(res.data);
 				console.log('Your post has successfully been deleted!');
+				this.getPosts();
+			
 			})
 			.catch(function (err) {
 				console.log("Error", err);
 			})
 		},
+
+
 
 		postComment() {
 
@@ -198,27 +194,10 @@ export default {
 				console.error(error);
 			})
 		}
-
-
-		// getUsers() {
-
-		// 	let userId = JSON.parse(window.localStorage.getItem('post')).userId;
-		// 	console.log(userId)
-
-		// 	axios.get("http://localhost:3000/user/" + userId)
-		// 	.then(res => {
-
-		// 		console.log(res.data);
-		// 		this.user = res.data;
-				
-		// 	})
-		// 	.catch(error => {
-		// 		console.error(error);
-		// 	})
-		// },
 	},
 
 	beforeMount() {
+		this.isAuthenticated(),
 		this.getPosts(),
 		// this.getUsers()
 		this.getComments()
