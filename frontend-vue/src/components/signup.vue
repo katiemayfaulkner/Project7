@@ -1,9 +1,9 @@
 <template>
-  <div class="auth-window">
-    <div class="box">
-        <div class="hero">
-            <h1>Welcome to your new account!</h1>
-            <p> or <router-link to="/login"> login </router-link> to your existing account.</p>
+    <div class="auth-window">
+        <div class="box">
+            <div class="hero">
+                <h1>Welcome to your new account!</h1>
+                <p> or <router-link to="/login"> login </router-link> to your existing account.</p>
             </div>
 
             <form class="auth" v-on:submit.prevent="onSubmit">
@@ -111,6 +111,15 @@
         },
         
         methods: {
+            notAuthenticated() {
+                // Checks for token
+                let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
+
+                if(hasToken) {
+                this.$router.push({ path: "/home" });
+                }
+            },
+            
             // Password visibility toggle
             showFirstPassword: function () {
             let signupInput = document.getElementById("signupPassword");
@@ -178,6 +187,9 @@
                 }        
             },
         },
+        beforeMount() {
+            this.notAuthenticated()
+        }
     };
 
 </script>

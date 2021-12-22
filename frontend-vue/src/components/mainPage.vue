@@ -122,6 +122,7 @@ export default {
 		isAuthenticated() {
 			// Checks for token
 			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
+			
 			if(!hasToken) {
 				this.$router.push({ path: "/" });
 			}
@@ -132,7 +133,6 @@ export default {
 		},
       
 		getPosts() {
-
 			// let newPosts = ['kqyn', 'sorqkq', 'vqrus', 'jax'];
 			// setTimeout(() => {
 			// 	this.posts = newPosts;
@@ -141,7 +141,6 @@ export default {
 			axios.get("http://localhost:3000/post")
 			.then(res => {
 
-				console.log(res.data);
 				this.posts = res.data;
 			})
 			.catch(error => {
@@ -150,11 +149,10 @@ export default {
 		},
 
 		deletePost(id) {
-			console.log(id)
 			axios.delete('http://localhost:3000/post/' + id,
 			// { headers: {'Authorization': `Basic ${token}`,}}
 			).then(res => {
-				console.log(res.data);
+
 				console.log('Your post has successfully been deleted!');
 				this.getPosts();
 			
@@ -164,17 +162,13 @@ export default {
 			})
 		},
 
-
-
 		postComment() {
 
 			let commentContent = this.form;
-			console.log(commentContent)
 
 			axios.post("http://localhost:3000/post/comment", commentContent)
 			.then(res => {
 
-				console.log(res.data);
 				this.comments = res.data;
 			})
 			.catch(error => {
@@ -187,7 +181,6 @@ export default {
 			axios.get("http://localhost:3000/post/comments")
 			.then(res => {
 
-				console.log(res.data);
 				this.comments = res.data;
 			})
 			.catch(error => {

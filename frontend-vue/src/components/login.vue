@@ -39,36 +39,49 @@
 import axios from 'axios'; 
 
 export default {
-  name: 'Login',
-  data() {
-    return {
-      error: "",
-      form: {
-        email: "",
-        password: ""
-      }
-    };
-  },
-  methods: {
-    // Check both passwords are the same
-    onSubmit: function () {
+	name: 'Login',
+	data() {
+		return {
+			error: "",
+			form: {
+				email: "",
+				password: ""
+			}
+		};
+	},
+	methods: {
+		notAuthenticated() {
+			// Checks for token
+			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
 
-      this.error = ''; // To reset any previously happened errors
+			if(hasToken) {
+			this.$router.push({ path: "/home" });
+			}
+		},
 
-      axios.post("http://localhost:3000/user/login", this.form)
-        .then(res => {
-          console.log(res.data);
-            
-          localStorage.setItem('user', JSON.stringify(res.data));
-          this.$router.push({ path: "/home" });
+		// Check both passwords are the same
+		onSubmit: function () {
 
-        })
-        .catch(err => {
-			this.error = "Please check your information is correct and linked to a valid account.";
-            // console.error(error);
-        })
-    }
-  }
+			this.error = ''; // To reset any previously happened errors
+
+			axios.post("http://localhost:3000/user/login", this.form)
+			.then(res => {
+				console.log(res.data);
+				
+				localStorage.setItem('user', JSON.stringify(res.data));
+				this.$router.push({ path: "/home" });
+
+			})
+			.catch(err => {
+				this.error = "Please check your information is correct and linked to a valid account.";
+				// console.error(error);
+			})
+		}
+	},
+	beforeMount() {
+		this.notAuthenticated()
+
+	}
 }
 </script>
 

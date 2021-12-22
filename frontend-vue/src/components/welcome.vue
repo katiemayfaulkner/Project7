@@ -17,7 +17,22 @@
 
 <script>
 export default {
-  name: 'Welcome',
+	name: 'Welcome',
+
+	methods: {
+		notAuthenticated() {
+			// Checks for token
+			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
+
+			if(hasToken) {
+			this.$router.push({ path: "/home" });
+			}
+		}
+	},
+	beforeMount() {
+		this.notAuthenticated()
+
+	}
 }
 </script>
 

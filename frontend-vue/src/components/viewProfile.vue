@@ -53,9 +53,16 @@ export default {
 		};
 	},
 	methods: {
+		isAuthenticated() {
+			// Checks for token
+			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
+
+			if(!hasToken) {
+				this.$router.push({ path: "/" });
+			}
+		},	
 
 		getUser() {
-
 			// let newPeople = ['kqyn', 'sorqkq', 'vqrus', 'jax'];
 			// setTimeout(() => {
 			// 	this.people = newPeople;
@@ -66,9 +73,7 @@ export default {
 			axios.get("http://localhost:3000/user/" + userId)
 			.then(res => {
 
-				console.log(res.data);
-				this.user = res.data;
-				
+				this.user = res.data;				
 			})
 			.catch(error => {
 				console.error(error);
@@ -89,7 +94,6 @@ export default {
 			// { headers: {'Authorization': `Basic ${token}`,}}
 			).then(res => {
 
-				console.log(res.data);
 				this.logoutUser();
 
 				console.log('Your account has successfully been deleted!');
@@ -100,6 +104,7 @@ export default {
 		},
 	},
 	beforeMount() {
+		this.isAuthenticated(),
 		this.getUser()
 	}
 }

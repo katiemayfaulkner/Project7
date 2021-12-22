@@ -10,9 +10,9 @@
 				<form class="profile" v-on:submit.prevent="onSubmit" enctype="multipart/form-data">
 					<div class="profile-picture">
 						<div class="user-img"> 
-							<img src="../assets/bob.jpg" alt="">
+							<img :src="form.imageUrl" v-if="form.imageUrl">
 						</div>
-						<input type="file">
+						<input type="file" name="imageUrl" @change="fileChange()" accept=".jpg, .jpeg, .gif, .png">
 					</div>
 					<div class="user-input">
 						<p class="title">First name:</p>
@@ -57,6 +57,7 @@ export default {
             error: "",
 			form: {
 				imageUrl: "",
+				file: "",
 				firstName: "",
 				lastName: "",
 				email: "",
@@ -66,6 +67,14 @@ export default {
 		};
 	},
 	methods: {
+		isAuthenticated() {
+			// Checks for token
+			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
+			
+			if(!hasToken) {
+				this.$router.push({ path: "/" });
+			}
+		},
 
 		getUser() {
 			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
@@ -95,6 +104,11 @@ export default {
 		
 		},
 
+		fileChange() {
+			this.form.file = this.$refs.file.files[0];
+			this.form.imageUrl = URL.createObjectURL(this.form.file);
+		},
+
 		modifyUser() {
 
 			if(this.passwordsMatched) {
@@ -117,6 +131,7 @@ export default {
 		},
 	},
 	beforeMount() {
+		this.isAuthenticated(),
 		this.getUser()
 	}
 }

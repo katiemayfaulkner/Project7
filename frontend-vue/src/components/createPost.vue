@@ -8,7 +8,7 @@
 				<h1> Create a new post: </h1>
 				<form class="create-post" v-on:submit.prevent="onSubmit" enctype="multipart/form-data"> 					
 					<div class="img-input">
-						<input type="file" ref="file" name="imageUrl" @change="fileChange()" accept=".jpg, .jpeg, .gif, .png" required>
+						<input type="file" name="imageUrl" @change="fileChange()" accept=".jpg, .jpeg, .gif, .png" required>
 						<img class="img-preview" :src="form.imageUrl" v-if="form.imageUrl">
 					</div>
 
@@ -44,6 +44,15 @@ export default {
 		};
 	},
 	methods: {
+		isAuthenticated() {
+			// Checks for token
+			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
+
+			if(!hasToken) {
+				this.$router.push({ path: "/" });
+			}
+		},
+
 		onSubmit : function () {
 			this.createPost();
 		},
@@ -68,6 +77,9 @@ export default {
 				console.error(error);
 			})	
 		},
+	},
+	beforeMount() {
+		this.isAuthenticated()
 	}
 }
 </script>

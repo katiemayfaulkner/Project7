@@ -557,7 +557,7 @@ exports.modifyUser = (req, res) => {
 
 
 
-			// Request data
+			// Request data			
 			let email = req.body.email;		
 	
 			// SQL Queries : if email already in use, throw error, else continue
@@ -579,6 +579,14 @@ exports.modifyUser = (req, res) => {
 						let lastName = req.body.lastName;
 						let email = req.body.email;
 						let password = req.body.password;
+						let imageUrl = 'http://localhost:3000/images/HAPPY_SAUCE.jpeg1639427653157.jpg';
+
+						// // If image input has not been filled in by user, only send firstName, lastName
+						// if(!imageUrl) {
+						// 	console.log('NO')
+						// } else {
+						// 	console.log('YES')
+						// }
 
 						// If email input has not been filled in by user, only send firstName, lastName
 						if(!email) {
