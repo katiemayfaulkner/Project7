@@ -38,7 +38,6 @@ exports.createPost = (req, res) => {
 				userId: req.body.userId,
 				caption: req.body.caption,
 				imageUrl: 'http://localhost:3000/images/HAPPY_SAUCE.jpeg1639427653157.jpg',	
-				likes: req.body.likes,
 			}
 
 			console.log('File: ', req.file)
@@ -73,15 +72,12 @@ exports.getAllPosts = (req, res) => {
 			throw err;
 
 		} else {
-
-			console.log(req.body)
 	
 			const query = 'SELECT * FROM Post';
 	
 			// SQL Queries
 			connection.query(query, (err, rows) => {
 				if(!err) {
-					console.log(rows)
 					res.send(rows)
 
 				} else {
@@ -134,23 +130,25 @@ exports.viewPost = (req, res) => {
 		if(err) {
 			throw err;
 		} else {
-
-			console.log(req.body)
 	
 			const newView = {
-                // userId: req.body.userId,
 				view: req.body.view,
+                userId: req.body.userId,
+				postId: req.params.id,
 			}
+
+			console.log(newView)
 	
 			// const query = 'UPDATE Post SET ? WHERE postId = ?';
             const query = 'INSERT INTO View SET ?';
 	
 			// SQL Queries
-			connection.query(query, [newView, 1], (err, rows) => {
+			connection.query(query, [newView], (err, rows) => {
 				
 				if(!err) {
 					console.log(rows);
 					res.send('Post successfully viewed!');
+
 				} else {
 					console.log(err)
 				}
@@ -210,11 +208,11 @@ exports.postComment = (req, res) => {
 		if(err) {
 			throw err;
 		} else {
-
-			console.log(req.body)
 	
 			const newComment = {
 				content: req.body.content,
+				userId: req.body.userId,
+				postId: req.params.id,
 			}
 
 			console.log(newComment)
@@ -249,15 +247,14 @@ exports.getComments = (req, res) => {
 
 		} else {
 
-			console.log(req.body)
+			let postId = req.params.id
 	
-			const query = 'SELECT * FROM Comments';
+			const query = 'SELECT * FROM Comments where postId = ?';
 	
 			// SQL Queries
-			connection.query(query, (err, rows) => {
+			connection.query(query, [postId], (err, rows) => {
 				if(!err) {
 
-					console.log(rows)
 					res.send(rows)
 
 				} else {

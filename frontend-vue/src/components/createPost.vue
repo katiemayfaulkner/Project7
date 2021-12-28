@@ -39,7 +39,6 @@ export default {
 				imageUrl: "",
 				file: "",
 				caption: "",
-				likes: 0,
 			},
 		};
 	},

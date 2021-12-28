@@ -91,11 +91,9 @@ export default {
 			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 
 			axios.delete('http://localhost:3000/user/' + userId,
-			// { headers: {'Authorization': `Basic ${token}`,}}
 			).then(res => {
-
+				
 				this.logoutUser();
-
 				console.log('Your account has successfully been deleted!');
 			})
 			.catch(function (err) {

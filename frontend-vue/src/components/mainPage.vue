@@ -40,17 +40,31 @@
 									</div>
 
 									<div class="post-actions">
-										<div class="seen">
+										<div class="seen" @click="viewPost(post.postId)">
 											<img 
 											src="../assets/seen.png"								  
-												v-bind:class="{active: isSeen}"
-												@click="isSeen = !isSeen"
-											>  
+											v-bind:class="{active: isSeen}"
+											@click="isSeen = !isSeen"
+											id="seePost"
+											> 
 										</div>
 
+										<!-- <div class="seen" @click="viewPost(post.postId)">
+											<img 
+											src="../assets/seen.png"								  
+											@click="newView"
+											id="addView"
+											> 
+											<img 
+											src="../assets/seen2.png"								  
+											@click="newView"
+											id="removeView"
+											>
+										</div> -->
+
 										<form class="comments" v-on:submit.prevent="onSubmit">
-											<input class="input" type="text" placeholder="Write a comment..." v-model="form.content">
-											<button type="submit"> Submit </button>
+											<input class="input" type="text" placeholder="Write a comment..." v-model="commentForm.content" required>
+											<button type="submit" @click="postComment(post.postId)"> Submit </button>
 										</form>
 									</div>
 								</div>
@@ -109,10 +123,19 @@ export default {
 		return{
 			isSeen: false,
 			seeComments: false,
-			form: {
+
+			commentForm: {
 				content: "",
+				userId: JSON.parse(localStorage.getItem('user')).userId,
 			},
+
+			viewForm: {	
+				view: 1,
+				userId: JSON.parse(localStorage.getItem('user')).userId,	
+			},
+			
 			posts: [],
+			views: [],
 			comments: [],
 			user: {},
 		};
@@ -127,21 +150,13 @@ export default {
 				this.$router.push({ path: "/" });
 			}
 		},
-
-		onSubmit: function (){
-			this.postComment();
-		},
       
 		getPosts() {
-			// let newPosts = ['kqyn', 'sorqkq', 'vqrus', 'jax'];
-			// setTimeout(() => {
-			// 	this.posts = newPosts;
-			// }, 2000)
 
 			axios.get("http://localhost:3000/post")
 			.then(res => {
-
 				this.posts = res.data;
+
 			})
 			.catch(error => {
 				console.error(error);
@@ -149,8 +164,8 @@ export default {
 		},
 
 		deletePost(id) {
+
 			axios.delete('http://localhost:3000/post/' + id,
-			// { headers: {'Authorization': `Basic ${token}`,}}
 			).then(res => {
 
 				console.log('Your post has successfully been deleted!');
@@ -162,11 +177,41 @@ export default {
 			})
 		},
 
-		postComment() {
+		viewPost(id) {
 
-			let commentContent = this.form;
+			let viewDetails = this.viewForm;
 
-			axios.post("http://localhost:3000/post/comment", commentContent)
+			axios.post("http://localhost:3000/post/view/" + id, viewDetails)
+			.then(res => {
+
+				this.views = res.data;
+			})
+			.catch(error => {
+				console.error(error);
+			})
+
+
+			let seen = document.getElementsByClassName('isSeen')
+
+			if(seen){
+				console.log('yes')
+
+			} else{
+				console.log('no')
+			}
+		},
+
+		onSubmit: function (){
+			this.postComment();
+		},
+
+		postComment(id) {
+
+			console.log(id)
+
+			let commentContent = this.commentForm;
+
+			axios.post("http://localhost:3000/post/comment/" + id, commentContent)
 			.then(res => {
 
 				this.comments = res.data;
@@ -176,23 +221,24 @@ export default {
 			})
 		},
 
-		getComments() {
+		getComments(id) {
 			
-			axios.get("http://localhost:3000/post/comments")
-			.then(res => {
+			console.log(id)
+			
+			// axios.get("http://localhost:3000/post/comments/" + id)
+			// .then(res => {
 
-				this.comments = res.data;
-			})
-			.catch(error => {
-				console.error(error);
-			})
+			// 	this.comments = res.data;
+			// })
+			// .catch(error => {
+			// 	console.error(error);
+			// })
 		}
 	},
 
 	beforeMount() {
 		this.isAuthenticated(),
 		this.getPosts(),
-		// this.getUsers()
 		this.getComments()
 	},
 }
@@ -262,8 +308,9 @@ export default {
 						background-color: #f2f2f2;
 						border-radius: 12px;
 						box-shadow: rgba(35, 35, 65, 0.25) 0px 6px 12px -2px, rgba(3, 3, 3, 0.418) 0px 3px 7px -3px;
+						overflow: scroll;
 
-						.post-content {
+						.post-content {							
 							position: absolute;
 							z-index: 1;
 							width: 100%;
@@ -402,7 +449,6 @@ export default {
 							}
 							
 							.items {
-								overflow: scroll;
 								padding: 15px 0;
 
 								.item {
