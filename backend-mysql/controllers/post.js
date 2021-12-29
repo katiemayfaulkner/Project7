@@ -27,10 +27,7 @@ exports.createPost = (req, res) => {
 		if(err) {
 			throw err;
 			
-		} else {
-		
-			// let userId = req.session.id
-			// console.log(userId)			
+		} else {			
 	
 			// let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
 

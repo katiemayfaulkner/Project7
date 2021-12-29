@@ -24,15 +24,15 @@
 					</div>
 					<div class="user-input">
 						<p class="title">Email:</p>
-						<input type="text" v-model="form.email">
+						<input type="text" v-model="form.email" required>
 					</div>
 					<p>Optional: </p>
 					<div class="user-input">
-						<p class="title">New Password:</p>
+						<p class="title">New password:</p>
 						<input type="password" v-model="form.password">
 					</div>
 					<div class="user-input">
-						<p class="title">Confirm New Password:</p>
+						<p class="title">Confirm new password:</p>
 						<input type="password" v-model="form.retypePassword">
 					</div>
 
@@ -83,7 +83,8 @@ export default {
 			.then(res => {
 
 				this.form.firstName = res.data.firstName
-				this.form.lastName = res.data.lastName					
+				this.form.lastName = res.data.lastName	
+				this.form.imageUrl = res.data.imageUrl				
 			})
 			.catch(error => {
 				console.error(error);
@@ -120,6 +121,7 @@ export default {
 				.then(res => {
 					
 					console.log(userDetails.firstName,", your account has successfully been updated!");	
+					localStorage.clear();
 					this.$router.push({ path: "/login" });
 					
 				})
@@ -168,7 +170,7 @@ export default {
 		}
 
 		.profile {
-			margin: 30px 0;
+			margin-top: 30px;
 
 			.profile-picture {
 				display: flex;
@@ -220,13 +222,49 @@ export default {
 
 			button {
 				padding: 10px;
-				margin: 0 10px 15px 0;
 				border-radius: 12px;
 				border: none;
 				background-color: #091F43;
 				font-weight: 500;
 				color: white;
 				font-size: 17px;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 650px) {
+
+	.edit-profile {
+
+		.content {
+			padding: 15px;
+			margin-bottom: 30px;
+
+			.profile {
+
+				.profile-picture {
+					display: block;
+					margin-bottom: 20px;
+
+					.user-img {
+						margin-bottom: 10px;
+					}
+
+					input {
+						margin: 0;
+					}
+				}
+
+				.user-input {
+					display: block;
+					margin-bottom: 15px;
+
+					p {
+						margin: 0;
+					}
+
+				}
 			}
 		}
 	}

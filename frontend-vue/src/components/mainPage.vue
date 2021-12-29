@@ -18,10 +18,10 @@
 								<div class="post-content" v-if="!seeComments" v-bind:class="{active: seeComments}">
 									<div class="top-bar">
 										<div class="user-info">
-											<div class="user-img"> 
-												<img src="../assets/bob.jpg" alt="">
+											<div class="user-img" @click="getUser(user.userId)"> 
+												<img :src="user.imageUrl">	
 											</div>
-											<p> Katie May {{user.firstName}} </p>
+											<p>{{user.firstName}} {{user.lastName}}</p>
 										</div>
 
 										<div>
@@ -31,8 +31,7 @@
 									</div>
 
 									<div class="img-container">
-										<img :src="post.imageUrl" >
-										
+										<img :src="post.imageUrl">		
 									</div>
 
 									<div class="caption-container">
@@ -124,20 +123,20 @@ export default {
 			isSeen: false,
 			seeComments: false,
 
-			commentForm: {
-				content: "",
-				userId: JSON.parse(localStorage.getItem('user')).userId,
-			},
-
 			viewForm: {	
 				view: 1,
 				userId: JSON.parse(localStorage.getItem('user')).userId,	
+			},
+
+			commentForm: {
+				content: "",
+				userId: JSON.parse(localStorage.getItem('user')).userId,
 			},
 			
 			posts: [],
 			views: [],
 			comments: [],
-			user: {},
+			user: [],
 		};
 	},
 	
@@ -163,17 +162,31 @@ export default {
 			})
 		},
 
+		getUser(id) {
+
+			console.log('userId:' ,id)
+
+			// axios.get('http://localhost:3000/user/' + id)
+			// .then(res => {
+
+			// 	this.user = res.data;				
+			// })
+			// .catch(error => {
+			// 	console.error(error);
+			// })
+		},
+
 		deletePost(id) {
 
-			axios.delete('http://localhost:3000/post/' + id,
-			).then(res => {
+			axios.delete('http://localhost:3000/post/' + id)
+			.then(res => {
 
 				console.log('Your post has successfully been deleted!');
 				this.getPosts();
 			
 			})
-			.catch(function (err) {
-				console.log("Error", err);
+			.catch(error => {
+				console.error(error);
 			})
 		},
 
@@ -201,13 +214,11 @@ export default {
 			}
 		},
 
-		onSubmit: function (){
+		onSubmit: function() {
 			this.postComment();
 		},
 
 		postComment(id) {
-
-			console.log(id)
 
 			let commentContent = this.commentForm;
 
@@ -223,7 +234,7 @@ export default {
 
 		getComments(id) {
 			
-			console.log(id)
+			console.log('postId:', id)
 			
 			// axios.get("http://localhost:3000/post/comments/" + id)
 			// .then(res => {
@@ -239,6 +250,7 @@ export default {
 	beforeMount() {
 		this.isAuthenticated(),
 		this.getPosts(),
+		this.getUser(),
 		this.getComments()
 	},
 }
@@ -491,20 +503,24 @@ export default {
 				position: sticky;
 				top: 30px;
 				margin-bottom: 30px;
+
 				.footer {
 					margin: 20px 0;
 					padding: 20px;
 					box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+
 					p {
 						line-height: 10px;
 						font-size: 15px;
 						cursor: pointer;
 					}
+
 					span {
 						font-size: 13px;
 						margin: 5px 0;
 					}
 				}
+
 				a {
 					width: 100%;
 					text-decoration: none;
@@ -525,22 +541,53 @@ export default {
 	}
 }
 
-@media only screen and (max-width: 770px) {
+@media only screen and (max-width: 650px) {
 	.main-page {
+
 		.container {
-			.posts {
-				.box {
-					.post {
-						.content {
-							.post-actions {
-								div {
-									img {
-										margin-right: 10px;
-										height: 20px;
-									}
-								}
+			margin-top: 20px;
+			padding: 0;
+
+			article {
+				padding: 10px;
+
+				h2{
+					font-size: 22px;
+				}
+
+				.no-posts {
+					margin-top: 50px;
+
+					div {
+
+						h2 {
+							width: 90%;
+							font-size: 20px;
+						}
+					}	
+				}
+
+				.post-content {
+
+					.post-actions {
+
+						.comments {
+							width: 80%;
+							.input {
+								width: 90%;
 							}
 						}
+					}
+				}
+			}
+
+			div {
+
+				.sticky-items {
+
+					button {
+						font-size: 15px;
+						padding: 7px;
 					}
 				}
 			}

@@ -76,18 +76,19 @@ export default {
 
 @media only screen and (max-width: 770px) {
 	.main-header {
+		padding: 20px 0 10px 0;
 
 		.container {
 
 			div {
 
 				.logo {
-					height: 32px;
+					height: 30px;
 					width: auto;
 				}
 
 				h1 {
-					margin-left: 50px;
+					margin-left: 40px;
 					font-size: 20px;
 				}
 			}

@@ -119,12 +119,11 @@ export default {
 	}
 }
 
-@media only screen and (max-width: 770px) {
+@media only screen and (max-width: 650px) {
 
-	.window {
+	.welcome-window {
 
-		.box {
-			padding: 20px 15px;
+		.box {	
 			width: 90%;
 		}
 	}

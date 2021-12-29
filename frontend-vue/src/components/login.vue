@@ -106,7 +106,7 @@ export default {
 		transform: translate(-50%, -50%);
 		width: 60%;	
 		margin: O auto;
-		padding: 60px;
+		padding: 65px;
 		border-radius: 12px;
 		background-color: #091f43;
 		color: white;
@@ -195,11 +195,23 @@ export default {
 	}
 }
 
-@media only screen and (max-width: 770px) {
-	.window {
-		.box {
-			padding: 50px 0;
-			width: 83%;
+@media only screen and (max-width: 650px) {
+
+	.auth-window {
+
+		.box {	
+			width: 90%;
+
+            .auth {
+
+                p{
+                    position: absolute;
+                    left: -60px;
+                    padding: 5px;
+                    margin: 0 5px;
+                    width: 320px
+                }
+            }
 		}
 	}
 }

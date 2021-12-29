@@ -11,7 +11,7 @@
 
 				<div class="profile">
 					<div class="user-img"> 
-						<img src="../assets/bob.jpg" alt="">
+						<img :src="user.imageUrl" v-if="user.imageUrl">
 					</div>
 					<div>
 						<p class="title">First name:</p>
@@ -30,7 +30,7 @@
 				<div class="profile-btns">
 					<input type="button" value="Logout" @click="logoutUser()">
 					<router-link to="/edit-profile">
-						<input type="button" value="Edit my profile">
+						<input type="button" value="Edit profile">
 					</router-link>
 					<input type="button" value="Delete account" @click="deleteUser()">
 				</div>
@@ -184,6 +184,24 @@ export default {
 				font-weight: 500;
 				color: white;
 				font-size: 17px;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 770px) {
+	.view-profile {
+		.content {
+			padding: 15px;
+
+			.profile-btns {
+				display: flex;
+				flex-wrap: nowrap;
+
+				input {
+					font-size: 16px;
+					margin: 0 5px 15px 0;
+				}
 			}
 		}
 	}

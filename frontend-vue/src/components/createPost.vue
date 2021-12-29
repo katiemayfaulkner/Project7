@@ -98,6 +98,7 @@ export default {
 		}
 
 	}
+
 	.content{
 		padding: 25px;
 		width: 100%;
@@ -161,6 +162,27 @@ export default {
 				font-weight: 500;
 				color: white;
 				font-size: 17px;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 770px) {
+	.create-post {
+
+		.content {
+			padding: 15px;
+
+			h1 {
+				font-size: 22px;
+			}
+
+			.create-post {
+
+				.submit-btn {
+					padding: 10px;
+					font-size: 16px;
+				}
 			}
 		}
 	}
