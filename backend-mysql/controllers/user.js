@@ -148,36 +148,6 @@ exports.login = (req, res) => {
 	})
 };
 
-// exports.getAllUsers = (req, res) => {
-
-// 	// Retrieve user
-//     mySqlConnection.getConnection((err, connection) => {
-
-// 		// If there's a problem throw error, else, continue 
-// 		if(err) {
-// 			throw err;
-
-// 		} else {
-// 			console.log(req.body)
-	
-// 			const query = 'SELECT * FROM User';
-	
-// 			// SQL Queries
-// 			connection.query(query, (err, rows) => {
-// 				if(!err) {
-// 					console.log(rows)
-// 					res.send(rows)
-
-// 				} else {
-// 					res.status(400).json({
-// 						error: "Users cannot be retrieved."
-// 					})
-// 				}
-// 			})
-// 		}
-// 	})
-// };
-
 exports.getOneUser = (req, res) => {
 
 	// Retrieve user

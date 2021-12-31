@@ -13,79 +13,7 @@
 					</div>
 
 					<div class="box">
-						<div class="post col-lg-6" v-for= "post in posts" :key="post.postId">
-							<div class="contents">
-								<div class="post-content" v-if="!seeComments" v-bind:class="{active: seeComments}">
-									<div class="top-bar">
-										<div class="user-info">
-											<div class="user-img" @click="getUser(user.userId)"> 
-												<img :src="user.imageUrl">	
-											</div>
-											<p>{{user.firstName}} {{user.lastName}}</p>
-										</div>
-
-										<div>
-											<img src="../assets/bin-black.png" alt="" @click="deletePost(post.postId)">		
-											<img src="../assets/comments.png" alt="" @click="seeComments = !seeComments">	
-										</div>
-									</div>
-
-									<div class="img-container">
-										<img :src="post.imageUrl">		
-									</div>
-
-									<div class="caption-container">
-										<p> {{post.caption}} </p>
-									</div>
-
-									<div class="post-actions">
-										<div class="seen" @click="viewPost(post.postId)">
-											<img 
-											src="../assets/seen.png"								  
-											v-bind:class="{active: isSeen}"
-											@click="isSeen = !isSeen"
-											id="seePost"
-											> 
-										</div>
-
-										<!-- <div class="seen" @click="viewPost(post.postId)">
-											<img 
-											src="../assets/seen.png"								  
-											@click="newView"
-											id="addView"
-											> 
-											<img 
-											src="../assets/seen2.png"								  
-											@click="newView"
-											id="removeView"
-											>
-										</div> -->
-
-										<form class="comments" v-on:submit.prevent="onSubmit">
-											<input class="input" type="text" placeholder="Write a comment..." v-model="commentForm.content" required>
-											<button type="submit" @click="postComment(post.postId)"> Submit </button>
-										</form>
-									</div>
-								</div>
-
-								<div class="post-comments">
-									<div class="hero">
-										<h1> Comments: </h1>				
-										<img src="../assets/comments.png" alt="" @click="seeComments = !seeComments">	
-									</div>
-
-									<div class="items">
-										<div class="item" v-for= "comment in comments" :key="comment.commentId">
-											<div class="user">
-												<img src="img/user.png" alt="">
-												<p class="user-name"> Katie May : </p>
-											</div>
-											<p class="comment"> {{comment.content}} </p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						<Post v-for="post in posts" :key="post.postId" :post="post" />
 					</div> 
 				</article>
 					
@@ -115,24 +43,12 @@
 
 // import the promise-based library used with Node.js + your browser to make asynchronous Js HTTP requests
 import axios from 'axios'; 
+import Post from './Post.vue';
 
 export default {
    name: 'MainPage',
 	data() {
 		return{
-			isSeen: false,
-			seeComments: false,
-
-			viewForm: {	
-				view: 1,
-				userId: JSON.parse(localStorage.getItem('user')).userId,	
-			},
-
-			commentForm: {
-				content: "",
-				userId: JSON.parse(localStorage.getItem('user')).userId,
-			},
-			
 			posts: [],
 			views: [],
 			comments: [],
@@ -151,20 +67,19 @@ export default {
 		},
       
 		getPosts() {
-
 			axios.get("http://localhost:3000/post")
-			.then(res => {
-				this.posts = res.data;
+				.then(res => {
+					this.posts = res.data.result;
 
-			})
-			.catch(error => {
-				console.error(error);
-			})
+				})
+				.catch(error => {
+					console.error(error);
+				})
 		},
 
 		getUser(id) {
 
-			console.log('userId:' ,id)
+			console.log('userId:', id)
 
 			// axios.get('http://localhost:3000/user/' + id)
 			// .then(res => {
@@ -175,84 +90,16 @@ export default {
 			// 	console.error(error);
 			// })
 		},
-
-		deletePost(id) {
-
-			axios.delete('http://localhost:3000/post/' + id)
-			.then(res => {
-
-				console.log('Your post has successfully been deleted!');
-				this.getPosts();
-			
-			})
-			.catch(error => {
-				console.error(error);
-			})
-		},
-
-		viewPost(id) {
-
-			let viewDetails = this.viewForm;
-
-			axios.post("http://localhost:3000/post/view/" + id, viewDetails)
-			.then(res => {
-
-				this.views = res.data;
-			})
-			.catch(error => {
-				console.error(error);
-			})
-
-
-			let seen = document.getElementsByClassName('isSeen')
-
-			if(seen){
-				console.log('yes')
-
-			} else{
-				console.log('no')
-			}
-		},
-
-		onSubmit: function() {
-			this.postComment();
-		},
-
-		postComment(id) {
-
-			let commentContent = this.commentForm;
-
-			axios.post("http://localhost:3000/post/comment/" + id, commentContent)
-			.then(res => {
-
-				this.comments = res.data;
-			})
-			.catch(error => {
-				console.error(error);
-			})
-		},
-
-		getComments(id) {
-			
-			console.log('postId:', id)
-			
-			// axios.get("http://localhost:3000/post/comments/" + id)
-			// .then(res => {
-
-			// 	this.comments = res.data;
-			// })
-			// .catch(error => {
-			// 	console.error(error);
-			// })
-		}
 	},
 
 	beforeMount() {
 		this.isAuthenticated(),
-		this.getPosts(),
-		this.getUser(),
-		this.getComments()
+		this.getPosts()
 	},
+
+	components: {
+		Post
+	}
 }
 
 </script>
@@ -309,191 +156,6 @@ export default {
 			.box {
 				display: flex;
 				flex-wrap: wrap;
-
-				.post {
-					padding: 15px;
-
-					.contents {
-						position: relative;
-						width: 100%;
-						height: 470px;
-						background-color: #f2f2f2;
-						border-radius: 12px;
-						box-shadow: rgba(35, 35, 65, 0.25) 0px 6px 12px -2px, rgba(3, 3, 3, 0.418) 0px 3px 7px -3px;
-						overflow: scroll;
-
-						.post-content {							
-							position: absolute;
-							z-index: 1;
-							width: 100%;
-							height: 100%;
-							margin: O auto;
-							padding: 15px;
-							border-radius: 12px;
-							background-color: #f2f2f2;
-							color: black;
-							overflow: scroll;
-							display: block;
-
-							.top-bar {
-								display: flex;
-								flex-wrap: nowrap;
-								justify-content: space-between;
-	
-								img {
-									margin-right: 10px;
-									height: 30px;
-									cursor: pointer;
-								}
-	
-								.user-info {
-									display: flex;
-
-									.user-img {
-										border: 1px solid black;
-										width: 40px;
-										height: 40px;
-										border-radius: 50%;
-										overflow: hidden;
-										margin-bottom: 15px;
-										margin-right: 10px;
-
-										img {
-											width: 100%;
-											height: 100%;
-											object-fit: fill;
-										}
-									}
-	
-									p {
-										line-height: 40px;
-									}
-								}
-							}
-	
-							.img-container {
-								position: relative;
-								height: 220px;
-								overflow: hidden;
-	
-								img {
-									width: 100%;
-									height: 100%;
-									object-fit: contain;
-								}
-							}
-	
-							.caption-container {
-								height: 90px;
-								margin: 15px 0;
-								overflow-y: scroll;
-								border-radius: 12px;
-							}
-	
-							.post-actions {
-								display: flex;
-								justify-content: space-around;
-	
-								.seen {
-									position: relative;
-									padding: 0;
-									width: 45px;
-	
-									img {
-										position: absolute;
-										margin-right: 15px;
-										width: 40px;
-										height: auto;
-										cursor: pointer;
-										filter: brightness(1);		
-										opacity: 35%;
-									}
-									img.active {
-										filter: brightness(1.5);
-										opacity: 100%;
-									}
-								}
-	
-								.comments {
-									display: flex;
-									flex-wrap: nowrap;
-	
-									.input {
-										border-radius: 12px;
-										border: 1px solid #091F43;
-										padding-left: 5px;
-									}
-	
-									button {
-										margin-left: 5px;
-										padding: 7px;
-										border-radius: 12px;
-										width: 90px;
-										border: 2px solid black;
-										background-color: #091F43;
-										color: white;
-										font-size: 15px;
-										font-weight: 500;
-									}
-								}
-							}
-						}
-
-						.post-comments {
-							padding: 15px;
-
-							.hero {
-								display: flex;
-								justify-content: space-between;
-								position: sticky;
-								background-color: #f2f2f2;
-
-								img {		
-									height: 30px;
-									cursor: pointer;
-									margin-right: 10px;
-								}
-
-								h1 {
-									font-size: 21px;
-									font-weight: 300px;
-								}
-							}
-							
-							.items {
-								padding: 15px 0;
-
-								.item {
-									display: flex;
-									flex-wrap: wrap;
-									height: auto;
-									padding: 7px;
-									margin: 15px;
-									border-radius: 12px;
-									background-color: white;
-									border: 1px solid rgba(0, 0, 0, 0.404);
-
-									.user {
-										display: flex;
-										flex-wrap: nowrap;
-										margin-right: 10px;
-										img {
-											height: 25px;
-											margin-right: 7px;
-										}
-										p {
-											line-height: 25px;
-											font-weight: 600;
-										}
-									}
-									p {
-										font-weight: 200;
-									}
-								}
-							}
-						}
-					}
-				}
 			}
 		}
 

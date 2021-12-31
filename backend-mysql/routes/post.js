@@ -16,6 +16,7 @@ router.post('/comment/:id', post.postComment);
 router.get('/comments/:id', post.getComments);
 
 router.post('/view/:id', post.viewPost);
-router.delete('/unview/:id', post.unviewPost);
+router.delete('/view/:id', post.unviewPost);
+router.get('/view/:id', post.getView)
 
 module.exports = router;

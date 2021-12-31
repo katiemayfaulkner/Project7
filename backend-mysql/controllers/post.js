@@ -61,6 +61,33 @@ exports.createPost = (req, res) => {
 
 exports.getAllPosts = (req, res) => {
 
+	let whatever = (connection, rows) => {
+		rows.map((row, index) => {
+			const getUserInfoQuery = `SELECT firstName, lastName, imageUrl FROM User WHERE userId = ${row.userId}`
+
+			connection.query(getUserInfoQuery, (err, user) => {
+
+				if(!err) {
+					const author = {
+						firstName: user[0].firstName,
+						lastName: user[0].lastName,
+						imageUrl: user[0].imageUrl
+					}
+					
+					// PUSH EACH AUTHOR TO ITS CORRESPONDING POST. BASED ON INDEX.
+					rows[index].author = author;
+					console.log("🚀 ~ file: post.js ~ line 107 ~ connection.query ~ rows", rows)
+
+				} else {
+					console.log('not working')
+				}
+			})
+		})
+
+		return rows;
+	}
+
+
 	// Retrieve post
     mySqlConnection.getConnection((err, connection) => {
 
@@ -75,7 +102,23 @@ exports.getAllPosts = (req, res) => {
 			// SQL Queries
 			connection.query(query, (err, rows) => {
 				if(!err) {
-					res.send(rows)
+					
+					if(rows.length > 0) { // There's data
+
+						let data = whatever(connection, rows);
+                        console.log("🚀 ~ file: post.js ~ line 109 ~ connection.query ~ data", data)
+
+						res.status(200).json({
+							result: data
+						});
+
+
+
+					} else { // No data
+						res.status(400).json({
+							error: "This user does not exist."
+						})
+					}
 
 				} else {
 					res.status(400).json({
@@ -158,43 +201,79 @@ exports.viewPost = (req, res) => {
 
 exports.unviewPost = (req, res) => {
 	
-	// Adding a new dislike
+	// Delete post
 	mySqlConnection.getConnection((err, connection) => {
 
-		// If there's a problem throw error, else, continue
+		// If there's a problem throw error, else, continue 
 		if(err) {
 			throw err;
+
 		} else {
-
-			console.log(req.body)
 	
-			const newDislike = {
-                userId: req.body.userId,
-				dislikes: req.body.dislikes,
-
-			}
+			// SELECT * FROM Post
+			let postId = req.params.id;
 	
-			// const query = 'UPDATE Post SET ? WHERE postId = ?';
-            const query = 'INSERT INTO Post(dislikes) VALUES (dislikes)';
+			const query = 'DELETE FROM View WHERE postId = ?';
 	
 			// SQL Queries
-			connection.query(query, [newDislike, 1], (err, rows) => {
-				
+			connection.query(query, [postId], (err, rows) => {
+
 				if(!err) {
-					console.log(rows);
-					res.send('Post successfully disliked!');
+					console.log(rows)
+					res.send('View successfully deleted!');
+
 				} else {
 					console.log(err)
 				}
 			})
-
 		}
-		
 	})
 };
 
+exports.getView = (req, res) => {
 
+	// Retrieve user
+    mySqlConnection.getConnection((err, connection) => {
 
+		// If there's a problem throw error, else, continue 
+		if(err) {	
+			throw err;
+
+		} else {
+			// console.log('BODY PARAMS:', req.body); // { id: 17 }
+			// console.log('QUERY PARAMS:', req.query); // ?id=17
+			// console.log('PATH/URL PARAMS:', req.params); // user/:id -> user/17
+			// console.log('HEADERS PARAMS:', req.headers)			
+	
+			// SELECT * FROM users
+			let userId = req.params.id;
+	
+			const query = 'SELECT * FROM View WHERE userId = ?';
+
+			console.log(userId)
+	
+			// SQL Queries
+			connection.query(query, [userId], (err, rows) => {
+				if(!err) {
+					if(rows.length > 0) { // There's data
+						res.status(200).json({
+							view: rows[0].view,
+							postId: rows[0].postId,
+							userId: rows[0].userId
+						})
+
+					} else { // No data
+						res.status(400).json({
+							error: "No view."
+						})
+					}
+				} else {
+					console.log(err)
+				}
+			})
+		}
+	})
+};
 
 exports.postComment = (req, res) => {
 	
@@ -251,8 +330,8 @@ exports.getComments = (req, res) => {
 			// SQL Queries
 			connection.query(query, [postId], (err, rows) => {
 				if(!err) {
-
 					res.send(rows)
+                    console.log("🚀 ~ file: post.js ~ line 298 ~ connection.query ~ rows", rows)		
 
 				} else {
 					console.log(err)
