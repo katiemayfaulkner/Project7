@@ -5,20 +5,26 @@ const mySqlConnection = require('../config/database');
 exports.createPost = (req, res) => {
 	
 		
-	// if(req.file) {
-	// 	let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+	// Create initial empty "newPost" to be filled according to the condition below
+	let newPost;
 
-	// 	res.send(newPost)
-	// } 
-
-	// if (!req.file) {
-	// 	res.send("File was not found");
-	// 	return;
-	// }
-
-	// const file = req.file.filename;
-	// res.send(`${file.name} File Uploaded`);
-
+	// If there's an attachment file, add its uploaded URL to the "newPost"
+	if(req.file) {
+		let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+		
+		newPost = {
+			userId: req.body.userId,
+			caption: req.body.caption,
+			postImg: image,	
+		}
+		
+	} else { // No attachments.
+		newPost = {
+			userId: req.body.userId,
+			caption: req.body.caption,
+			postImg: null,	
+		}
+	}
 	
 	// Adding a new post
 	mySqlConnection.getConnection((err, connection) => {
@@ -27,20 +33,7 @@ exports.createPost = (req, res) => {
 		if(err) {
 			throw err;
 			
-		} else {			
-	
-			// let image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
-
-			const newPost = {
-				userId: req.body.userId,
-				caption: req.body.caption,
-				imageUrl: 'http://localhost:3000/images/HAPPY_SAUCE.jpeg1639427653157.jpg',	
-			}
-
-			console.log('File: ', req.file)
-			console.log('body: ', req.body)
-			
-			//console.log(newPost)
+		} else {
 	
             const query = 'INSERT INTO Post Set ?';
 	
@@ -61,33 +54,6 @@ exports.createPost = (req, res) => {
 
 exports.getAllPosts = (req, res) => {
 
-	let whatever = (connection, rows) => {
-		rows.map((row, index) => {
-			const getUserInfoQuery = `SELECT firstName, lastName, imageUrl FROM User WHERE userId = ${row.userId}`
-
-			connection.query(getUserInfoQuery, (err, user) => {
-
-				if(!err) {
-					const author = {
-						firstName: user[0].firstName,
-						lastName: user[0].lastName,
-						imageUrl: user[0].imageUrl
-					}
-					
-					// PUSH EACH AUTHOR TO ITS CORRESPONDING POST. BASED ON INDEX.
-					rows[index].author = author;
-					console.log("🚀 ~ file: post.js ~ line 107 ~ connection.query ~ rows", rows)
-
-				} else {
-					console.log('not working')
-				}
-			})
-		})
-
-		return rows;
-	}
-
-
 	// Retrieve post
     mySqlConnection.getConnection((err, connection) => {
 
@@ -97,22 +63,18 @@ exports.getAllPosts = (req, res) => {
 
 		} else {
 	
-			const query = 'SELECT * FROM Post';
+			const query = 'SELECT post.postImg, post.caption, user.firstName, user.lastName, user.imageUrl FROM post INNER JOIN user ON post.userId = user.userId';
 	
 			// SQL Queries
 			connection.query(query, (err, rows) => {
 				if(!err) {
 					
 					if(rows.length > 0) { // There's data
-
-						let data = whatever(connection, rows);
-                        console.log("🚀 ~ file: post.js ~ line 109 ~ connection.query ~ data", data)
+						console.log("🚀 ~ file: post.js ~ line 103 ~ connection.query ~ rows", rows)
 
 						res.status(200).json({
-							result: data
+							result: rows
 						});
-
-
 
 					} else { // No data
 						res.status(400).json({

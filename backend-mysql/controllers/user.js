@@ -550,7 +550,7 @@ exports.modifyUser = (req, res) => {
 						let lastName = req.body.lastName;
 						let email = req.body.email;
 						let password = req.body.password;
-						let imageUrl = 'http://localhost:3000/images/HAPPY_SAUCE.jpeg1639427653157.jpg';
+						// let imageUrl = 'http://localhost:3000/images/HAPPY_SAUCE.jpeg1639427653157.jpg';
 
 						// // If image input has not been filled in by user, only send firstName, lastName
 						// if(!imageUrl) {

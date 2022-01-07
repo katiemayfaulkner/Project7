@@ -9,9 +9,9 @@
         <div class="top-bar">
           <div class="user-info">
             <div class="user-img" @click="getUser(user.userId)">
-              <img :src="user.imageUrl" />
+              <img :src="post.imageUrl" />
             </div>
-            <p>{{ user.firstName }} {{ user.lastName }}</p>
+            <p>{{ post.firstName }} {{ post.lastName }}</p>
           </div>
 
           <div>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="img-container">
-          <img :src="post.imageUrl" />
+          <img :src="post.postImg" />
         </div>
 
         <div class="caption-container">
@@ -315,7 +315,7 @@ export default {
 
       .caption-container {
         height: 90px;
-        margin: 15px 0;
+        margin: 15px 5px;
         overflow-y: scroll;
         border-radius: 12px;
       }
