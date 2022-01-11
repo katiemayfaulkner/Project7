@@ -9,7 +9,7 @@
         <div class="top-bar">
           <div class="user-info">
             <div class="user-img" @click="getUser(user.userId)">
-              <img :src="post.imageUrl" />
+              <img :src="post.userImg" />
             </div>
             <p>{{ post.firstName }} {{ post.lastName }}</p>
           </div>
@@ -280,7 +280,7 @@ export default {
           display: flex;
 
           .user-img {
-            border: 1px solid black;
+            border: 2px solid black;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -291,7 +291,7 @@ export default {
             img {
               width: 100%;
               height: 100%;
-              object-fit: fill;
+              object-fit: cover;
             }
           }
 

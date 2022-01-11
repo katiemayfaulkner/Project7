@@ -77,10 +77,7 @@ export default {
       // NOTE: FormData will return empty object if you used console.log(formData) direct. The below code is the alternative.
       // formData.forEach(el => console.log(el));
 
-      formData.append(
-        "userId",
-        JSON.parse(localStorage.getItem("user")).userId
-      );
+      formData.append("userId", JSON.parse(localStorage.getItem("user")).userId);
       formData.append("file", this.$refs.file.files[0]);
       formData.append("caption", this.caption);
 

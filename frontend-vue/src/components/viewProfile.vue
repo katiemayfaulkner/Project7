@@ -11,7 +11,7 @@
 
 				<div class="profile">
 					<div class="user-img"> 
-						<img :src="user.imageUrl" v-if="user.imageUrl">
+						<img :src="user.userImg" v-if="user.userImg">
 					</div>
 					<div>
 						<p class="title">First name:</p>
@@ -142,7 +142,7 @@ export default {
 			margin: 30px 0;
 
 			.user-img {
-				border: 1px solid black;
+				border: 2px solid black;
 				width: 64px;
 				height: 64px;
 				border-radius: 50%;

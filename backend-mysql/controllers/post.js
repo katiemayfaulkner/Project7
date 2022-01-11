@@ -63,7 +63,7 @@ exports.getAllPosts = (req, res) => {
 
 		} else {
 	
-			const query = 'SELECT post.postImg, post.caption, user.firstName, user.lastName, user.imageUrl FROM post INNER JOIN user ON post.userId = user.userId';
+			const query = 'SELECT post.postImg, post.caption, user.firstName, user.lastName, user.userImg FROM post INNER JOIN user ON post.userId = user.userId';
 	
 			// SQL Queries
 			connection.query(query, (err, rows) => {
