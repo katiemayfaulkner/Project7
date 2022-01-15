@@ -9,7 +9,7 @@
             alt=""
           />
         </router-link>
-        <h1>Welcome, {{ user.firstName }} !</h1>
+        <h1>Welcome, {{ getUser.firstName }}!</h1>
       </div>
 
       <div class="header-btns col-lg-2 col-md-3">
@@ -27,14 +27,11 @@
 <script>
 export default {
   name: "Header",
-  data() {
-    return {
-      user: JSON.parse(window.localStorage.getItem("user"))
-        ? JSON.parse(window.localStorage.getItem("user"))
-        : "",
-    };
-  },
-  props: ["firstName"],
+  computed: {
+		getUser: function() {
+			return this.$store.getters['getUser'];
+		}
+	},
 };
 </script>
 

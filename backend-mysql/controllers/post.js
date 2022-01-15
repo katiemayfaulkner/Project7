@@ -41,7 +41,6 @@ exports.createPost = (req, res) => {
 			connection.query(query, [newPost], (err, rows) => {
 				
 				if(!err) {
-					console.log(rows);
 					res.send('Your post has been created successfully!');
 
 				} else {
@@ -63,14 +62,13 @@ exports.getAllPosts = (req, res) => {
 
 		} else {
 	
-			const query = 'SELECT post.postImg, post.caption, user.firstName, user.lastName, user.userImg FROM post INNER JOIN user ON post.userId = user.userId';
+			const query = "SELECT post.postId, post.postImg, post.caption, user.firstName, user.lastName, user.userImg FROM post INNER JOIN user ON post.userId = user.userId";
 	
 			// SQL Queries
 			connection.query(query, (err, rows) => {
 				if(!err) {
 					
 					if(rows.length > 0) { // There's data
-						console.log("🚀 ~ file: post.js ~ line 103 ~ connection.query ~ rows", rows)
 
 						res.status(200).json({
 							result: rows
@@ -112,123 +110,8 @@ exports.deletePost = (req, res) => {
 			connection.query(query, [postId], (err, rows) => {
 
 				if(!err) {
-					console.log(rows)
 					res.send('Post successfully deleted!');
 
-				} else {
-					console.log(err)
-				}
-			})
-		}
-	})
-};
-
-exports.viewPost = (req, res) => {
-	
-	// Adding a new view
-	mySqlConnection.getConnection((err, connection) => {
-
-		// If there's a problem throw error, else, continue
-		if(err) {
-			throw err;
-		} else {
-	
-			const newView = {
-				view: req.body.view,
-                userId: req.body.userId,
-				postId: req.params.id,
-			}
-
-			console.log(newView)
-	
-			// const query = 'UPDATE Post SET ? WHERE postId = ?';
-            const query = 'INSERT INTO View SET ?';
-	
-			// SQL Queries
-			connection.query(query, [newView], (err, rows) => {
-				
-				if(!err) {
-					console.log(rows);
-					res.send('Post successfully viewed!');
-
-				} else {
-					console.log(err)
-				}
-			})
-
-		}
-		
-	})
-};
-
-exports.unviewPost = (req, res) => {
-	
-	// Delete post
-	mySqlConnection.getConnection((err, connection) => {
-
-		// If there's a problem throw error, else, continue 
-		if(err) {
-			throw err;
-
-		} else {
-	
-			// SELECT * FROM Post
-			let postId = req.params.id;
-	
-			const query = 'DELETE FROM View WHERE postId = ?';
-	
-			// SQL Queries
-			connection.query(query, [postId], (err, rows) => {
-
-				if(!err) {
-					console.log(rows)
-					res.send('View successfully deleted!');
-
-				} else {
-					console.log(err)
-				}
-			})
-		}
-	})
-};
-
-exports.getView = (req, res) => {
-
-	// Retrieve user
-    mySqlConnection.getConnection((err, connection) => {
-
-		// If there's a problem throw error, else, continue 
-		if(err) {	
-			throw err;
-
-		} else {
-			// console.log('BODY PARAMS:', req.body); // { id: 17 }
-			// console.log('QUERY PARAMS:', req.query); // ?id=17
-			// console.log('PATH/URL PARAMS:', req.params); // user/:id -> user/17
-			// console.log('HEADERS PARAMS:', req.headers)			
-	
-			// SELECT * FROM users
-			let userId = req.params.id;
-	
-			const query = 'SELECT * FROM View WHERE userId = ?';
-
-			console.log(userId)
-	
-			// SQL Queries
-			connection.query(query, [userId], (err, rows) => {
-				if(!err) {
-					if(rows.length > 0) { // There's data
-						res.status(200).json({
-							view: rows[0].view,
-							postId: rows[0].postId,
-							userId: rows[0].userId
-						})
-
-					} else { // No data
-						res.status(400).json({
-							error: "No view."
-						})
-					}
 				} else {
 					console.log(err)
 				}
@@ -253,16 +136,12 @@ exports.postComment = (req, res) => {
 				postId: req.params.id,
 			}
 
-			console.log(newComment)
-	
-			// const query = 'UPDATE Post SET ? WHERE postId = ?';
             const query = 'INSERT INTO Comments SET ?';
 	
 			// SQL Queries
 			connection.query(query, [newComment], (err, rows) => {
 				
 				if(!err) {
-					console.log(rows);
 					res.send('Your comment has been posted successfully!');
 				} else {
 					console.log(err)
@@ -285,20 +164,126 @@ exports.getComments = (req, res) => {
 
 		} else {
 
-			let postId = req.params.id
-	
-			const query = 'SELECT * FROM Comments where postId = ?';
-	
+			let postId = req.params.id;
+
+			const query = "SELECT comments.content, user.userImg, user.firstName, user.lastName FROM comments INNER JOIN user ON comments.userId = user.userId WHERE postId = ?";
+
 			// SQL Queries
 			connection.query(query, [postId], (err, rows) => {
-				if(!err) {
-					res.send(rows)
-                    console.log("🚀 ~ file: post.js ~ line 298 ~ connection.query ~ rows", rows)		
+				if (!err) {
+				if (rows.length > 0) {
+					// There's data
+
+					res.status(200).json({
+					result: rows,
+					});
 
 				} else {
-					console.log(err)
+					// No data
+
+					res.status(400).json({
+					error: "These comments can not be retrieved.",
+					});
 				}
-			})
+				} else {
+				console.log(err);
+				}
+			});
 		}
 	})
+};
+
+exports.viewPost = (req, res) => {
+  // Adding a new view
+  mySqlConnection.getConnection((err, connection) => {
+    // If there's a problem throw error, else, continue
+    if (err) {
+      throw err;
+    } else {
+      const newView = {
+		  postId: req.params.id,
+		  userId: req.body.userId,
+      };
+
+      const query = "INSERT INTO View SET ?";
+
+      // SQL Queries
+      connection.query(query, [newView], (err, rows) => {
+        if (!err) {
+          res.send("Post successfully viewed!");
+        } else {
+          console.log(err);
+        }
+      });
+    }
+  });
+};
+
+exports.unviewPost = (req, res) => {
+  // Delete post
+  mySqlConnection.getConnection((err, connection) => {
+    // If there's a problem throw error, else, continue
+    if (err) {
+      throw err;
+    } else {
+      let postId = req.params.id;
+	  let userId = req.body.userId;
+	  
+      //const query = 'DELETE FROM View WHERE postId = ?';
+      const query = "DELETE FROM View WHERE postId = ? AND userId = ?";
+
+      // SQL Queries
+      connection.query(query, [postId, userId], (err, rows) => {
+        if (!err) {
+          res.send("View successfully deleted!");
+		  console.log(rows)
+        } else {
+          console.log(err);
+        }
+      });
+    }
+  });
+};
+
+exports.getView = (req, res) => {
+  // Retrieve views
+  mySqlConnection.getConnection((err, connection) => {
+    // If there's a problem throw error, else, continue
+    if (err) {
+      throw err;
+    } else {
+      // console.log('BODY PARAMS:', req.body); // { id: 17 }
+      // console.log('QUERY PARAMS:', req.query); // ?id=17
+      // console.log('PATH/URL PARAMS:', req.params); // user/:id -> user/17
+      // console.log('HEADERS PARAMS:', req.headers)
+
+      // SELECT * FROM views
+      let userId = req.params.id;
+	  let postId = req.query.postId;
+
+      const query = "SELECT * FROM View WHERE userId = ? AND postId = ?";
+	  
+      // SQL Queries
+      connection.query(query, [userId, postId], (err, rows) => {
+        if (!err) {
+          if (rows.length > 0) {
+            // There's data
+            res.status(200).json({
+              // view: rows[0].view,
+              // postId: rows[0].postId,
+              // userId: rows[0].userId
+              result: rows,
+            });
+          } else {
+            // No data
+            res.status(404).json({
+              error: "No view.",
+            });
+          }
+        } else {
+          console.log(err);
+        }
+      });
+    }
+  });
 };

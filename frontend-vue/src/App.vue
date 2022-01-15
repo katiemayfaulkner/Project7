@@ -1,9 +1,8 @@
 <template>
   <div id="app">
-    <Header/>
-    <Welcome v-if="loggedIn"/>
-
-    <router-view/>
+    <Header />
+    <Welcome v-if="!isLoggedIn" />
+    <router-view />
   </div>
 </template>
 
@@ -16,17 +15,21 @@ import Header from './components/header.vue'
 
 export default {
   name: 'app',
-  loggedIn: false,
   components: {
     Welcome,
     Header,
+  },
+  computed: {
+    isLoggedIn: function() {
+      return this.$store.getters['isLoggedIn'];
+    }
   }
 }
 
 </script>
 
 <style>
-*{
+* {
   scroll-behavior: smooth;
 }
 

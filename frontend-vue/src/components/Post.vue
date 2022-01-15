@@ -1,43 +1,39 @@
 <template>
-  <div class="post col-lg-6">
+  <div class="post col-lg-10">
     <div class="contents">
-      <div
-        class="post-content"
-        v-if="!seeComments"
-        v-bind:class="{ active: seeComments }"
-      >
+      <div class="post-content">
         <div class="top-bar">
           <div class="user-info">
-            <div class="user-img" @click="getUser(user.userId)">
-              <img :src="post.userImg" />
+            <div class="user-img">
+              <img :src="postData.userImg" />
             </div>
-            <p>{{ post.firstName }} {{ post.lastName }}</p>
+            <p>{{ postData.firstName }} {{ postData.lastName }}</p>
           </div>
 
           <div>
             <img
               src="../assets/bin-black.png"
               alt=""
-              @click="deletePost(post.postId)"
+              @click="deletePost(postData.postId)"
             />
             <img
               src="../assets/comments.png"
               alt=""
-              @click="getComments(post.postId)"
+              @click="getComments(postData.postId)"
             />
           </div>
         </div>
 
-        <div class="img-container">
-          <img :src="post.postImg" />
+        <div class="img-container" v-if="postData.postImg">
+          <img :src="postData.postImg" />
         </div>
 
         <div class="caption-container">
-          <p>{{ post.caption }}</p>
+          <p>{{ postData.caption }}</p>
         </div>
 
         <div class="post-actions">
-          <div class="seen" @click="toggleViewPost(post.postId)">
+          <div class="seen" @click="toggleViewPost(postData.postId)">
             <img
               src="../assets/seen.png"
               v-bind:class="{ active: isSeen }"
@@ -45,20 +41,10 @@
             />
           </div>
 
-          <!-- <div class="seen" @click="viewPost(post.postId)">
-				<img 
-				src="../assets/seen.png"								  
-				@click="newView"
-				id="addView"
-				> 
-				<img 
-				src="../assets/seen2.png"								  
-				@click="newView"
-				id="removeView"
-				>
-			</div> -->
-
-          <form class="comments" v-on:submit.prevent="onSubmit">
+          <form
+            class="comments"
+            v-on:submit.prevent="postComment(postData.postId)"
+          >
             <input
               class="input"
               type="text"
@@ -66,14 +52,12 @@
               v-model="commentForm.content"
               required
             />
-            <button type="submit" @click="postComment(post.postId)">
-              Submit
-            </button>
+            <button type="submit">Submit</button>
           </form>
         </div>
       </div>
 
-      <div class="post-comments">
+      <div class="post-comments" v-if="seeComments">
         <div class="hero">
           <h1>Comments:</h1>
           <img
@@ -90,12 +74,16 @@
         <div class="items">
           <div
             class="item"
-            v-for="comment in comments"
+            v-for="comment in comments.result"
             :key="comment.commentId"
           >
             <div class="user">
-              <img src="img/user.png" alt="" />
-              <p class="user-name">Katie May :</p>
+              <div class="user-img">
+                <img :src="comment.userImg" />
+              </div>
+              <p class="user-name">
+                {{ comment.firstName }} {{ comment.lastName }}
+              </p>
             </div>
             <p class="comment">{{ comment.content }}</p>
           </div>
@@ -111,35 +99,35 @@ import axios from "axios";
 
 export default {
   name: "Post",
-  props: ["post"],
+  props: ["postData"],
   data() {
     return {
       isSeen: false,
       seeComments: false,
-
-      viewForm: {
-        view: 1,
-        userId: JSON.parse(localStorage.getItem("user")).userId,
-      },
+      userId: JSON.parse(localStorage.getItem("user")).userId,
 
       commentForm: {
         content: "",
-        userId: JSON.parse(localStorage.getItem("user")).userId,
+        userId: JSON.parse(localStorage.getItem("user")).userId
       },
 
-      posts: [],
       view: [],
       comments: [],
       user: [],
     };
   },
+
   methods: {
+
     deletePost(id) {
+      this.$emit('deletePostFromChild', id);
+    },
+
+    postComment(id) {
       axios
-        .delete("http://localhost:3000/post/" + id)
+        .post("http://localhost:3000/post/comment/" + id, this.commentForm)
         .then((res) => {
-          console.log("Your post has successfully been deleted!");
-          location.reload();
+          this.commentForm.content = "";
         })
         .catch((error) => {
           console.error(error);
@@ -162,28 +150,28 @@ export default {
     },
 
     toggleViewPost(id) {
+
       this.isSeen = !this.isSeen;
 
       if (this.isSeen) {
-        let viewDetails = this.viewForm;
-
         axios
-          .post("http://localhost:3000/post/view/" + id, viewDetails)
+          .post("http://localhost:3000/post/view/" + id, {userId: this.userId})
           .then((res) => {
             this.view = res.data;
-            console.log("Post viewed!");
-            this.getViews();
           })
           .catch((error) => {
             console.error(error);
           });
       } else {
+
         axios
-          .delete("http://localhost:3000/post/view/" + id)
+          .delete("http://localhost:3000/post/view/" + id, {
+            data: {
+              userId: this.userId
+            }
+          })
           .then((res) => {
             this.view = res.data;
-            console.log("Post unviewed!");
-            this.getViews();
           })
           .catch((error) => {
             console.error(error);
@@ -191,49 +179,25 @@ export default {
       }
     },
 
-    // displayViews() {
-    //   if (this.view != null) {
-    //     this.isSeen = true;
-    //   } else {
-    //     this.isSeen = false;
-    //   }
-    // },
-
     getViews() {
-      let userId = JSON.parse(window.localStorage.getItem("user")).userId;
-
       axios
-        .get("http://localhost:3000/post/view/" + userId)
+        .get("http://localhost:3000/post/view/" + this.userId, {
+          params: {
+            postId: this.postData.postId
+          }
+        })
         .then((res) => {
-          this.view = res.data;
+          this.isSeen = true;
           console.log(res.data);
         })
         .catch((error) => {
           console.error(error);
         });
     },
-
-    postComment(id) {
-      let commentContent = this.commentForm;
-
-      axios
-        .post("http://localhost:3000/post/comment/" + id, commentContent)
-        .then((res) => {
-          this.comments = res.data;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-
-    onSubmit: function () {
-      this.postComment();
-      location.reload();
-    },
   },
 
   beforeMount() {
-    this.displayViews();
+    this.getViews();
   },
 };
 </script>
@@ -245,7 +209,7 @@ export default {
   .contents {
     position: relative;
     width: 100%;
-    height: 470px;
+    height: auto;
     background-color: #f2f2f2;
     border-radius: 12px;
     box-shadow: rgba(35, 35, 65, 0.25) 0px 6px 12px -2px,
@@ -253,17 +217,10 @@ export default {
     overflow: scroll;
 
     .post-content {
-      position: absolute;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      margin: O auto;
-      padding: 15px;
+      padding: 25px;
       border-radius: 12px;
       background-color: #f2f2f2;
       color: black;
-      overflow: scroll;
-      display: block;
 
       .top-bar {
         display: flex;
@@ -303,7 +260,7 @@ export default {
 
       .img-container {
         position: relative;
-        height: 220px;
+        height: 65%;
         overflow: hidden;
 
         img {
@@ -314,19 +271,20 @@ export default {
       }
 
       .caption-container {
-        height: 90px;
-        margin: 15px 5px;
+        height: 50px;
+        margin-top: 7px;
         overflow-y: scroll;
         border-radius: 12px;
       }
 
       .post-actions {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
 
         .seen {
           position: relative;
           padding: 0;
+          margin-right: 15px;
           width: 45px;
 
           img {
@@ -371,6 +329,12 @@ export default {
 
     .post-comments {
       padding: 15px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f2f2f2;
 
       .hero {
         display: flex;
@@ -393,7 +357,7 @@ export default {
       .no-comments {
         h2 {
           padding: 0;
-          margin-top: 140px;
+          margin-top: 30px;
           text-align: center;
           font-size: 19px;
         }
@@ -416,16 +380,29 @@ export default {
             display: flex;
             flex-wrap: nowrap;
             margin-right: 10px;
-            img {
-              height: 25px;
-              margin-right: 7px;
+
+            .user-img {
+              border: 1px solid black;
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              overflow: hidden;
+              margin-bottom: 15px;
+              margin-right: 10px;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
             }
             p {
-              line-height: 25px;
+              line-height: 30px;
               font-weight: 600;
             }
           }
           p {
+            line-height: 30px;
             font-weight: 200;
           }
         }

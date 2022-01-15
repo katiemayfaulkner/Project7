@@ -17,13 +17,13 @@
               ref="file"
               @change="fileChange()"
               accept=".jpg, .jpeg, .gif, .png"
-              required
+              
             />
             <img class="img-preview" :src="imgPreview" v-if="imgPreview" />
           </div>
 
           <div class="text-input">
-            <label for="text"> Insert your caption: </label>
+            <label for="text"> Insert your message: </label>
             <input
               type="text"
               maxlength="150"

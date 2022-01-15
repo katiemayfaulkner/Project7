@@ -81,9 +81,10 @@ export default {
 		},
 
 		logoutUser() {
+			// FIXME: Rely on VueX insteqd of LocqlStorqge
+			this.$store.commit('RESET');
 			localStorage.clear();
 			this.$router.push({ name: "Welcome" });
-
 			console.log('You have successfully been logged out.')
 		},
 
@@ -91,8 +92,7 @@ export default {
 			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 
 			axios.delete('http://localhost:3000/user/' + userId,
-			).then(res => {
-				
+			).then(res => {	
 				this.logoutUser();
 				console.log('Your account has successfully been deleted!');
 			})
