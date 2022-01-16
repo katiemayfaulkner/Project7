@@ -60,16 +60,7 @@ export default {
 		};
 	},
 	
-	methods: {
-		isAuthenticated() {
-			// Checks for token
-			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
-			
-			if(!hasToken) {
-				this.$router.push({ path: "/" });
-			}
-		},
-      
+	methods: {     
 		getPosts() {
 			axios.get("http://localhost:3000/post")
 				.then(res => {
@@ -96,7 +87,6 @@ export default {
 	},
 
 	beforeMount() {
-		//this.isAuthenticated(),
 		this.getPosts()
 	},
 

@@ -1,14 +1,11 @@
 // DB Connection
 const mySqlConnection = require('../config/database');
 
-// Password hashing
+// For password hashing
 const bcrypt = require("bcrypt");
 
 // Secret or private key (token) generator for verification purpose
 const jwt = require('jsonwebtoken');
-
-// Import the file system
-const fs = require('fs'); //fs = file system, includes functions for deleting (unused) files
 
 
 // Requests
@@ -23,7 +20,6 @@ exports.signup = (req, res) => {
 
 		} else {
 
-			// Define user email 
 			let email = req.body.email;
 
 			// SQL Queries : if user already exists, throw error, else continue
@@ -91,7 +87,7 @@ exports.signup = (req, res) => {
 
 exports.login = (req, res) => {
 
-	// Log user in
+	// Logging user in
 	mySqlConnection.getConnection((err, connection) => {
 
 		// If there's a problem throw error, else, continue 
@@ -159,8 +155,7 @@ exports.getOneUser = (req, res) => {
 			throw err;
 
 		} else {			
-	
-			// SELECT * FROM users
+
 			let userId = req.params.id;
 	
 			const query = 'SELECT * FROM User WHERE userId = ?';
@@ -175,7 +170,6 @@ exports.getOneUser = (req, res) => {
 							email: rows[0].email,
 							userImg: rows[0].userImg
 						})
-
 					} else { // No data
 						res.status(400).json({
 							error: "This user does not exist."
@@ -199,10 +193,7 @@ exports.deleteUser = (req, res)=> {
       throw err;
     } else {
 
-      // DELETE FROM users
       let userId = req.params.id;
-
-      console.log(userId);
 
       const query = "DELETE FROM User WHERE userId = ?";
 
@@ -210,6 +201,7 @@ exports.deleteUser = (req, res)=> {
       connection.query(query, [userId], (err, rows) => {
         if (!err) {
           res.send("Account successfully deleted!");
+
         } else {
           console.log(err);
         }
@@ -228,8 +220,7 @@ exports.modifyUser = (req, res) => {
 			throw err;
 			
 		} else {
-
-			// Request data			
+		
 			let email = req.body.email;		
 	
 			// SQL Queries : if email already in use, throw error, else continue

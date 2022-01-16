@@ -119,7 +119,7 @@
                 this.$router.push({ path: "/home" });
                 }
             },
-            
+
             // Password visibility toggle
             showFirstPassword: function () {
             let signupInput = document.getElementById("signupPassword");
@@ -153,20 +153,6 @@
             }
             },
 
-            // Check both passwords are the same
-            onSubmit: function (){
-                if(this.form.password === this.form.retypePassword){
-                    this.passwordsMatched = true;
-                    this.error = ""
-                    
-                } else {
-                    this.passwordsMatched = false;
-                    this.error = "Passwords must match!"
-                }
-
-                this.signUp();
-            },
-
             signUp() {
                 if(this.passwordsMatched) {
 
@@ -185,6 +171,20 @@
                         
                     })
                 }        
+            },
+
+            // Check both passwords are the same
+            onSubmit: function (){
+                if(this.form.password === this.form.retypePassword){
+                    this.passwordsMatched = true;
+                    this.error = ""
+                    
+                } else {
+                    this.passwordsMatched = false;
+                    this.error = "Passwords must match!"
+                }
+
+                this.signUp();
             },
         },
         beforeMount() {

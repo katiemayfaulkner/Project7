@@ -12,11 +12,8 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "sass-loader": "^10.2.0",
-    "sequelize": "^6.9.0",
     "vue": "^2.6.11",
-    "vue-observe-visibility": "^1.0.0",
     "vue-router": "^3.5.3",
-    "vue-simple-alert": "^1.1.1",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0"
   },

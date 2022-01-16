@@ -1,7 +1,7 @@
 {
   "name": "mysql-api",
   "version": "1.0.0",
-  "description": "A simple NodeJS API with Express & MySQL",
+  "description": "A NodeJS API with Express & MySQL",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -71,7 +71,6 @@ export default {
 			.then(res => {
 				console.log(res.data);
 				
-				// FIXME: Use VueX insteqd of locqlStorqge
 				this.$store.commit('SET_TOKEN', res.data.token);
 				this.$store.commit('SET_USER', res.data);
 				localStorage.setItem('user', JSON.stringify(res.data));
@@ -80,13 +79,11 @@ export default {
 			})
 			.catch(err => {
 				this.error = "Please check your information is correct and linked to a valid account.";
-				// console.error(error);
 			})
 		}
 	},
 	beforeMount() {
 		this.notAuthenticated()
-
 	}
 }
 </script>

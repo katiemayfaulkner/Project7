@@ -31,7 +31,6 @@
               v-model="caption"
             />
           </div>
-
           <button class="submit-btn" type="submit">Submit</button>
         </form>
       </div>
@@ -48,24 +47,11 @@ export default {
 
   data() {
     return {
-      // userId: JSON.parse(localStorage.getItem('user')).userId,
       imgPreview: "",
       caption: "",
     };
   },
   methods: {
-    isAuthenticated() {
-      // Checks for token
-      let hasToken = JSON.parse(localStorage.getItem("user")) ? true : false;
-
-      if (!hasToken) {
-        this.$router.push({ path: "/" });
-      }
-    },
-
-    onSubmit: function () {
-      this.createPost();
-    },
 
     fileChange() {
       this.imgPreview = URL.createObjectURL(this.$refs.file.files[0]);
@@ -73,9 +59,6 @@ export default {
 
     createPost() {
       let formData = new FormData();
-
-      // NOTE: FormData will return empty object if you used console.log(formData) direct. The below code is the alternative.
-      // formData.forEach(el => console.log(el));
 
       formData.append("userId", JSON.parse(localStorage.getItem("user")).userId);
       formData.append("file", this.$refs.file.files[0]);
@@ -95,10 +78,10 @@ export default {
           console.error(error);
         });
     },
-  },
-  beforeMount() {
-    this.isAuthenticated();
-  },
+    onSubmit: function () {
+      this.createPost();
+    },
+  }
 };
 </script>
 

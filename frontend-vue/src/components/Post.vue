@@ -213,7 +213,7 @@ export default {
     background-color: #f2f2f2;
     border-radius: 12px;
     box-shadow: rgba(35, 35, 65, 0.25) 0px 6px 12px -2px,
-      rgba(3, 3, 3, 0.418) 0px 3px 7px -3px;
+    rgba(3, 3, 3, 0.418) 0px 3px 7px -3px;
     overflow: scroll;
 
     .post-content {
@@ -271,7 +271,7 @@ export default {
       }
 
       .caption-container {
-        height: 50px;
+        height: 65px;
         margin-top: 7px;
         overflow-y: scroll;
         border-radius: 12px;
@@ -328,7 +328,7 @@ export default {
     }
 
     .post-comments {
-      padding: 15px;
+      padding: 25px;
       position: absolute;
       top: 0;
       left: 0;
@@ -355,9 +355,10 @@ export default {
       }
 
       .no-comments {
+        
         h2 {
           padding: 0;
-          margin-top: 30px;
+          margin-top: 40px;
           text-align: center;
           font-size: 19px;
         }

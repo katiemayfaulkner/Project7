@@ -1,7 +1,5 @@
 <template>
 	<div>
-		<!-- <p v-if="people.length == 0">You've no posts</p>
-		<p v-for="person in people" v-bind:key='person'>NAME: {{person}} </p> -->
 		<section class="container view-profile">
 			<router-link to="/home">
 				<p> Return </p>
@@ -49,24 +47,11 @@ export default {
 	data() {
 		return {
 			user: {},
-			// people: [],
 		};
 	},
-	methods: {
-		isAuthenticated() {
-			// Checks for token
-			let hasToken = JSON.parse(localStorage.getItem('user')) ? true : false;
-
-			if(!hasToken) {
-				this.$router.push({ path: "/" });
-			}
-		},	
+	methods: {	
 
 		getUser() {
-			// let newPeople = ['kqyn', 'sorqkq', 'vqrus', 'jax'];
-			// setTimeout(() => {
-			// 	this.people = newPeople;
-			// }, 3000)
 
 			let userId = JSON.parse(window.localStorage.getItem('user')).userId;
 
@@ -81,7 +66,6 @@ export default {
 		},
 
 		logoutUser() {
-			// FIXME: Rely on VueX insteqd of LocqlStorqge
 			this.$store.commit('RESET');
 			localStorage.clear();
 			this.$router.push({ name: "Welcome" });
@@ -102,7 +86,6 @@ export default {
 		},
 	},
 	beforeMount() {
-		this.isAuthenticated(),
 		this.getUser()
 	}
 }

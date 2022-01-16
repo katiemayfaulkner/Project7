@@ -6,7 +6,6 @@
       </router-link>
       <div class="content">
         <h1>Enter your new details:</h1>
-
         <form
           class="profile"
           v-on:submit.prevent="onSubmit"
@@ -45,7 +44,6 @@
             <p class="title">Confirm new password:</p>
             <input type="password" v-model="retypePassword" />
           </div>
-
           <button type="submit">Submit</button>
           <p class="alert alert-danger" v-if="this.error">{{ this.error }}</p>
         </form>
@@ -75,15 +73,6 @@ export default {
     };
   },
   methods: {
-    isAuthenticated() {
-      // Checks for token
-      let hasToken = JSON.parse(localStorage.getItem("user")) ? true : false;
-
-      if (!hasToken) {
-        this.$router.push({ path: "/" });
-      }
-    },
-
     fileChange() {
       this.imgPreview = URL.createObjectURL(this.$refs.file.files[0]);
     },
@@ -131,24 +120,18 @@ export default {
         axios
           .put("http://localhost:3000/user/" + userId, formData)
           .then((res) => {
-            console.log(
-              this.firstName,
-              ", your account has successfully been updated!"
-            );
             localStorage.clear();
             this.$router.push({ path: "/login" });
           })
           .catch((error) => {
             console.error(error);
-            this.error =
-              "Please check your password has minimum 8 characters (uppercase & lowercase, numbers, & special characters), and your email is not in use!";
+            this.error = "Please check your password has minimum 8 characters (uppercase & lowercase, numbers, & special characters), and your email is not in use!";
           });
       }
     },
   },
   beforeMount() {
-    this.isAuthenticated(), 
-	this.getUser();
+    this.getUser();
   },
 };
 </script>

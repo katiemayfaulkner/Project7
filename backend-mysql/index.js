@@ -1,7 +1,7 @@
 const http = require('http');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const express = require('express');     // Fast & minimalist web framework
+const bodyParser = require('body-parser');  // Body parsing middleware : Converts body into useable json object
+const cors = require('cors');   // Cross origin resource sharing : allows resources on a web page to be requested from a domain outside the domain from which the first resource was served
 const path = require('path');   // Import node package "path", which allows access to folder paths
 
 // Express App & Configuration
@@ -12,8 +12,6 @@ app.set('port', port);
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 
-// FYI: This line fixes the "undefined" req.body issue
-// app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
