@@ -54,7 +54,7 @@ exports.getAllPosts = (req, res) => {
       throw err;
     } else {
       const query =
-        "SELECT post.postId, post.postImg, post.caption, user.firstName, user.lastName, user.userImg FROM post INNER JOIN user ON post.userId = user.userId";
+        "SELECT post.postId, post.postImg, post.caption, user.userId, user.firstName, user.lastName, user.userImg FROM post INNER JOIN user ON post.userId = user.userId";
 
       // SQL Queries
       connection.query(query, (err, rows) => {
@@ -234,7 +234,7 @@ exports.getView = (req, res) => {
       // SQL Queries
       connection.query(query, [userId, postId], (err, rows) => {
         if (!err) {
-          if (rows.length > 0) { // There's data
+          if (rows.length > 0) {// There's data
             res.status(200).json({
               result: rows,
 

@@ -12,6 +12,7 @@
 
           <div>
             <img
+              v-if="postData.userId === userId"
               src="../assets/bin-black.png"
               alt=""
               @click="deletePost(postData.postId)"
